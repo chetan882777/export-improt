@@ -13,11 +13,8 @@ class LoginScreen extends StatelessWidget {
   late BuildContext _ctx;
 
   Future<void> _login(LoginViewModel model) async {
-    Map<String, dynamic> loginDetails = {
-      "phoneNumber": phoneNumberController.text
-    };
 
-    Resource resource = await model.login(loginDetails);
+    Resource resource = await model.login(phoneNumberController.text);
 
     switch (resource.status) {
       case Status.SUCCESS:
@@ -47,8 +44,9 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _ctx = context;
     return ChangeNotifierProvider<LoginViewModel>(
-      create: (context) => LoginViewModel(),
+      create: (context) => LoginViewModel(context),
       child: Scaffold(
         body: Stack(
           children: [
@@ -124,7 +122,7 @@ class LoginScreen extends StatelessWidget {
               builder: (context, LoginViewModel model, child) =>
                   MATUtils.showLoader(
                 context: context,
-                isLoadingVar: model.busy,
+                isLoadingVar: false,
                 size: 20,
                 opacity: 0.95,
               ),
