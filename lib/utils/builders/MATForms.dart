@@ -138,7 +138,7 @@ class MATForms {
     bool disabled = false,
     bool needController = true,
     bool autocorrect = false,
-    int maxLength = 100,
+    int maxLength = 80,
     int maxLine = 1,
     required FormFieldValidator validator,
   }) {
@@ -435,6 +435,32 @@ class MATForms {
       width: double.infinity,
       height: height,
       color: color,
+    );
+  }
+
+  Widget elevatedBtn({
+   required Color color,
+    required Color textColor,
+    required String displayText,
+    required Function player
+
+  }) {
+    return ElevatedButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(color),
+          textStyle: MaterialStateProperty.all(
+              TextStyle(
+                  color: textColor,
+                  fontSize: 20)),
+          shape: MaterialStateProperty.all<
+              RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.circular(12.0)))),
+      child: Text(displayText),
+      onPressed: () {
+        player();
+      }
     );
   }
 }

@@ -62,22 +62,74 @@ class RegisterScreen extends StatelessWidget {
         ])),
         body: Stack(
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                matForms.matEditable(
-                  variable: "test",
-                  displayText: "Testing",
-                  player: (val) {
-                  },
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(context),
-                    FormBuilderValidators.max(context, 70),
-                  ]),
-                )
-              ],
+            Padding(
+              padding: EdgeInsets.all(32),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  matForms.matEditable(
+                    variable: "first_name",
+                    displayText: "First Name",
+                    player: (val) {},
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                      FormBuilderValidators.max(context, 70),
+                    ]),
+                  ),
+                  matForms.matEditable(
+                    variable: "last_name",
+                    displayText: "Last Name",
+                    player: (val) {},
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                      FormBuilderValidators.max(context, 70),
+                    ]),
+                  ),
+                  matForms.matEditable(
+                    variable: "email_address",
+                    displayText: "Email Address",
+                    player: (val) {},
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                      FormBuilderValidators.max(context, 70),
+                    ]),
+                  ),
+                  matForms.matEditable(
+                    variable: "contact",
+                    displayText: "Contact",
+                    player: (val) {},
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                      FormBuilderValidators.max(context, 70),
+                    ]),
+                  ),
+                  matForms.matEditable(
+                    variable: "department",
+                    displayText: "Department",
+                    player: (val) {},
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(context),
+                      FormBuilderValidators.max(context, 70),
+                    ]),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 70.0,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      child: matForms.elevatedBtn(
+                          color: Theme.of(context).accentColor,
+                          textColor: Colors.white,
+                          displayText: "Submit",
+                          player: () {
+                            print(" ==== Submit");
+                          }),
+                    ),
+                  ),
+                ],
+              ),
             ),
             Consumer(
               builder: (context, RegisterViewModel model, child) =>
