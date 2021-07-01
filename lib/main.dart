@@ -30,11 +30,10 @@ class AgroWorld extends StatelessWidget {
           ),
           primaryColor: Color.fromARGB(255, 231, 211, 142),
           accentColor: Color.fromARGB(255, 145, 105, 26),
+          fontFamily: 'Lato',
         ),
         initialRoute: '/',
-        routes: {
-          '/' : (ctx) => LoginScreen()
-        },
+        routes: {'/': (ctx) => LoginScreen()},
       ),
     );
   }
