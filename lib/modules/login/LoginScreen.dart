@@ -14,6 +14,15 @@ class LoginScreen extends StatelessWidget {
 
   Future<void> _login(LoginViewModel model) async {
 
+    if(phoneNumberController.text.isEmpty) {
+      showToast('Enter Number Please');
+      return;
+    }
+    if(phoneNumberController.text.length < 10 || phoneNumberController.text.length > 15) {
+      showToast('Invalid Number');
+      return;
+    }
+
     Resource resource = await model.login(phoneNumberController.text);
 
     switch (resource.status) {
@@ -95,15 +104,9 @@ class LoginScreen extends StatelessWidget {
                                                 BorderRadius.circular(12.0)))),
                                 child: progressButton(model.busy),
                                 onPressed: () {
-                                  if (phoneNumberController.text.length != 10) {
                                     if (!model.busy) {
                                       _login(model);
                                     }
-                                  } else {
-                                    Fluttertoast.showToast(
-                                      msg: "Required fields are missing!",
-                                    );
-                                  }
                                 },
                               ),
                             ),
@@ -139,6 +142,7 @@ class LoginScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
         child: Consumer(
           builder: (context, LoginViewModel model, child) => TextField(
+            keyboardType: TextInputType.phone,
             controller: listener,
             style: TextStyle(fontSize: 20.0, color: Color(0xff313136)),
             cursorColor: Theme.of(context).accentColor,
