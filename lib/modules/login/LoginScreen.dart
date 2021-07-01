@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/register/RegisterScreen.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/Resource.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
@@ -113,7 +114,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         TextButton(onPressed: () {
-                          print(" Register here");
+                          Navigator.pushNamed(context, RegisterScreen.ROUTE_NAME);
                         }, child: Text("Register here", style: TextStyle(color: Colors.black, fontSize: 20),))
                       ],
                     ),

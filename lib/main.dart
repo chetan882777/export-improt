@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/register/RegisterScreen.dart';
 import 'package:agro_worlds/providers/ApplicationApiProvider.dart';
 import 'package:agro_worlds/utils/MatKeys.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +34,10 @@ class AgroWorld extends StatelessWidget {
           fontFamily: 'Lato',
         ),
         initialRoute: '/',
-        routes: {'/': (ctx) => LoginScreen()},
+        routes: {
+          '/': (ctx) => LoginScreen(),
+          RegisterScreen.ROUTE_NAME : (ctx) => RegisterScreen()
+        },
       ),
     );
   }
