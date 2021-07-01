@@ -1,0 +1,440 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
+
+import 'MATUtils.dart';
+import 'ModifiedLengthLimitingTextInputFormatter.dart';
+
+class MATForms {
+  BuildContext context;
+  Map<String, TextEditingController> mapper;
+  GlobalKey<FormBuilderState> dynamicFormKey;
+  Function saveController;
+
+  MATForms(
+      {required this.context,
+        required this.dynamicFormKey,
+        required this.mapper,
+        required this.saveController});
+
+  GlobalKey<FormBuilderState> getDynamicKey() {
+    return dynamicFormKey;
+  }
+
+  void resetData() {
+    dynamicFormKey.currentState!.reset();
+    mapper.forEach((k, v) {
+      setVariableData(k, "");
+    });
+  }
+
+  dynamic getMapper() {
+    return mapper;
+  }
+
+  dynamic getVariableData(String variable) {
+    if (mapper[variable] != null) {
+      return mapper[variable]!.text;
+    } else {
+      return dynamicFormKey.currentState!.fields[variable]!.value;
+    }
+  }
+
+  void setVariableData(String variable, dynamic data) {
+    if (mapper[variable] != null) {
+      saveController(variable, data);
+    }
+    try {
+      RegExp dateExp = RegExp(r'^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$');
+      RegExp timeExp = RegExp(r'^[0-9]{2}:[0-9]{2}\s[A|P][M]$');
+
+      if (data is String && dateExp.hasMatch(data)) {
+        DateFormat inputFormat = DateFormat("dd/MM/yyyy");
+        DateTime dateTime = inputFormat.parse(data);
+        if (dynamicFormKey.currentState!.fields.containsKey(variable))
+          dynamicFormKey.currentState!.fields[variable]!
+              .didChange(dateTime);
+      } else if (data is String && timeExp.hasMatch(data)) {
+        DateFormat inputFormat = DateFormat("hh:mm a");
+        DateTime dateTime = inputFormat.parse(data);
+        if (dynamicFormKey.currentState!.fields.containsKey(variable))
+          dynamicFormKey.currentState!.fields[variable]!
+              .didChange(dateTime);
+      } else {
+        if (dynamicFormKey.currentState!.fields.containsKey(variable))
+          dynamicFormKey.currentState!.fields[variable]!
+              .didChange(data);
+      }
+    } catch (e) {
+      // print("Some wierd thing happened, $e");
+    }
+  }
+
+  Widget matCombiDropEdit({
+    required String dropdownVariable,
+    required bool isDropDisabled,
+    required List<String> items,
+    required String variable,
+    required String displayText,
+    required String hint,
+    bool disabled = false,
+    int maxLength = 1,
+    TextInputType textInputType = TextInputType.text,
+    FormFieldValidator? validator,
+    FormFieldValidator? dropValidators,
+    required Function player,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          flex: 3,
+          child: Padding(
+            padding: EdgeInsets.only(top: 11, right: 10),
+            child: Container(
+              color: Color.fromARGB(225, 245, 245, 245),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: FormBuilderDropdown<dynamic>(
+                  initialValue: dropdownVariable,
+                  hint: Text(hint),
+                  name: variable,
+                  validator: dropValidators != null ? dropValidators : null,
+                  items: MATUtils.simpleDropdownCovertor(items),
+                  // initialValue: items.length != 0 ? items[0] : null,
+                  enabled: !isDropDisabled,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 9,
+          child: matEditable(
+              variable: variable,
+              displayText: displayText,
+              textInputType: textInputType,
+              player: player,
+              disabled: disabled,
+              validator: validator!,
+              maxLength: maxLength),
+        ),
+      ],
+    );
+  }
+
+  Widget matEditable({
+    required String variable,
+    required String displayText,
+    String value = "",
+    TextInputType textInputType = TextInputType.text,
+    required Function player,
+    bool obfuscate = false,
+    bool allCaps = true,
+    bool disabled = false,
+    bool needController = true,
+    bool autocorrect = false,
+    int maxLength = 100,
+    int maxLine = 1,
+    required FormFieldValidator validator,
+  }) {
+    if (needController)
+      mapper.putIfAbsent(variable, () => TextEditingController(text: value));
+    return FormBuilderTextField(
+      name: variable,
+      keyboardType: textInputType,
+      textCapitalization:
+      allCaps ? TextCapitalization.characters : TextCapitalization.none,
+      obscureText: obfuscate,
+      maxLines: maxLine,
+      autocorrect: autocorrect,
+      decoration: InputDecoration(labelText: displayText),
+      controller: needController ? mapper[variable] : null,
+      readOnly: disabled,
+      maxLength: maxLength,
+      inputFormatters: [ModifiedLengthLimitingTextInputFormatter(maxLength)],
+      validator: validator,
+      onChanged: (val) {
+        if (player != null) {
+          player(val);
+        }
+      },
+    );
+  }
+  
+
+  Widget matAsyncDropdown({
+    required String variable,
+    required Future<dynamic> future,
+    required Function convertor,
+    required Function player,
+    required String hint,
+    required String displayText,
+    required FormFieldValidator validator,
+  }) {
+    return FutureBuilder(
+      future: future,
+      builder: (BuildContext context, snapshot) {
+        if (!snapshot.hasData) return CircularProgressIndicator();
+        return FormBuilderDropdown(
+          name: variable,
+          items: convertor(snapshot.data),
+          hint: Text(hint),
+          validator: validator,
+          onChanged: (val) {
+            if (player != null) {
+              player(val);
+            }
+          },
+          decoration: InputDecoration(labelText: displayText),
+        );
+      },
+    );
+  }
+
+  Widget matSimpleDropdown({
+    required String variable,
+    required String hint,
+    required String displayText,
+    required Function player,
+    bool disabled = false,
+    required List<String> items,
+    bool isSetInitialData = false,
+    required FormFieldValidator validator,
+  }) {
+    return FormBuilderDropdown<dynamic>(
+      name: variable,
+      items: MATUtils.simpleDropdownCovertor(items),
+      hint: Text(hint),
+      enabled: !disabled,
+      initialValue: isSetInitialData
+          ? items.length != 0
+          ? items[0]
+          : null
+          : null,
+      validator: validator,
+      onChanged: (val) {
+        if (player != null) {
+          player(val);
+        }
+      },
+      decoration: InputDecoration(labelText: displayText),
+    );
+  }
+
+  Widget matSimpleColorDropdown({
+    required String variable,
+    required String hint,
+    required String displayText,
+    required Color color,
+    required Function player,
+    bool disabled = false,
+    bool isSetInitialData = false,
+    required List<String> items,
+    required FormFieldValidator validator,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      color: color,
+      child: FormBuilderDropdown<dynamic>(
+        name: variable,
+        decoration: InputDecoration(
+          labelText: displayText,
+          border: InputBorder.none,
+        ),
+        initialValue: isSetInitialData
+            ? items.length != 0
+            ? items[0]
+            : null
+            : null,
+        items: MATUtils.simpleDropdownCovertor(items),
+        hint: Text(hint),
+        enabled: !disabled,
+        validator: validator,
+        onChanged: disabled
+            ? null
+            : (val) {
+          if (player != null) {
+            player(val);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget matCheckBox({
+    required String variable,
+    required String displayText,
+    bool leadingInput = false,
+    bool initialInput = false,
+    bool readOnly = false,
+    required Function player,
+    required FormFieldValidator validators,
+  }) {
+    return FormBuilderCheckbox(
+      initialValue: initialInput,
+      name: variable,
+      title: Text(
+        displayText,
+        style: TextStyle(fontSize: 16),
+      ),
+      enabled: !readOnly,
+      selected: leadingInput,
+      decoration: InputDecoration(
+        border: InputBorder.none,
+      ),
+      validator: validators,
+      onChanged: (val) {
+        if (player != null) {
+          player(val);
+        }
+      },
+    );
+  }
+
+  Widget matDatePicker({
+    required String variable,
+    required String displayText,
+    required Function player,
+    InputType inputType = InputType.date,
+    String dateFormat = "dd/MM/yyyy",
+    bool disabled = false,
+    DateTime? lastDate,
+    DateTime? startDate,
+    required FormFieldValidator validator,
+  }) {
+    mapper.putIfAbsent(variable, () => TextEditingController());
+    return FormBuilderDateTimePicker(
+      name: variable,
+      inputType: inputType,
+      controller: mapper[variable],
+      enabled: !disabled,
+      firstDate: startDate,
+      lastDate: lastDate,
+      validator: validator,
+      format: inputType == InputType.time
+          ? DateFormat("hh:mm a")
+          : DateFormat(dateFormat),
+      decoration: InputDecoration(labelText: displayText),
+      onChanged: (val) {
+        if (player != null) {
+          player(val);
+        }
+      },
+    );
+  }
+
+  Widget matPlainText({
+    required String displayText,
+    String? fontWeight,
+    double fontSize = 16,
+    double left = 0,
+    double right = 0,
+    double top = 0,
+    double bottom = 0,
+  }) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(left, top, right, bottom),
+      child: Text(
+        displayText,
+        style: TextStyle(
+            fontWeight:
+            fontWeight == "bold" ? FontWeight.bold : FontWeight.normal,
+            fontSize: fontSize),
+      ),
+    );
+  }
+
+  Widget matMaterialButton({
+    required Color color,
+    required Color textColor,
+    required String displayText,
+    required Function player,
+    double? width,
+    Alignment alignment = Alignment.centerRight,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Align(
+        alignment: alignment,
+        child: Container(
+          width: width,
+          child: MaterialButton(
+            color: color,
+            child: Text(
+              displayText,
+              style: TextStyle(
+                color: textColor,
+              ),
+            ),
+            onPressed: () {
+              if (player != null) {
+                player();
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget matOutlineButton({
+    required Color color,
+    required Color textColor,
+    required String displayText,
+    double? width,
+    double borderRadius = 10,
+    double fontSize = 16,
+    Alignment alignment = Alignment.centerRight,
+    required Function player,
+  }) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Align(
+        alignment: alignment,
+        child: Container(
+          width: width,
+          child: OutlineButton(
+            highlightedBorderColor: color,
+            shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(borderRadius)),
+            color: color,
+            child: Text(
+              displayText,
+              style: TextStyle(
+                color: textColor,
+                fontSize: fontSize,
+              ),
+            ),
+            onPressed: () {
+              if (player != null) {
+                player();
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget matDivider({
+    required Color color,
+    required double height,
+    double left = 0,
+    double right = 0,
+    double top = 0,
+    double bottom = 0,
+  }) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(left, top, right, bottom),
+      width: double.infinity,
+      height: height,
+      color: color,
+    );
+  }
+}

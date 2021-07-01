@@ -27,7 +27,7 @@ class AgroWorld extends StatelessWidget {
         navigatorKey: MATKeys.navKey,
         theme: ThemeData(
           colorScheme: ColorScheme.light(
-            primary: Color.fromARGB(255, 231, 211, 142),
+            primary:  Color.fromARGB(255, 145, 105, 26),
           ),
           primaryColor: Color.fromARGB(255, 231, 211, 142),
           accentColor: Color.fromARGB(255, 145, 105, 26),

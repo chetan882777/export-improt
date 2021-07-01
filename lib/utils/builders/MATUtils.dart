@@ -47,4 +47,15 @@ class MATUtils {
     );
   }
 
+  static List<DropdownMenuItem> simpleDropdownCovertor(List<String> options) {
+    List<DropdownMenuItem> items = [];
+    for (String option in options) {
+      items.add(DropdownMenuItem(
+        value: option,
+        child: Text(option),
+      ));
+    }
+    return items;
+  }
+
 }
