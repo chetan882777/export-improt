@@ -1,16 +1,19 @@
 import 'package:agro_worlds/modules/otp/OtpViewModel.dart';
 import 'package:agro_worlds/modules/register/RegisterViewModel.dart';
+import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:provider/provider.dart';
 
 class OtpScreen extends StatelessWidget {
   static final String ROUTE_NAME = "/otp";
 
-  final GlobalKey<FormBuilderState> dynamicFormKey = GlobalKey<FormBuilderState>();
+  final GlobalKey<FormBuilderState> dynamicFormKey =
+      GlobalKey<FormBuilderState>();
   final Map<String, TextEditingController> mapper = Map();
 
   void saveVariable(String variable, String data) {
@@ -26,6 +29,12 @@ class OtpScreen extends StatelessWidget {
         dynamicFormKey: dynamicFormKey,
         mapper: mapper,
         saveController: saveVariable);
+
+    FlowDataProvider provider = Provider.of(context, listen: false);
+    String phone = provider.phone;
+    String maskedNum =
+        "${phone.substring(0, 2)}******${phone.substring(phone.length - 3, phone.length - 1)}";
+
     return ChangeNotifierProvider<OtpViewModel>(
       create: (context) => OtpViewModel(context),
       child: Scaffold(
@@ -68,50 +77,51 @@ class OtpScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  matForms.matEditable(
-                    variable: "first_name",
-                    displayText: "First Name",
-                    player: (val) {},
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(context),
-                      FormBuilderValidators.max(context, 70),
-                    ]),
+                  Text(
+                    "Please enter the OTP sent on your registered phone number  $maskedNum.",
+                    style: TextStyle(fontSize: 16),
                   ),
-                  matForms.matEditable(
-                    variable: "last_name",
-                    displayText: "Last Name",
-                    player: (val) {},
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(context),
-                      FormBuilderValidators.max(context, 70),
-                    ]),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                    child: PinCodeTextField(
+                      length: 6,
+                      obscureText: false,
+                      animationType: AnimationType.fade,
+                      pinTheme: PinTheme(
+                        selectedColor: Colors.grey,
+                        inactiveColor: Colors.grey,
+                        inactiveFillColor: Colors.transparent,
+                        selectedFillColor: Colors.transparent,
+                        shape: PinCodeFieldShape.box,
+                        borderRadius: BorderRadius.circular(5),
+                        fieldHeight: 50,
+                        fieldWidth: 40,
+                        activeFillColor: Colors.white,
+                      ),
+                      animationDuration: Duration(milliseconds: 300),
+                      backgroundColor: Colors.transparent,
+                      enableActiveFill: true,
+                      onCompleted: (v) {
+                        print("Completed");
+                      },
+                      onChanged: (value) {
+                        print(value);
+                      },
+                      beforeTextPaste: (text) {
+                        return true;
+                      },
+                      appContext: context,
+                    ),
                   ),
-                  matForms.matEditable(
-                    variable: "email_address",
-                    displayText: "Email Address",
-                    player: (val) {},
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(context),
-                      FormBuilderValidators.max(context, 70),
-                    ]),
-                  ),
-                  matForms.matEditable(
-                    variable: "contact",
-                    displayText: "Contact",
-                    player: (val) {},
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(context),
-                      FormBuilderValidators.max(context, 70),
-                    ]),
-                  ),
-                  matForms.matEditable(
-                    variable: "department",
-                    displayText: "Department",
-                    player: (val) {},
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.required(context),
-                      FormBuilderValidators.max(context, 70),
-                    ]),
+                  matForms.matTextButton(
+                      textColor: Theme.of(context).accentColor,
+                      displayText: "Resend OTP",
+                      fontWeight: FontWeight.bold,
+                      player: () {
+
+                      }),
+                  SizedBox(
+                    height: 10.0,
                   ),
                   SizedBox(
                     width: double.infinity,

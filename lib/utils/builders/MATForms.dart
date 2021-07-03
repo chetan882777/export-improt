@@ -350,6 +350,39 @@ class MATForms {
     );
   }
 
+  Widget matTextButton({
+    required Color textColor,
+    required String displayText,
+    required Function player,
+    double? width,
+    Alignment alignment = Alignment.centerRight,
+    FontWeight fontWeight = FontWeight.normal,
+    int displayTextSize = 12
+  }) {
+    return Container(
+      margin: EdgeInsets.only(top: 10),
+      child: Align(
+        alignment: alignment,
+        child: Container(
+          width: width,
+          child: TextButton(
+            child: Text(
+              displayText,
+              style: TextStyle(
+                  fontSize: 16,
+                  color: textColor,
+                  fontWeight: fontWeight
+              ),
+            ),
+            onPressed: () {
+              player();
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget matMaterialButton({
     required Color color,
     required Color textColor,
