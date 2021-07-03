@@ -1,5 +1,7 @@
+import 'package:agro_worlds/modules/otp/OtpScreen.dart';
 import 'package:agro_worlds/modules/register/RegisterScreen.dart';
 import 'package:agro_worlds/providers/ApplicationApiProvider.dart';
+import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/MatKeys.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +16,8 @@ void main() {
 List<SingleChildWidget> providers = [...independentServices];
 
 List<SingleChildWidget> independentServices = [
-  Provider.value(value: ApplicationApiProvider())
+  Provider.value(value: ApplicationApiProvider()),
+  Provider.value(value: FlowDataProvider())
 ];
 
 class AgroWorld extends StatelessWidget {
@@ -36,7 +39,8 @@ class AgroWorld extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (ctx) => LoginScreen(),
-          RegisterScreen.ROUTE_NAME : (ctx) => RegisterScreen()
+          RegisterScreen.ROUTE_NAME : (ctx) => RegisterScreen(),
+          OtpScreen.ROUTE_NAME : (ctx) => OtpScreen(),
         },
       ),
     );

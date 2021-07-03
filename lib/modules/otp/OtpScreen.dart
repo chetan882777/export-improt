@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/otp/OtpViewModel.dart';
 import 'package:agro_worlds/modules/register/RegisterViewModel.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
@@ -6,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends StatelessWidget {
-  static final String ROUTE_NAME = "/register";
+class OtpScreen extends StatelessWidget {
+  static final String ROUTE_NAME = "/otp";
 
   final GlobalKey<FormBuilderState> dynamicFormKey = GlobalKey<FormBuilderState>();
   final Map<String, TextEditingController> mapper = Map();
@@ -25,13 +26,13 @@ class RegisterScreen extends StatelessWidget {
         dynamicFormKey: dynamicFormKey,
         mapper: mapper,
         saveController: saveVariable);
-    return ChangeNotifierProvider<RegisterViewModel>(
-      create: (context) => RegisterViewModel(context),
+    return ChangeNotifierProvider<OtpViewModel>(
+      create: (context) => OtpViewModel(context),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text(
-            "Register",
+            "Enter OTP",
             style: TextStyle(color: Colors.black),
           ),
           elevation: 0,
@@ -130,10 +131,10 @@ class RegisterScreen extends StatelessWidget {
               ),
             ),
             Consumer(
-              builder: (context, RegisterViewModel model, child) =>
+              builder: (context, OtpViewModel model, child) =>
                   MATUtils.showLoader(
                 context: context,
-                isLoadingVar: false,
+                isLoadingVar: model.busy,
                 size: 20,
                 opacity: 0.95,
               ),

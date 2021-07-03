@@ -1,6 +1,5 @@
 import 'package:agro_worlds/modules/register/RegisterScreen.dart';
 import 'package:agro_worlds/utils/Constants.dart';
-import 'package:agro_worlds/utils/Resource.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +10,10 @@ import 'LoginViewModel.dart';
 
 class LoginScreen extends StatelessWidget {
   final phoneNumberController = TextEditingController();
-  late BuildContext _ctx;
+  late final BuildContext _ctx;
 
   Future<void> _login(LoginViewModel model) async {
-
+    phoneNumberController.text = "9009193663"; // for testing purpose
     if(phoneNumberController.text.isEmpty) {
       showToast('Enter Number Please');
       return;
@@ -23,33 +22,7 @@ class LoginScreen extends StatelessWidget {
       showToast('Invalid Number');
       return;
     }
-
-    Resource resource = await model.login(phoneNumberController.text);
-
-    switch (resource.status) {
-      case Status.SUCCESS:
-        Navigator.pushReplacement(
-            _ctx, MaterialPageRoute(builder: (context) => Text("")));
-        break;
-      case Status.ERROR:
-        _failedLogin(resource);
-        break;
-    }
-  }
-
-  void _failedLogin(Resource resource) {
-    switch (resource.message) {
-      case LoginViewModel.ERROR_MAINTENANCE:
-        MATUtils.showAlertDialog(
-            resource.data, _ctx, () => Navigator.pop(_ctx));
-        break;
-      case LoginViewModel.ERROR_NETWORK:
-        showToast('Network Error');
-        break;
-      case LoginViewModel.ERROR_UNKNOWN:
-        showToast('Incorrect Credentials');
-        break;
-    }
+    model.login(phoneNumberController.text);
   }
 
   @override

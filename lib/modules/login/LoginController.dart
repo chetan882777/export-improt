@@ -3,7 +3,7 @@ import 'package:agro_worlds/network/ApiService.dart';
 class LoginController {
   dynamic login(String phone) async {
     var response =
-        await ApiService.dio.post("profile/logincheck", data: {"phone": phone});
+        await ApiService.dio.post("profile/logincheck", queryParameters: {"phone": phone});
     if (response.statusCode == 200)
       return response.data;
     else

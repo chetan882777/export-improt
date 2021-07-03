@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:agro_worlds/modules/BaseViewModel.dart';
 import 'package:agro_worlds/modules/login/LoginController.dart';
+import 'package:agro_worlds/modules/otp/OtpScreen.dart';
+import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/Resource.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 
 class LoginViewModel extends BaseViewModel {
 
@@ -13,24 +16,36 @@ class LoginViewModel extends BaseViewModel {
   static const String ERROR_MAINTENANCE_DESC_KEY = 'errorDesc';
 
   late final LoginController _controller;
+  late final FlowDataProvider flowDataProvider;
 
   LoginViewModel(BuildContext context) : super(context) {
+    flowDataProvider = Provider.of(context, listen: false);
     _controller = LoginController();
   }
 
-  Future<Resource> login(String phone) async{
+  void login(String phone) async{
     setBusy(true);
-    var response = await _controller.login(phone);
-    setBusy(false);
-    print(response);
-    Map<String, dynamic> result = json.decode(response);
-    if(result["code"] == "400") {
-      if(result["message"] == "Invalid request!")
-        return Resource.error(ERROR_NETWORK, response);
-      else
-        return Resource.error(ERROR_UNKNOWN, response);
+    try {
+      var response = await _controller.login(phone);
+      setBusy(false);
+      print(response);
+      Map<String, dynamic> result = json.decode(response);
+      if (result["code"] == "400") {
+        if (result["message"] == "Invalid request!")
+          showToast("Invalid Phone number");
+        else
+          showToast("Network Error");
+      }
+      else if (result["code"] == "200") {
+        flowDataProvider.otp = result["data"]["OTP"];
+        showToast(result["message"]);
+        Navigator.pushNamed(context, OtpScreen.ROUTE_NAME);
+      } else {
+        showToast("Something went Wrong!");
+      }
+    } catch (e) {
+      showToast("Something went Wrong!");
     }
-    return Resource.success(response);
   }
 
 }
