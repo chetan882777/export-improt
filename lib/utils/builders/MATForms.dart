@@ -354,6 +354,7 @@ class MATForms {
     required Color textColor,
     required String displayText,
     required Function player,
+    bool enable = true,
     double? width,
     Alignment alignment = Alignment.centerRight,
     FontWeight fontWeight = FontWeight.normal,
@@ -374,9 +375,9 @@ class MATForms {
                   fontWeight: fontWeight
               ),
             ),
-            onPressed: () {
+            onPressed: enable ? () {
               player();
-            },
+            } : null,
           ),
         ),
       ),
