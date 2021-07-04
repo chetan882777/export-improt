@@ -32,14 +32,17 @@ class AgroWorld extends StatelessWidget {
         theme: ThemeData(
           colorScheme: ColorScheme.light(
             primary:  Color.fromARGB(255, 145, 105, 26),
+            secondary: Color.fromARGB(255, 231, 211, 142),
           ),
-          primaryColor: Color.fromARGB(255, 231, 211, 142),
+          primaryColor: Color.fromARGB(255, 145, 105, 26),
+          secondaryHeaderColor: Color.fromARGB(255, 231, 211, 142),
           accentColor: Color.fromARGB(255, 145, 105, 26),
           fontFamily: 'Lato',
         ),
-        initialRoute: '/',
+        initialRoute: LoginScreen.ROUTE_NAME,
         routes: {
           '/': (ctx) => LoginScreen(),
+          LoginScreen.ROUTE_NAME : (ctx) => LoginScreen(),
           RegisterScreen.ROUTE_NAME : (ctx) => RegisterScreen(),
           OtpScreen.ROUTE_NAME : (ctx) => OtpScreen(),
           DashboardScreen.ROUTE_NAME: (ctx) => DashboardScreen(),

@@ -53,7 +53,7 @@ class LoginScreen extends StatelessWidget {
                 ),
                 Container(
                   width: double.infinity,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).secondaryHeaderColor,
                   child: Padding(
                     padding: EdgeInsets.all(20),
                     child: Column(
