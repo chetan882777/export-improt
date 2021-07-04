@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:agro_worlds/modules/BaseViewModel.dart';
+import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginController.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
@@ -47,7 +48,7 @@ class OtpViewModel extends BaseViewModel {
 
   void submit(String otp) {
     if(otp == flowDataProvider.otp) {
-      print("Success");
+      Navigator.pushNamedAndRemoveUntil(context, DashboardScreen.ROUTE_NAME, (route) => false);
     }
   }
 }

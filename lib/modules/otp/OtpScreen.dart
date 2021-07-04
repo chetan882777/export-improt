@@ -1,5 +1,4 @@
 import 'package:agro_worlds/modules/otp/OtpViewModel.dart';
-import 'package:agro_worlds/modules/register/RegisterViewModel.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
