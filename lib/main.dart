@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/addClient/AddClient.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/otp/OtpScreen.dart';
 import 'package:agro_worlds/modules/register/RegisterScreen.dart';
@@ -46,6 +47,7 @@ class AgroWorld extends StatelessWidget {
           RegisterScreen.ROUTE_NAME : (ctx) => RegisterScreen(),
           OtpScreen.ROUTE_NAME : (ctx) => OtpScreen(),
           DashboardScreen.ROUTE_NAME: (ctx) => DashboardScreen(),
+          AddClient.ROUTE_NAME: (ctx) => AddClient()
         },
       ),
     );

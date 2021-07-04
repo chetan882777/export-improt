@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/addClient/AddClient.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
@@ -95,7 +96,9 @@ class DashboardScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
                           borderRadius: BorderRadius.all(Radius.circular(12))),
-                      child: Row(
+                      child: InkWell(
+                        onTap: () => Navigator.pushNamed(context, AddClient.ROUTE_NAME),
+                        child: Row(
                         children: [
                           Expanded(
                             child: Text(
@@ -109,10 +112,10 @@ class DashboardScreen extends StatelessWidget {
                           IconButton(
                             iconSize: 36.0,
                             icon: Icon(Icons.person_add, color: Colors.white),
-                            onPressed: () => print("add client"),
+                            onPressed: () => Navigator.pushNamed(context, AddClient.ROUTE_NAME),
                           ),
                         ],
-                      ),
+                      ),),
                       // decoration: BoxDecoration(
                       //   image: DecorationImage(
                       //     image: AssetImage(""),

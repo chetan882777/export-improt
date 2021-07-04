@@ -26,7 +26,7 @@ class LoginViewModel extends BaseViewModel {
   void login(String phone) async{
     print(" releaseLogs123 ====> login");
     setBusy(true);
-    print(" releaseLogs123  ====> busy ");
+    print("    ====> busy ");
     try {
       print(" releaseLogs123  ====> try");
       var response = await _controller.login(phone);
