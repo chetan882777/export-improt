@@ -1,4 +1,5 @@
 import 'package:agro_worlds/modules/dashboard/DashboardViewModel.dart';
+import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,23 +45,7 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () => SystemNavigator.pop(),
           ),
         ),
-        endDrawer: Drawer(
-            child: ListView(children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.shopping_cart),
-            title: Text('Checkout'),
-            onTap: () {
-              Navigator.pushNamed(context, '/home');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.report),
-            title: Text('Transactions'),
-            onTap: () {
-              Navigator.pushNamed(context, '/transactionsList');
-            },
-          ),
-        ])),
+        endDrawer: AgroWorldsDrawer.drawer(context: context, displayName: "Saksham Arora"),
         body: Stack(
           children: [
             Padding(
@@ -106,25 +91,25 @@ class DashboardScreen extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                          borderRadius: BorderRadius.all(Radius.circular(12))),
                       child: Row(
                         children: [
                           Expanded(
-                            child: Text("Add a client",
+                            child: Text(
+                              "Add a client",
                               style: TextStyle(
-                                fontSize: 28,
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal
-                              ),
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.normal),
                             ),
                           ),
                           IconButton(
                             iconSize: 36.0,
                             icon: Icon(Icons.person_add, color: Colors.white),
-                            onPressed: () => SystemNavigator.pop(),
+                            onPressed: () => print("add client"),
                           ),
                         ],
                       ),
@@ -135,6 +120,35 @@ class DashboardScreen extends StatelessWidget {
                       //   )
                       // ),
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    belowClickWidgets(
+                        context: context,
+                        icon: CupertinoIcons.clock,
+                        displayText: "Recent clients"),
+                    Container(
+                      height: 1,
+                      width: double.infinity,
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      color: Color(0xffd6d6d6),
+                    ),
+                    belowClickWidgets(
+                        context: context,
+                        icon: CupertinoIcons.doc_chart,
+                        displayText: "Activity logs"),
+                    Container(
+                      height: 1,
+                      width: double.infinity,
+                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                      color: Color(0xffd6d6d6),
+                    ),
+                    belowClickWidgets(
+                        context: context,
+                        icon: CupertinoIcons.rectangle_stack_person_crop,
+                        displayText: "Meetings", player: (){
+                          print("meetings");
+                    }),
                   ],
                 ),
               ),
@@ -154,12 +168,51 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
+  Widget belowClickWidgets(
+      {required BuildContext context,
+      required IconData icon,
+      required String displayText,
+      void Function()? player}) {
+    return InkWell(
+      onTap: player,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: Color(0xff946d20),
+              size: 32,
+            ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(25, 0, 20, 0),
+                child: Text(
+                  displayText,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+            ),
+            Icon(
+              CupertinoIcons.right_chevron,
+              color: Color(0xff946d20),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget infoWidget(
       {required BuildContext context,
       required String largeText,
       required String smallText,
       required Color bgColor,
-      required Function player}) {
+      void Function()? player}) {
     return Expanded(
       child: Container(
         alignment: Alignment.topLeft,
@@ -172,9 +225,7 @@ class DashboardScreen extends StatelessWidget {
             ),
             borderRadius: BorderRadius.all(Radius.circular(20))),
         child: InkWell(
-          onTap: () {
-            player();
-          },
+          onTap: player,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -182,7 +233,7 @@ class DashboardScreen extends StatelessWidget {
                 largeText,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 48,
+                    fontSize: 40,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -192,7 +243,7 @@ class DashboardScreen extends StatelessWidget {
                 smallText,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold),
               ),
             ],

@@ -24,9 +24,13 @@ class LoginViewModel extends BaseViewModel {
   }
 
   void login(String phone) async{
+    print(" releaseLogs123 ====> login");
     setBusy(true);
+    print(" releaseLogs123  ====> busy ");
     try {
+      print(" releaseLogs123  ====> try");
       var response = await _controller.login(phone);
+      print(" releaseLogs123  ====> respoonse");
       setBusy(false);
       print(response);
       Map<String, dynamic> result = json.decode(response);
@@ -45,6 +49,7 @@ class LoginViewModel extends BaseViewModel {
         showToast("Something went Wrong!");
       }
     } catch (e) {
+      print(" releaseLogs123  ===> error $e");
       showToast("Something went Wrong!");
     }
   }

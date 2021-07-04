@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/modules/otp/OtpViewModel.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
@@ -52,23 +53,6 @@ class OtpScreen extends StatelessWidget {
             onPressed: () => Navigator.of(context).pop(),
           ),
         ),
-        endDrawer: Drawer(
-            child: ListView(children: <Widget>[
-          ListTile(
-            leading: Icon(Icons.shopping_cart),
-            title: Text('Checkout'),
-            onTap: () {
-              Navigator.pushNamed(context, '/home');
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.report),
-            title: Text('Transactions'),
-            onTap: () {
-              Navigator.pushNamed(context, '/transactionsList');
-            },
-          ),
-        ])),
         body: Stack(
           children: [
             Padding(
