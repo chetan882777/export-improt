@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 import 'LoginViewModel.dart';
 
 class LoginScreen extends StatelessWidget {
+  static final String ROUTE_NAME = "/login";
+
+
   final phoneNumberController = TextEditingController();
   late final BuildContext _ctx;
 
