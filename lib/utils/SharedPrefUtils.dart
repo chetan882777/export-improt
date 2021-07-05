@@ -8,7 +8,7 @@ class SharedPrefUtils {
     await sharedPreferences.setString(user_id, value);
   }
 
-  static Future<String?> getUserId(String value) async {
+  static Future<String?> getUserId() async {
     var sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString(user_id);
   }
