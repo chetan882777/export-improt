@@ -4,10 +4,13 @@ import 'package:agro_worlds/modules/BaseViewModel.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginController.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
+import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:provider/provider.dart';
+
+import 'OtpController.dart';
 
 class OtpViewModel extends BaseViewModel {
   late final FlowDataProvider flowDataProvider;
@@ -15,11 +18,13 @@ class OtpViewModel extends BaseViewModel {
   bool enableResendOtp = true;
   late Color resendOtpTextColor = Theme.of(context).accentColor;
 
-  late final LoginController _controller;
+  late final LoginController _loginController;
+  late final OtpController _otpController;
 
   OtpViewModel(BuildContext context, this.matForms) : super(context) {
     flowDataProvider = Provider.of(context, listen: false);
-    _controller = LoginController();
+    _loginController = LoginController();
+    _otpController = OtpController();
   }
 
   void resendOtp() {
@@ -32,7 +37,7 @@ class OtpViewModel extends BaseViewModel {
 
   void reLogin() async{
     try {
-      var response = await _controller.login(flowDataProvider.phone);
+      var response = await _loginController.login(flowDataProvider.phone);
       print(response);
       Map<String, dynamic> result = json.decode(response);
       if (result["code"] == "200") {
@@ -46,9 +51,26 @@ class OtpViewModel extends BaseViewModel {
   }
 
 
-  void submit(String otp) {
+  void submit(String otp) async {
     if(otp == flowDataProvider.otp) {
-      Navigator.pushNamedAndRemoveUntil(context, DashboardScreen.ROUTE_NAME, (route) => false);
+      try {
+        var response = await _otpController.loginCheck(otp);
+
+        var data = json.decode(response) as Map<String, dynamic>;
+        if (data.containsKey("error")) {
+          showToast("Network Error");
+          return;
+        }
+        if (data["code"] == "200") {
+          String id = data["data"]["id"];
+          await SharedPrefUtils.saveUserId(id);
+          Navigator.pushNamedAndRemoveUntil(context, DashboardScreen.ROUTE_NAME, (route) => false);
+        } else {
+          showToast("Something went Wrong!");
+        }
+      } catch(e) {
+        showToast("Something went Wrong!");
+      }
     }
   }
 }

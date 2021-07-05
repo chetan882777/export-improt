@@ -41,7 +41,7 @@ class LoginViewModel extends BaseViewModel {
           showToast("Network Error");
       }
       else if (result["code"] == "200") {
-        flowDataProvider.otp = result["data"]["OTP"];
+        flowDataProvider.otp = "${result["data"]["OTP"]}";
         flowDataProvider.phone = phone;
         showToast(result["message"]);
         Navigator.pushNamed(context, OtpScreen.ROUTE_NAME);
