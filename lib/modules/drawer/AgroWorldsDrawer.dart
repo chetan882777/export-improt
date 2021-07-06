@@ -1,6 +1,7 @@
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginScreen.dart';
 import 'package:agro_worlds/utils/Constants.dart';
+import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:flutter/material.dart';
 
 class AgroWorldsDrawer {
@@ -51,7 +52,8 @@ class AgroWorldsDrawer {
         drawerMenuItem(displayName: "Activity logs"),
         drawerMenuItem(displayName: "Deals"),
         drawerMenuItem(displayName: "Help"),
-        drawerMenuItem(displayName: "Logout", color: Colors.red, player: () {
+        drawerMenuItem(displayName: "Logout", color: Colors.red, player: () async {
+          await SharedPrefUtils.deleteUserId();
           Navigator.pushNamed(context, LoginScreen.ROUTE_NAME);
         }),
       ],

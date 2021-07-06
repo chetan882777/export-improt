@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:agro_worlds/modules/BaseViewModel.dart';
+import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginController.dart';
 import 'package:agro_worlds/modules/otp/OtpScreen.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/Resource.dart';
+import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +23,15 @@ class LoginViewModel extends BaseViewModel {
   LoginViewModel(BuildContext context) : super(context) {
     flowDataProvider = Provider.of(context, listen: false);
     _controller = LoginController();
+    asyncInit();
+  }
+
+
+  void asyncInit() async {
+    String? userId = await SharedPrefUtils.getUserId();
+    if(userId != null) {
+      Navigator.pushReplacementNamed(context, DashboardScreen.ROUTE_NAME);
+    }
   }
 
   void login(String phone) async{
@@ -43,6 +54,7 @@ class LoginViewModel extends BaseViewModel {
       else if (result["code"] == "200") {
         flowDataProvider.otp = "${result["data"]["OTP"]}";
         flowDataProvider.phone = phone;
+        flowDataProvider.id = result["data"]["id"];
         showToast(result["message"]);
         Navigator.pushNamed(context, OtpScreen.ROUTE_NAME);
       } else {

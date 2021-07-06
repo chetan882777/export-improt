@@ -13,5 +13,10 @@ class SharedPrefUtils {
     return sharedPreferences.getString(user_id);
   }
 
+  static Future<void> deleteUserId() async {
+    var sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.remove(user_id);
+  }
+
 
 }

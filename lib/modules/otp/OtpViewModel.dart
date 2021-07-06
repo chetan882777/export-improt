@@ -54,8 +54,9 @@ class OtpViewModel extends BaseViewModel {
   void submit(String otp) async {
     if(otp == flowDataProvider.otp) {
       try {
-        var response = await _otpController.loginCheck(otp);
-
+        setBusy(true);
+        var response = await _otpController.loginCheck(otp, flowDataProvider.id);
+        setBusy(false);
         var data = json.decode(response) as Map<String, dynamic>;
         if (data.containsKey("error")) {
           showToast("Network Error");
