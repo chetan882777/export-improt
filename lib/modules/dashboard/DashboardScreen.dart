@@ -46,113 +46,123 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () => SystemNavigator.pop(),
           ),
         ),
-        endDrawer: AgroWorldsDrawer.drawer(context: context, displayName: "Saksham Arora"),
+        endDrawer: AgroWorldsDrawer.drawer(
+            context: context, displayName: "Saksham Arora"),
         body: Stack(
           children: [
             Padding(
               padding: EdgeInsets.all(10),
               child: Consumer(
-                builder: (context, DashboardViewModel model, child) => Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        infoWidget(
-                            context: context,
-                            largeText: "38",
-                            smallText: "Prospects active",
-                            bgColor: const Color(0xffaf8b46),
-                            player: () {}),
-                        infoWidget(
-                            context: context,
-                            largeText: "21",
-                            smallText: "Meetings inline",
-                            bgColor: const Color(0xffbd9b5b),
-                            player: () {})
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        infoWidget(
-                            context: context,
-                            largeText: "20%",
-                            smallText: "Conversion rate",
-                            bgColor: const Color(0xffa07a30),
-                            player: () {}),
-                        infoWidget(
-                            context: context,
-                            largeText: "4",
-                            smallText: "Deals this month",
-                            bgColor: const Color(0xff91691a),
-                            player: () {})
-                      ],
-                    ),
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.all(Radius.circular(12))),
-                      child: InkWell(
-                        onTap: () => Navigator.pushNamed(context, AddClient.ROUTE_NAME),
-                        child: Row(
+                builder: (context, DashboardViewModel model, child) =>
+                    SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Row(
                         children: [
-                          Expanded(
-                            child: Text(
-                              "Add a client",
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                          ),
-                          IconButton(
-                            iconSize: 36.0,
-                            icon: Icon(Icons.person_add, color: Colors.white),
-                            onPressed: () => Navigator.pushNamed(context, AddClient.ROUTE_NAME),
-                          ),
+                          infoWidget(
+                              context: context,
+                              largeText: "38",
+                              smallText: "Prospects active",
+                              bgColor: const Color(0xffaf8b46),
+                              player: () {}),
+                          infoWidget(
+                              context: context,
+                              largeText: "21",
+                              smallText: "Meetings inline",
+                              bgColor: const Color(0xffbd9b5b),
+                              player: () {})
                         ],
-                      ),),
-                      // decoration: BoxDecoration(
-                      //   image: DecorationImage(
-                      //     image: AssetImage(""),
-                      //     fit: BoxFit.cover
-                      //   )
-                      // ),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    belowClickWidgets(
-                        context: context,
-                        icon: CupertinoIcons.clock,
-                        displayText: "Recent clients"),
-                    Container(
-                      height: 1,
-                      width: double.infinity,
-                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                      color: Color(0xffd6d6d6),
-                    ),
-                    belowClickWidgets(
-                        context: context,
-                        icon: CupertinoIcons.doc_chart,
-                        displayText: "Activity logs"),
-                    Container(
-                      height: 1,
-                      width: double.infinity,
-                      margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                      color: Color(0xffd6d6d6),
-                    ),
-                    belowClickWidgets(
-                        context: context,
-                        icon: CupertinoIcons.rectangle_stack_person_crop,
-                        displayText: "Meetings", player: (){
-                          print("meetings");
-                    }),
-                  ],
+                      ),
+                      Row(
+                        children: [
+                          infoWidget(
+                              context: context,
+                              largeText: "20%",
+                              smallText: "Conversion rate",
+                              bgColor: const Color(0xffa07a30),
+                              player: () {}),
+                          infoWidget(
+                              context: context,
+                              largeText: "4",
+                              smallText: "Deals this month",
+                              bgColor: const Color(0xff91691a),
+                              player: () {})
+                        ],
+                      ),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
+                        child: InkWell(
+                          onTap: () => Navigator.pushNamed(
+                              context, AddClient.ROUTE_NAME),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Add a client",
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.normal),
+                                ),
+                              ),
+                              IconButton(
+                                iconSize: 36.0,
+                                icon:
+                                    Icon(Icons.person_add, color: Colors.white),
+                                onPressed: () => Navigator.pushNamed(
+                                    context, AddClient.ROUTE_NAME),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // decoration: BoxDecoration(
+                        //   image: DecorationImage(
+                        //     image: AssetImage(""),
+                        //     fit: BoxFit.cover
+                        //   )
+                        // ),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      belowClickWidgets(
+                          context: context,
+                          icon: CupertinoIcons.clock,
+                          displayText: "Recent clients"),
+                      Container(
+                        height: 1,
+                        width: double.infinity,
+                        margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        color: Color(0xffd6d6d6),
+                      ),
+                      belowClickWidgets(
+                          context: context,
+                          icon: CupertinoIcons.doc_chart,
+                          displayText: "Activity logs"),
+                      Container(
+                        height: 1,
+                        width: double.infinity,
+                        margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                        color: Color(0xffd6d6d6),
+                      ),
+                      belowClickWidgets(
+                          context: context,
+                          icon: CupertinoIcons.rectangle_stack_person_crop,
+                          displayText: "Meetings",
+                          player: () {
+                            print("meetings");
+                          }),
+                    ],
+                  ),
                 ),
               ),
             ),
