@@ -5,4 +5,6 @@ class AddClientViewModel extends BaseViewModel {
 
   AddClientViewModel(BuildContext context) : super(context);
 
+  void submit() async {}
+
 }

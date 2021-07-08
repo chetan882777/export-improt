@@ -127,7 +127,7 @@ class AddClient extends StatelessWidget {
                                 );
                               }).toList(),
                               value: 'Business stage',
-                              onChanged: (_) {},
+                              onChanged: (val) {},
                             ),
                           ),
                         ),
@@ -163,8 +163,8 @@ class AddClient extends StatelessWidget {
                         ]),
                       ),
                       matForms.matEditable(
-                        variable: "lastName",
-                        displayText: "Last name",
+                        variable: "email",
+                        displayText: "Email Address",
                         player: () {},
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context),
@@ -172,14 +172,37 @@ class AddClient extends StatelessWidget {
                         ]),
                       ),
                       matForms.matEditable(
-                        variable: "lastName",
-                        displayText: "Last name",
+                        variable: "contact",
+                        displayText: "Contact number",
                         player: () {},
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context),
                           FormBuilderValidators.max(context, 40),
                         ]),
                       ),
+                      matForms.matEditable(
+                        variable: "addressLine1",
+                        displayText: "Address (line 1)",
+                        player: () {},
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.required(context),
+                          FormBuilderValidators.max(context, 40),
+                        ]),
+                      ),
+                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 48,
+                        width: double.infinity,
+                        child: matForms.elevatedBtn(
+                          color: Theme.of(context).primaryColor,
+                          textColor: Colors.white,
+                          displayText: "Submit",
+                          player: () {
+                            model.submit();
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 10,),
                     ],
                   ),
                 ),
