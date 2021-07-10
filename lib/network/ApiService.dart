@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:agro_worlds/models/ListBuilder.dart';
+import 'package:agro_worlds/models/Role.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {
@@ -20,5 +24,14 @@ class ApiService {
       default:
         return "https://i-engage.in.net/dev2/agroworlds/api/";
     }
+  }
+
+  static Future<List<Role>> rolesList() async {
+    var response =
+    await ApiService.dio.post("profile/roles");
+    if (response.statusCode == 200)
+      return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
+    else
+      return [];
   }
 }

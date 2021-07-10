@@ -497,4 +497,58 @@ class MATForms {
       }
     );
   }
+
+
+
+  Widget borderedDropDown({
+    required Color borderColor,
+    required List<String> items,
+    required String displayValue,
+    Function(dynamic)? player,
+    Color menuColor = Colors.black,
+  }) {
+    return Container(
+      width: double.infinity,
+      decoration: ShapeDecoration(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 1.0,
+            style: BorderStyle.solid,
+            color: borderColor,
+          ),
+          borderRadius:
+          BorderRadius.all(Radius.circular(16.0)),
+        ),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: Container(
+          margin: EdgeInsets.only(left: 10.0, right: 10.0),
+          child: DropdownButton(
+            icon: Icon(
+              Icons.keyboard_arrow_down_outlined,
+              color: borderColor,
+            ),
+            items: items.map((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Text(
+                    value,
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: menuColor),
+                  ),
+                ),
+              );
+            }).toList(),
+            value: displayValue,
+            onChanged: player,
+          ),
+        ),
+      ),
+    );
+  }
+
 }
