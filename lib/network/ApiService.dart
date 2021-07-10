@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:agro_worlds/models/ListBuilder.dart';
 import 'package:agro_worlds/models/Role.dart';
+import 'package:agro_worlds/models/User.dart';
+import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:dio/dio.dart';
 
 class ApiService {
@@ -34,4 +36,19 @@ class ApiService {
     else
       return [];
   }
+
+
+  static Future<User> getUser() async {
+    var response =
+    await ApiService.dio.post("profile", queryParameters: {
+      "id" : await SharedPrefUtils.getUserId()
+    });
+    if (response.statusCode == 200)
+      return User.fromJson(json.decode(response.data)["data"]);
+    else
+      return User.error();
+  }
+
+
+
 }

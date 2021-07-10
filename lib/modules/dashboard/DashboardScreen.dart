@@ -46,8 +46,8 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () => SystemNavigator.pop(),
           ),
         ),
-        endDrawer: AgroWorldsDrawer.drawer(
-            context: context, displayName: "Saksham Arora"),
+        endDrawer: Consumer(builder: (context, DashboardViewModel model, child) => AgroWorldsDrawer.drawer(
+            context: context),),
         body: Stack(
           children: [
             Padding(

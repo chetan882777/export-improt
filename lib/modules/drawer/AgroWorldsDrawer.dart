@@ -1,14 +1,20 @@
+import 'package:agro_worlds/models/User.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginScreen.dart';
+import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AgroWorldsDrawer {
   static Drawer drawer(
       {required BuildContext context,
-      String displayName = "N/A",
-      String role = "Business Developer Executive"}) {
+        bool listen = false
+      }) {
+    FlowDataProvider provider = Provider.of(context, listen: true);
+    User user = provider.user;
+
     return Drawer(
         child: Column(
       children: [
@@ -27,7 +33,7 @@ class AgroWorldsDrawer {
           child: Column(
             children: [
               Text(
-                displayName,
+                "${user.firstName} ${user.lastName}",
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -37,7 +43,7 @@ class AgroWorldsDrawer {
                 height: 10,
               ),
               Text(
-                role,
+                "${user.UserRole}",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
               ),
             ],

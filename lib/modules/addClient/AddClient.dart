@@ -48,7 +48,7 @@ class AddClient extends StatelessWidget {
           ),
         ),
         endDrawer: AgroWorldsDrawer.drawer(
-            context: context, displayName: "Saksham Arora"),
+            context: context),
         body: Stack(
           children: [
             Padding(
