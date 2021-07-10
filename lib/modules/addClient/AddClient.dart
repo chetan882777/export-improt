@@ -61,27 +61,38 @@ class AddClient extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      SizedBox(
+                      Offstage(
+                        offstage: model.isNameEntered,
+                        child: SizedBox(
                           height: 100,
                           width: double.infinity,
-                          child: Stack(
-                            children: [
-                              Align(
-                                child: Image.asset(
-                                  Constants.AGRO_HEADER_LOGO,
-                                  fit: BoxFit.contain,
-                                ),
-                                alignment: Alignment.center,
-                              ),
-                              Align(
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                alignment: Alignment(0.65, 0.0),
-                              ),
-                            ],
-                          )),
+                          child: CircleAvatar(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            child: Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 56,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Offstage(
+                        offstage: !model.isNameEntered,
+                        child: SizedBox(
+                          height: 100,
+                          width: double.infinity,
+                          child: CircleAvatar(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            child: Text(
+                              model.name.isNotEmpty
+                                  ? model.name[0].toUpperCase()
+                                  : "A".toUpperCase(),
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 56),
+                            ),
+                          ),
+                        ),
+                      ),
                       SizedBox(
                         height: 32,
                       ),
@@ -138,7 +149,9 @@ class AddClient extends StatelessWidget {
                       matForms.matEditable(
                         variable: "busienssName",
                         displayText: "Business name",
-                        player: () {},
+                        player: (val) {
+                          model.setName(val);
+                        },
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(context),
                           FormBuilderValidators.max(context, 70),
