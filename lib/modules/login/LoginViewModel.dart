@@ -5,7 +5,6 @@ import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginController.dart';
 import 'package:agro_worlds/modules/otp/OtpScreen.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
-import 'package:agro_worlds/utils/Resource.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
@@ -35,13 +34,9 @@ class LoginViewModel extends BaseViewModel {
   }
 
   void login(String phone) async{
-    print(" releaseLogs123 ====> login");
     setBusy(true);
-    print("    ====> busy ");
     try {
-      print(" releaseLogs123  ====> try");
       var response = await _controller.login(phone);
-      print(" releaseLogs123  ====> respoonse");
       setBusy(false);
       print(response);
       Map<String, dynamic> result = json.decode(response);
@@ -53,15 +48,15 @@ class LoginViewModel extends BaseViewModel {
       }
       else if (result["code"] == "200") {
         flowDataProvider.otp = "${result["data"]["OTP"]}";
+        showToast("otp " + flowDataProvider.otp);
         flowDataProvider.phone = phone;
         flowDataProvider.id = result["data"]["id"];
-        showToast(result["message"]);
+        //showToast(result["message"]);
         Navigator.pushNamed(context, OtpScreen.ROUTE_NAME);
       } else {
         showToast("Something went Wrong!");
       }
     } catch (e) {
-      print(" releaseLogs123  ===> error $e");
       showToast("Something went Wrong!");
     }
   }
