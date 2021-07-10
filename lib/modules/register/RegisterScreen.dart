@@ -58,48 +58,43 @@ class RegisterScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        SizedBox(
+                        Offstage(
+                          offstage: model.isNameEntered,
+                          child: SizedBox(
                             height: 100,
                             width: double.infinity,
-                            child: Stack(
-                              children: [
-                                Align(
-                                    child: Container(
-                                  height: 100,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      border: Border.all(
-                                          width: 2,
-                                          color:
-                                              Theme.of(context).primaryColor)),
-                                  child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: Icon(
-                                        Icons.person,
-                                        size: 80,
-                                        color: Theme.of(context).primaryColor,
-                                      )),
-                                )),
-                                Align(
-                                  child: InkWell(
-                                    onTap: () {},
-                                    child: Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: Icon(
-                                        Icons.edit,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                    ),
-                                  ),
-                                  alignment: Alignment(0.65, 0.0),
-                                ),
-                              ],
-                            )),
+                            child: CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 56,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Offstage(
+                          offstage: !model.isNameEntered,
+                          child: SizedBox(
+                            height: 100,
+                            width: double.infinity,
+                            child: CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Text(
+                                model.name.isNotEmpty?model.name[0]:"A",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 56),
+                              ),
+                            ),
+                          ),
+                        ),
                         matForms.matEditable(
                           variable: "firstName",
                           displayText: "First Name",
                           textInputType: TextInputType.name,
-                          player: (val) {},
+                          player: (val) {
+                            model.setName(val);
+                          },
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
                             FormBuilderValidators.max(context, 70),
