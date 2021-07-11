@@ -42,6 +42,8 @@ class AddClientViewModel extends BaseViewModel {
       print(reqData);
       Navigator.pushReplacementNamed(context, AddClientSuccess.ROUTE_NAME);
     }
+
+    Navigator.pushReplacementNamed(context, AddClientSuccess.ROUTE_NAME);
   }
 
   void setSelectedClientType(val) {

@@ -1,4 +1,5 @@
 import 'package:agro_worlds/models/User.dart';
+import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginScreen.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
@@ -56,7 +57,9 @@ class AgroWorldsDrawer {
                 player: () {
                   Navigator.pushNamed(context, DashboardScreen.ROUTE_NAME);
                 }),
-            drawerMenuItem(displayName: "Clients"),
+            drawerMenuItem(displayName: "Clients", player: () {
+              Navigator.pushNamed(context, AllClients.ROUTE_NAME);
+            }),
             drawerMenuItem(displayName: "Meetings"),
             drawerMenuItem(displayName: "Activity logs"),
             drawerMenuItem(displayName: "Deals"),

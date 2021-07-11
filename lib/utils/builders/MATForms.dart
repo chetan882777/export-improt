@@ -421,7 +421,8 @@ class MATForms {
       double displayTextSize = 16,
       double borderWidth = 1,
       Color borderColor = Colors.black,
-      EdgeInsets padding = const EdgeInsets.all(8)}) {
+      Icon? leading,
+      EdgeInsets padding = const EdgeInsets.all(0)}) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Align(
@@ -437,16 +438,25 @@ class MATForms {
                     side: BorderSide(width: borderWidth, color: borderColor)),
               ),
             ),
-            child: Padding(
-              padding: padding,
-              child: Text(
-                displayText,
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: displayTextSize,
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              Offstage(
+                offstage: leading == null,
+                child: Padding(
+                  padding: padding,
+                  child: leading,
                 ),
               ),
-            ),
+              Padding(
+                padding: padding,
+                child: Text(
+                  displayText,
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: displayTextSize,
+                  ),
+                ),
+              ),
+            ]),
             onPressed: enable
                 ? () {
                     player();

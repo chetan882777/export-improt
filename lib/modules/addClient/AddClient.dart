@@ -177,12 +177,12 @@ class AddClient extends StatelessWidget {
                             textColor: Colors.white,
                             displayText: "Submit",
                             player: () {
-                              if (dynamicFormKey.currentState!
-                                  .saveAndValidate()) {
-                                model.submit();
-                              } else {
-                                model.showToast("Fill up all valid data");
-                              }
+                              // if (dynamicFormKey.currentState!
+                              //     .saveAndValidate()) {
+                                 model.submit();
+                              // } else {
+                              //   model.showToast("Fill up all valid data");
+                              // }
                             },
                           ),
                         ),
