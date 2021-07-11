@@ -32,7 +32,7 @@ class AddClient extends StatelessWidget {
         saveController: saveVariable);
 
     return ChangeNotifierProvider<AddClientViewModel>(
-      create: (context) => AddClientViewModel(context),
+      create: (context) => AddClientViewModel(context, matForms),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -47,8 +47,7 @@ class AddClient extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
         ),
-        endDrawer: AgroWorldsDrawer.drawer(
-            context: context),
+        endDrawer: AgroWorldsDrawer.drawer(context: context),
         body: Stack(
           children: [
             Padding(
@@ -56,167 +55,142 @@ class AddClient extends StatelessWidget {
               child: Consumer(
                 builder: (context, AddClientViewModel model, child) =>
                     SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Offstage(
-                        offstage: model.isNameEntered,
-                        child: SizedBox(
-                          height: 100,
-                          width: double.infinity,
-                          child: CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Icon(
-                              Icons.person,
-                              color: Colors.white,
-                              size: 56,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Offstage(
-                        offstage: !model.isNameEntered,
-                        child: SizedBox(
-                          height: 100,
-                          width: double.infinity,
-                          child: CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Text(
-                              model.name.isNotEmpty
-                                  ? model.name[0].toUpperCase()
-                                  : "A".toUpperCase(),
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 56),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 32,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                              width: 1.0,
-                              style: BorderStyle.solid,
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(16.0)),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: Container(
-                            margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                            child: DropdownButton(
-                              icon: Icon(
-                                Icons.keyboard_arrow_down_outlined,
-                                color: Theme.of(context).primaryColor,
+                  child: FormBuilder(
+                    key: dynamicFormKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Offstage(
+                          offstage: model.isNameEntered,
+                          child: SizedBox(
+                            height: 100,
+                            width: double.infinity,
+                            child: CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Icon(
+                                Icons.person,
+                                color: Colors.white,
+                                size: 56,
                               ),
-                              items: <String>[
-                                'Business stage',
-                                'Prospect',
-                                "Client"
-                              ].map((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      value,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              Theme.of(context).primaryColor),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                              value: 'Business stage',
-                              onChanged: (val) {},
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      matForms.matEditable(
-                        variable: "busienssName",
-                        displayText: "Business name",
-                        player: (val) {
-                          model.setName(val);
-                        },
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.max(context, 70),
-                        ]),
-                      ),
-                      matForms.matEditable(
-                        variable: "firstName",
-                        displayText: "First name",
-                        player: () {},
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.max(context, 40),
-                        ]),
-                      ),
-                      matForms.matEditable(
-                        variable: "lastName",
-                        displayText: "Last name",
-                        player: () {},
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.max(context, 40),
-                        ]),
-                      ),
-                      matForms.matEditable(
-                        variable: "email",
-                        displayText: "Email Address",
-                        player: () {},
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.max(context, 40),
-                        ]),
-                      ),
-                      matForms.matEditable(
-                        variable: "contact",
-                        displayText: "Contact number",
-                        player: () {},
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.max(context, 40),
-                        ]),
-                      ),
-                      matForms.matEditable(
-                        variable: "addressLine1",
-                        displayText: "Address (line 1)",
-                        player: () {},
-                        validator: FormBuilderValidators.compose([
-                          FormBuilderValidators.required(context),
-                          FormBuilderValidators.max(context, 40),
-                        ]),
-                      ),
-                      SizedBox(height: 10,),
-                      SizedBox(
-                        height: 48,
-                        width: double.infinity,
-                        child: matForms.elevatedBtn(
-                          color: Theme.of(context).primaryColor,
-                          textColor: Colors.white,
-                          displayText: "Submit",
-                          player: () {
-                            model.submit();
-                          },
+                        Offstage(
+                          offstage: !model.isNameEntered,
+                          child: SizedBox(
+                            height: 100,
+                            width: double.infinity,
+                            child: CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Text(
+                                model.name.isNotEmpty
+                                    ? model.name[0].toUpperCase()
+                                    : "A".toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 56),
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 10,),
-                    ],
+                        SizedBox(
+                          height: 32,
+                        ),
+                        matForms.borderedDropDown(
+                          borderColor: Theme.of(context).primaryColor,
+                          items: model.clientTypes,
+                          displayValue: model.selectedClientType,
+                          player: model.setSelectedClientType,
+                          menuColor: Theme.of(context).primaryColor,
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        matForms.matEditable(
+                          variable: "businessName",
+                          displayText: "Business name",
+                          textInputType: TextInputType.name,
+                          player: (val) {
+                            model.setName(val);
+                          },
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.max(context, 70),
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "firstName",
+                          displayText: "First name",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "lastName",
+                          displayText: "Last name",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "email",
+                          displayText: "Email Address",
+                          textInputType: TextInputType.emailAddress,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                            FormBuilderValidators.email(context)
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "contact",
+                          displayText: "Contact number",
+                          textInputType: TextInputType.phone,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "addressLine1",
+                          displayText: "Address (line 1)",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 48,
+                          width: double.infinity,
+                          child: matForms.elevatedBtn(
+                            color: Theme.of(context).primaryColor,
+                            textColor: Colors.white,
+                            displayText: "Submit",
+                            player: () {
+                              if (dynamicFormKey.currentState!
+                                  .saveAndValidate()) {
+                                model.submit();
+                              } else {
+                                model.showToast("Fill up all valid data");
+                              }
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

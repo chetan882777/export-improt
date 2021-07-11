@@ -1,31 +1,53 @@
 import 'package:agro_worlds/modules/BaseViewModel.dart';
+import 'package:agro_worlds/utils/SharedPrefUtils.dart';
+import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class AddClientViewModel extends BaseViewModel {
-
   bool isNameEntered = false;
-  late String name;
+  String name;
+  List<String> clientTypes;
+  String selectedClientType;
+  MATForms matForms;
 
-  AddClientViewModel(BuildContext context) : super(context) {
-    name = "";
+  AddClientViewModel(BuildContext context, this.matForms)
+      : clientTypes = ['Business stage', 'Prospect', 'Client'],
+        selectedClientType = 'Business stage',
+        name = "",
+        super(context);
+
+  void submit() async {
+    if (matForms.dynamicFormKey.currentState != null) {
+      var formData = matForms.dynamicFormKey.currentState!.value;
+      var reqData = Map();
+      formData.forEach((key, value) {
+        reqData[key] = value;
+      });
+      reqData.putIfAbsent("clientType", ()
+      {
+        return clientTypes.firstWhere((element) => element == selectedClientType);
+      });
+      String? id = await SharedPrefUtils.getUserId();
+      reqData.putIfAbsent("id", () => id);
+      print(reqData);
+    }
   }
 
-  void submit() async {}
+  void setSelectedClientType(val) {
+    selectedClientType = val;
+    notifyListeners();
+  }
 
   void setName(String name) {
     bool shouldNotify = false;
     if ((this.name.isEmpty && name.isNotEmpty) ||
-        (this.name.isNotEmpty && name.isEmpty))
-      shouldNotify = true;
+        (this.name.isNotEmpty && name.isEmpty)) shouldNotify = true;
 
     this.name = name;
 
     if (name.isNotEmpty)
       isNameEntered = true;
-    else if (name.isEmpty)
-      isNameEntered = false;
-    if (shouldNotify)
-      notifyListeners();
+    else if (name.isEmpty) isNameEntered = false;
+    if (shouldNotify) notifyListeners();
   }
-
 }

@@ -83,7 +83,7 @@ class MATForms {
     TextInputType textInputType = TextInputType.text,
     FormFieldValidator? validator,
     FormFieldValidator? dropValidators,
-    required Function player,
+    required void Function(dynamic)? player,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -132,7 +132,7 @@ class MATForms {
     required String displayText,
     String value = "",
     TextInputType textInputType = TextInputType.text,
-    required Function player,
+    void Function(dynamic)? player,
     bool obfuscate = false,
     bool allCaps = true,
     bool disabled = false,
@@ -158,11 +158,7 @@ class MATForms {
       maxLength: maxLength,
       inputFormatters: [ModifiedLengthLimitingTextInputFormatter(maxLength)],
       validator: validator,
-      onChanged: (val) {
-        if (player != null) {
-          player(val);
-        }
-      },
+      onChanged:player
     );
   }
   
