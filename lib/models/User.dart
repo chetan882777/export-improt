@@ -34,7 +34,7 @@ class User {
   String? _reportingPersonId;
   String? _reportingPersonFirstName;
   String? _reportingPersonLastName;
-  String? _UserRole;
+  String? _userRole;
   dynamic? _businessName;
   dynamic? _addressLine1;
   dynamic? _addressLine2;
@@ -59,7 +59,7 @@ class User {
   String? get reportingPersonId => _reportingPersonId;
   String? get reportingPersonFirstName => _reportingPersonFirstName;
   String? get reportingPersonLastName => _reportingPersonLastName;
-  String? get UserRole => _UserRole;
+  String? get userRole => _userRole;
   dynamic? get businessName => _businessName;
   dynamic? get addressLine1 => _addressLine1;
   dynamic? get addressLine2 => _addressLine2;
@@ -108,7 +108,7 @@ class User {
     _reportingPersonId = reportingPersonId;
     _reportingPersonFirstName = reportingPersonFirstName;
     _reportingPersonLastName = reportingPersonLastName;
-    _UserRole = UserRole;
+    _userRole = UserRole;
     _businessName = businessName;
     _addressLine1 = addressLine1;
     _addressLine2 = addressLine2;
@@ -134,7 +134,7 @@ class User {
     _reportingPersonId = json["reporting_person_id"];
     _reportingPersonFirstName = json["reporting_person_first_name"];
     _reportingPersonLastName = json["reporting_person_last_name"];
-    _UserRole = json["user_role"];
+    _userRole = json["user_role"];
     _businessName = json["business_name"];
     _addressLine1 = json["address_line1"];
     _addressLine2 = json["address_line2"];
@@ -145,6 +145,8 @@ class User {
     _clientTrader = json["client_trader"];
     _products = json["products"];
     _error = false;
+
+    _userRole = "BDM";
   }
 
 
@@ -166,7 +168,7 @@ class User {
     map["reporting_person_id"] = _reportingPersonId;
     map["reporting_person_first_name"] = _reportingPersonFirstName;
     map["reporting_person_last_name"] = _reportingPersonLastName;
-    map["user_role"] = _UserRole;
+    map["user_role"] = _userRole;
     map["business_name"] = _businessName;
     map["address_line1"] = _addressLine1;
     map["address_line2"] = _addressLine2;

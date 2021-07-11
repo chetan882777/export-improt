@@ -1,4 +1,5 @@
 import 'package:agro_worlds/modules/BaseViewModel.dart';
+import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -11,10 +12,17 @@ class AddClientViewModel extends BaseViewModel {
   MATForms matForms;
 
   AddClientViewModel(BuildContext context, this.matForms)
-      : clientTypes = ['Business stage', 'Prospect', 'Client'],
-        selectedClientType = 'Business stage',
+      : clientTypes = [],
+        selectedClientType = 'Prospect',
         name = "",
-        super(context);
+        super(context) {
+    if(flowDataProvider.user.userRole.toString().toLowerCase() == Constants.ROLE_BDE) {
+      clientTypes = ['Prospect'];
+    } else if (flowDataProvider.user.userRole.toString().toLowerCase() == Constants.ROLE_BDM) {
+      clientTypes = ['Prospect', 'Potential'];
+    }
+  }
+
 
   void submit() async {
     if (matForms.dynamicFormKey.currentState != null) {

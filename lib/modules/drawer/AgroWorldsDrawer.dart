@@ -43,7 +43,7 @@ class AgroWorldsDrawer {
                 height: 10,
               ),
               Text(
-                "${user.UserRole}",
+                "${user.userRole}",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
               ),
             ],

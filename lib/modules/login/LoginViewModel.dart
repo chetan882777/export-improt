@@ -17,10 +17,8 @@ class LoginViewModel extends BaseViewModel {
   static const String ERROR_MAINTENANCE_DESC_KEY = 'errorDesc';
 
   late final LoginController _controller;
-  late final FlowDataProvider flowDataProvider;
 
   LoginViewModel(BuildContext context) : super(context) {
-    flowDataProvider = Provider.of(context, listen: false);
     _controller = LoginController();
     asyncInit();
   }

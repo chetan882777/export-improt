@@ -13,7 +13,6 @@ import 'package:provider/provider.dart';
 import 'OtpController.dart';
 
 class OtpViewModel extends BaseViewModel {
-  late final FlowDataProvider flowDataProvider;
   late final MATForms matForms;
   bool enableResendOtp = true;
   late Color resendOtpTextColor = Theme.of(context).accentColor;
@@ -22,7 +21,6 @@ class OtpViewModel extends BaseViewModel {
   late final OtpController _otpController;
 
   OtpViewModel(BuildContext context, this.matForms) : super(context) {
-    flowDataProvider = Provider.of(context, listen: false);
     _loginController = LoginController();
     _otpController = OtpController();
   }
