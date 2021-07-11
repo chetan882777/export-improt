@@ -140,7 +140,7 @@ class MATForms {
     bool autocorrect = false,
     int maxLength = 80,
     int maxLine = 1,
-    required FormFieldValidator validator,
+    required FormFieldValidator<String> validator,
   }) {
     if (needController)
       mapper.putIfAbsent(variable, () => TextEditingController(text: value));

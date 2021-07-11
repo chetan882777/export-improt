@@ -100,8 +100,6 @@ class RegisterScreen extends StatelessWidget {
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
                             FormBuilderValidators.max(context, 80),
-                            FormBuilderValidators.min(context, 3, errorText: "Min 3 character required"),
-
                           ]),
                         ),
                         matForms.matEditable(
@@ -111,8 +109,6 @@ class RegisterScreen extends StatelessWidget {
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
-                            FormBuilderValidators.max(context, 80),
-                            FormBuilderValidators.min(context, 3, errorText: "Min 3 character required"),
                           ]),
                         ),
                         matForms.matEditable(
@@ -122,7 +118,7 @@ class RegisterScreen extends StatelessWidget {
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
-                            FormBuilderValidators.max(context, 70),
+                            FormBuilderValidators.email(context)
                           ]),
                         ),
                         matForms.matEditable(
@@ -133,19 +129,17 @@ class RegisterScreen extends StatelessWidget {
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
-                            FormBuilderValidators.min(context, 10)
                           ]),
                         ),
                         SizedBox(
                           height: 10,
                         ),
                         matForms.borderedDropDown(
-                          borderColor: Theme.of(context).primaryColor,
-                          items: model.roleNames,
-                          displayValue: model.selectedRole,
-                          menuColor: Theme.of(context).primaryColor,
-                          player: model.updateSelectedDepartment
-                        ),
+                            borderColor: Theme.of(context).primaryColor,
+                            items: model.roleNames,
+                            displayValue: model.selectedRole,
+                            menuColor: Theme.of(context).primaryColor,
+                            player: model.updateSelectedDepartment),
                         SizedBox(
                           height: 10,
                         ),
@@ -155,13 +149,15 @@ class RegisterScreen extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: matForms.elevatedBtn(
-                                 color: Theme.of(context).accentColor,
+                                color: Theme.of(context).accentColor,
                                 textColor: Colors.white,
                                 displayText: "Submit",
                                 player: () {
-                                  if(dynamicFormKey.currentState!
+                                  if (dynamicFormKey.currentState!
                                       .saveAndValidate()) {
                                     model.submit();
+                                  } else {
+                                    model.showToast("Fill up all valid data");
                                   }
                                 }),
                           ),
