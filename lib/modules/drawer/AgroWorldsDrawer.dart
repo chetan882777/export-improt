@@ -8,62 +8,70 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AgroWorldsDrawer {
-  static Drawer drawer(
-      {required BuildContext context,
-        bool listen = false
-      }) {
+  static Drawer drawer({required BuildContext context, bool listen = false}) {
     FlowDataProvider provider = Provider.of(context, listen: true);
     User user = provider.user;
 
     return Drawer(
+      child: SingleChildScrollView(
         child: Column(
-      children: [
-        SizedBox(
-          height: 64,
-        ),
-        Image.asset(
-          Constants.AGRO_HEADER_LOGO,
-          colorBlendMode: BlendMode.color,
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 16),
-          width: double.infinity,
-          padding: EdgeInsets.all(16),
-          color: Color(0xffe4e4e5),
-          child: Column(
-            children: [
-              Text(
-                "${user.firstName} ${user.lastName}",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).primaryColor),
+          children: [
+            SizedBox(
+              height: 64,
+            ),
+            Image.asset(
+              Constants.AGRO_HEADER_LOGO,
+              colorBlendMode: BlendMode.color,
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 16),
+              width: double.infinity,
+              padding: EdgeInsets.all(16),
+              color: Color(0xffe4e4e5),
+              child: Column(
+                children: [
+                  Text(
+                    "${user.firstName} ${user.lastName}",
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "${user.userRole}",
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "${user.userRole}",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            drawerMenuItem(
+                displayName: "Dashboard",
+                player: () {
+                  Navigator.pushNamed(context, DashboardScreen.ROUTE_NAME);
+                }),
+            drawerMenuItem(displayName: "Clients"),
+            drawerMenuItem(displayName: "Meetings"),
+            drawerMenuItem(displayName: "Activity logs"),
+            drawerMenuItem(displayName: "Deals"),
+            drawerMenuItem(displayName: "Help"),
+            drawerMenuItem(
+                displayName: "Logout",
+                color: Colors.red,
+                player: () async {
+                  await SharedPrefUtils.deleteUserId();
+                  Navigator.pushNamed(context, LoginScreen.ROUTE_NAME);
+                }),
+          ],
         ),
-        SizedBox(height: 10,),
-        drawerMenuItem(displayName: "Dashboard", player: () {
-          Navigator.pushNamed(context, DashboardScreen.ROUTE_NAME);
-        }),
-        drawerMenuItem(displayName: "Clients"),
-        drawerMenuItem(displayName: "Meetings"),
-        drawerMenuItem(displayName: "Activity logs"),
-        drawerMenuItem(displayName: "Deals"),
-        drawerMenuItem(displayName: "Help"),
-        drawerMenuItem(displayName: "Logout", color: Colors.red, player: () async {
-          await SharedPrefUtils.deleteUserId();
-          Navigator.pushNamed(context, LoginScreen.ROUTE_NAME);
-        }),
-      ],
-    ));
+      ),
+    );
   }
 
   static Widget drawerMenuItem({
@@ -85,9 +93,7 @@ class AgroWorldsDrawer {
                 child: Text(
                   displayName,
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      color: color),
+                      fontWeight: FontWeight.w600, fontSize: 16, color: color),
                 ),
               ),
               Container(
