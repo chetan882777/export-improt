@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -14,9 +15,9 @@ class MATForms {
 
   MATForms(
       {required this.context,
-        required this.dynamicFormKey,
-        required this.mapper,
-        required this.saveController});
+      required this.dynamicFormKey,
+      required this.mapper,
+      required this.saveController});
 
   GlobalKey<FormBuilderState> getDynamicKey() {
     return dynamicFormKey;
@@ -53,18 +54,15 @@ class MATForms {
         DateFormat inputFormat = DateFormat("dd/MM/yyyy");
         DateTime dateTime = inputFormat.parse(data);
         if (dynamicFormKey.currentState!.fields.containsKey(variable))
-          dynamicFormKey.currentState!.fields[variable]!
-              .didChange(dateTime);
+          dynamicFormKey.currentState!.fields[variable]!.didChange(dateTime);
       } else if (data is String && timeExp.hasMatch(data)) {
         DateFormat inputFormat = DateFormat("hh:mm a");
         DateTime dateTime = inputFormat.parse(data);
         if (dynamicFormKey.currentState!.fields.containsKey(variable))
-          dynamicFormKey.currentState!.fields[variable]!
-              .didChange(dateTime);
+          dynamicFormKey.currentState!.fields[variable]!.didChange(dateTime);
       } else {
         if (dynamicFormKey.currentState!.fields.containsKey(variable))
-          dynamicFormKey.currentState!.fields[variable]!
-              .didChange(data);
+          dynamicFormKey.currentState!.fields[variable]!.didChange(data);
       }
     } catch (e) {
       // print("Some wierd thing happened, $e");
@@ -145,23 +143,21 @@ class MATForms {
     if (needController)
       mapper.putIfAbsent(variable, () => TextEditingController(text: value));
     return FormBuilderTextField(
-      name: variable,
-      keyboardType: textInputType,
-      textCapitalization:
-      allCaps ? TextCapitalization.characters : TextCapitalization.none,
-      obscureText: obfuscate,
-      maxLines: maxLine,
-      autocorrect: autocorrect,
-      decoration: InputDecoration(labelText: displayText),
-      controller: needController ? mapper[variable] : null,
-      readOnly: disabled,
-      maxLength: maxLength,
-      inputFormatters: [ModifiedLengthLimitingTextInputFormatter(maxLength)],
-      validator: validator,
-      onChanged:player
-    );
+        name: variable,
+        keyboardType: textInputType,
+        textCapitalization:
+            allCaps ? TextCapitalization.characters : TextCapitalization.none,
+        obscureText: obfuscate,
+        maxLines: maxLine,
+        autocorrect: autocorrect,
+        decoration: InputDecoration(labelText: displayText),
+        controller: needController ? mapper[variable] : null,
+        readOnly: disabled,
+        maxLength: maxLength,
+        inputFormatters: [ModifiedLengthLimitingTextInputFormatter(maxLength)],
+        validator: validator,
+        onChanged: player);
   }
-  
 
   Widget matAsyncDropdown({
     required String variable,
@@ -209,8 +205,8 @@ class MATForms {
       enabled: !disabled,
       initialValue: isSetInitialData
           ? items.length != 0
-          ? items[0]
-          : null
+              ? items[0]
+              : null
           : null,
       validator: validator,
       onChanged: (val) {
@@ -245,8 +241,8 @@ class MATForms {
         ),
         initialValue: isSetInitialData
             ? items.length != 0
-            ? items[0]
-            : null
+                ? items[0]
+                : null
             : null,
         items: MATUtils.simpleDropdownCovertor(items),
         hint: Text(hint),
@@ -255,10 +251,10 @@ class MATForms {
         onChanged: disabled
             ? null
             : (val) {
-          if (player != null) {
-            player(val);
-          }
-        },
+                if (player != null) {
+                  player(val);
+                }
+              },
       ),
     );
   }
@@ -340,22 +336,22 @@ class MATForms {
         displayText,
         style: TextStyle(
             fontWeight:
-            fontWeight == "bold" ? FontWeight.bold : FontWeight.normal,
+                fontWeight == "bold" ? FontWeight.bold : FontWeight.normal,
             fontSize: fontSize),
       ),
     );
   }
 
-  Widget matTextButton({
-    required Color textColor,
-    required String displayText,
-    required Function player,
-    bool enable = true,
-    double? width,
-    Alignment alignment = Alignment.centerRight,
-    FontWeight fontWeight = FontWeight.normal,
-    int displayTextSize = 12
-  }) {
+  Widget matTextButton(
+      {required Color textColor,
+      required String displayText,
+      required Function player,
+      bool enable = true,
+      double? width,
+      Alignment alignment = Alignment.centerRight,
+      FontWeight fontWeight = FontWeight.normal,
+      double displayTextSize = 16,
+      EdgeInsets padding = const EdgeInsets.all(8)}) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Align(
@@ -363,17 +359,21 @@ class MATForms {
         child: Container(
           width: width,
           child: TextButton(
-            child: Text(
-              displayText,
-              style: TextStyle(
-                  fontSize: 16,
-                  color: textColor,
-                  fontWeight: fontWeight
+            child: Padding(
+              padding: padding,
+              child: Text(
+                displayText,
+                style: TextStyle(
+                    fontSize: displayTextSize,
+                    color: textColor,
+                    fontWeight: fontWeight),
               ),
             ),
-            onPressed: enable ? () {
-              player();
-            } : null,
+            onPressed: enable
+                ? () {
+                    player();
+                  }
+                : null,
           ),
         ),
       ),
@@ -403,9 +403,7 @@ class MATForms {
               ),
             ),
             onPressed: () {
-              if (player != null) {
-                player();
-              }
+              player();
             },
           ),
         ),
@@ -413,39 +411,47 @@ class MATForms {
     );
   }
 
-  Widget matOutlineButton({
-    required Color color,
-    required Color textColor,
-    required String displayText,
-    double? width,
-    double borderRadius = 10,
-    double fontSize = 16,
-    Alignment alignment = Alignment.centerRight,
-    required Function player,
-  }) {
+  Widget matOutlineButton(
+      {required Color textColor,
+      required String displayText,
+      required Function player,
+      bool enable = true,
+      Alignment alignment = Alignment.centerRight,
+      FontWeight fontWeight = FontWeight.normal,
+      double displayTextSize = 16,
+      double borderWidth = 1,
+      Color borderColor = Colors.black,
+      EdgeInsets padding = const EdgeInsets.all(8)}) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Align(
         alignment: alignment,
         child: Container(
-          width: width,
-          child: OutlineButton(
-            highlightedBorderColor: color,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(borderRadius)),
-            color: color,
-            child: Text(
-              displayText,
-              style: TextStyle(
-                color: textColor,
-                fontSize: fontSize,
+          child: TextButton(
+            style: ButtonStyle(
+              textStyle: MaterialStateProperty.all(
+                  TextStyle(color: textColor, fontSize: displayTextSize)),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0),
+                    side: BorderSide(width: borderWidth, color: borderColor)),
               ),
             ),
-            onPressed: () {
-              if (player != null) {
-                player();
-              }
-            },
+            child: Padding(
+              padding: padding,
+              child: Text(
+                displayText,
+                style: TextStyle(
+                  color: textColor,
+                  fontSize: displayTextSize,
+                ),
+              ),
+            ),
+            onPressed: enable
+                ? () {
+                    player();
+                  }
+                : null,
           ),
         ),
       ),
@@ -468,33 +474,25 @@ class MATForms {
     );
   }
 
-  Widget elevatedBtn({
-   required Color color,
-    required Color textColor,
-    required String displayText,
-    required Function player
-
-  }) {
+  Widget elevatedBtn(
+      {required Color color,
+      required Color textColor,
+      required String displayText,
+      required Function player,
+      EdgeInsets padding = const EdgeInsets.all(8)}) {
     return ElevatedButton(
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(color),
-          textStyle: MaterialStateProperty.all(
-              TextStyle(
-                  color: textColor,
-                  fontSize: 20)),
-          shape: MaterialStateProperty.all<
-              RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.circular(12.0)))),
-      child: Text(displayText),
-      onPressed: () {
-        player();
-      }
-    );
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(color),
+            textStyle: MaterialStateProperty.all(
+                TextStyle(color: textColor, fontSize: 20)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.0)))),
+        child: Padding(padding: padding, child: Text(displayText)),
+        onPressed: () {
+          player();
+        });
   }
-
-
 
   Widget borderedDropDown({
     required Color borderColor,
@@ -512,8 +510,7 @@ class MATForms {
             style: BorderStyle.solid,
             color: borderColor,
           ),
-          borderRadius:
-          BorderRadius.all(Radius.circular(16.0)),
+          borderRadius: BorderRadius.all(Radius.circular(16.0)),
         ),
       ),
       child: DropdownButtonHideUnderline(
@@ -546,5 +543,4 @@ class MATForms {
       ),
     );
   }
-
 }

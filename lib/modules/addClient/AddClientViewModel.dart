@@ -1,7 +1,9 @@
 import 'package:agro_worlds/modules/BaseViewModel.dart';
+import 'package:agro_worlds/modules/addClient/AddClientSuccess.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class AddClientViewModel extends BaseViewModel {
@@ -38,6 +40,7 @@ class AddClientViewModel extends BaseViewModel {
       String? id = await SharedPrefUtils.getUserId();
       reqData.putIfAbsent("id", () => id);
       print(reqData);
+      Navigator.pushReplacementNamed(context, AddClientSuccess.ROUTE_NAME);
     }
   }
 
