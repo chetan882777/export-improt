@@ -2,6 +2,7 @@ import 'package:agro_worlds/modules/addClient/AddClient.dart';
 import 'package:agro_worlds/modules/addClient/AddClientViewModel.dart';
 import 'package:agro_worlds/modules/allClients/AllClientsViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
+import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -79,18 +80,38 @@ class AllClients extends StatelessWidget {
                                   player: () {},
                                 ),
                               ),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: SizedBox(
-                                  width: 48,
-                                  height: 48,
-                                  child: Row(
-                                    children: [],
-                                  ),
+                              Expanded(
+                                flex: 1,
+                                child: SizedBox(),
+                              ),
+                              Text(
+                                "Sort:",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black
                                 ),
-                              )
+                              ),
+                              SizedBox(width: 4,),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(
+                                  Icons.access_time,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                              ),
+                              SizedBox(width: 4,),
+                              Image.asset(
+                                Constants.SORT_AZ_ICON,
+                                height: 24,
+                                width: 24,
+                              ),
+                              SizedBox(width: 4,),
                             ],
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(height: 0.5, color: Colors.black12),
                           Expanded(
                             flex: 1,
                             child: ListView.builder(
