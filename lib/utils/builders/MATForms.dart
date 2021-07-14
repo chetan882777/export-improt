@@ -510,6 +510,8 @@ class MATForms {
     required String displayValue,
     Function(dynamic)? player,
     Color menuColor = Colors.black,
+    FontWeight fontWeight = FontWeight.bold,
+    double borderRadius = 16
   }) {
     return Container(
       width: double.infinity,
@@ -520,7 +522,7 @@ class MATForms {
             style: BorderStyle.solid,
             color: borderColor,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
         ),
       ),
       child: DropdownButtonHideUnderline(
@@ -540,7 +542,7 @@ class MATForms {
                     value,
                     style: TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: fontWeight,
                         color: menuColor),
                   ),
                 ),
