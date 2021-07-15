@@ -15,6 +15,7 @@ class AddClientViewModel extends BaseViewModel {
   List<String> clientTypes;
   String selectedClientType;
   MATForms matForms;
+  bool isContactValid = false;
 
   AddClientViewModel(BuildContext context, this.matForms)
       : clientTypes = [],
@@ -30,6 +31,10 @@ class AddClientViewModel extends BaseViewModel {
 
 
   void submit() async {
+    if(!isContactValid) {
+      showToast("Enter valid Contact");
+      return;
+    }
     if (matForms.dynamicFormKey.currentState != null) {
       try {
         setBusy(true);

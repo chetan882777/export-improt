@@ -126,7 +126,13 @@ class RegisterScreen extends StatelessWidget {
                           displayText: "Contact",
                           maxLength: 15,
                           textInputType: TextInputType.phone,
-                          player: (val) {},
+                          player: (val) {
+                            if(val.toString().length >=10 && val.toString().length < 15) {
+                              model.isContactValid = true;
+                            } else {
+                              model.isContactValid = false;
+                            }
+                          },
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
                           ]),

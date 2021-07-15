@@ -18,6 +18,7 @@ class RegisterViewModel extends BaseViewModel {
   List<Role> roles = [];
   List<String> roleNames = [];
   String selectedRole = "-select";
+  bool isContactValid = false;
 
   RegisterViewModel(BuildContext context, this.matForms) : super(context) {
     name = "";
@@ -51,6 +52,10 @@ class RegisterViewModel extends BaseViewModel {
 
 
   void submit() async {
+    if(!isContactValid) {
+      showToast("Enter valid Contact");
+      return;
+    }
     if (matForms.dynamicFormKey.currentState != null) {
       var formData = matForms.dynamicFormKey.currentState!.value;
       var reqData = Map();
