@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:agro_worlds/modules/BaseViewModel.dart';
 import 'package:agro_worlds/modules/addClient/AddClientSuccess.dart';
+import 'package:agro_worlds/network/ApiService.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
@@ -28,22 +31,28 @@ class AddClientViewModel extends BaseViewModel {
 
   void submit() async {
     if (matForms.dynamicFormKey.currentState != null) {
-      var formData = matForms.dynamicFormKey.currentState!.value;
-      var reqData = Map();
-      formData.forEach((key, value) {
-        reqData[key] = value;
-      });
-      reqData.putIfAbsent("clientType", ()
-      {
-        return clientTypes.firstWhere((element) => element == selectedClientType);
-      });
-      String? id = await SharedPrefUtils.getUserId();
-      reqData.putIfAbsent("id", () => id);
-      print(reqData);
-      Navigator.pushReplacementNamed(context, AddClientSuccess.ROUTE_NAME);
-    }
+      try {
+        setBusy(true);
+        var formData = matForms.dynamicFormKey.currentState!.value;
+        var reqData = Map();
+        formData.forEach((key, value) {
+          reqData[key] = value;
+        });
+        reqData.putIfAbsent("clientType", () {
+          return clientTypes.firstWhere((element) =>
+          element == selectedClientType);
+        });
+        String? id = await SharedPrefUtils.getUserId();
+        reqData.putIfAbsent("id", () => id);
+        print(reqData);
 
-    Navigator.pushReplacementNamed(context, AddClientSuccess.ROUTE_NAME);
+        await addClientApiCall(formData);
+
+        setBusy(false);
+      } catch(e) {
+        setBusy(false);
+      }
+    }
   }
 
   void setSelectedClientType(val) {
@@ -62,5 +71,21 @@ class AddClientViewModel extends BaseViewModel {
       isNameEntered = true;
     else if (name.isEmpty) isNameEntered = false;
     if (shouldNotify) notifyListeners();
+  }
+
+  Future<void> addClientApiCall(Map<String, dynamic> formData) async {
+    var response = await ApiService.dio.post("profile/add_client", queryParameters: formData);
+
+    if(response.statusCode == 200) {
+      var result = json.decode(response.data);
+      if(result["code"] == "300")
+        showToast(result["code"]);
+      else if (result["code"] == "200")
+        Navigator.pushReplacementNamed(context, AddClientSuccess.ROUTE_NAME);
+      else
+        showToast("Something went Wrong!");
+    } else {
+      showToast("Something went Wrong!");
+    }
   }
 }

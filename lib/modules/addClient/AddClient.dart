@@ -164,6 +164,15 @@ class AddClient extends StatelessWidget {
                             FormBuilderValidators.required(context),
                           ]),
                         ),
+                        matForms.matEditable(
+                          variable: "city",
+                          displayText: "City",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -175,12 +184,12 @@ class AddClient extends StatelessWidget {
                             textColor: Colors.white,
                             displayText: "Submit",
                             player: () {
-                              // if (dynamicFormKey.currentState!
-                              //     .saveAndValidate()) {
+                              if (dynamicFormKey.currentState!
+                                  .saveAndValidate()) {
                                  model.submit();
-                              // } else {
-                              //   model.showToast("Fill up all valid data");
-                              // }
+                              } else {
+                                model.showToast("Fill up all valid data");
+                              }
                             },
                           ),
                         ),
