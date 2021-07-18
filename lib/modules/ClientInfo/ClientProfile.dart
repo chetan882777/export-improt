@@ -1,3 +1,7 @@
+import 'package:agro_worlds/modules/ClientInfo/ClientProfileContactTab.dart';
+import 'package:agro_worlds/modules/ClientInfo/ClientProfileDealsTab.dart';
+import 'package:agro_worlds/modules/ClientInfo/ClientProfileMeetigsTab.dart';
+import 'package:agro_worlds/modules/ClientInfo/ClientProfileRemarksTab.dart';
 import 'package:agro_worlds/modules/ClientInfo/ClientProfileViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/Constants.dart';
@@ -42,6 +46,7 @@ class ClientProfile extends StatelessWidget {
                 (BuildContext context, bool innerBoxIsScrolled) {
               return <Widget>[
                 SliverAppBar(
+                  elevation: 0,
                   title: Text(
                     title,
                     style: TextStyle(color: Colors.black),
@@ -145,6 +150,8 @@ class ClientProfile extends StatelessWidget {
                 SliverPersistentHeader(
                   delegate: _SliverAppBarDelegate(
                     TabBar(
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      overlayColor: MaterialStateProperty.all(Colors.white),
                       indicatorColor: Theme.of(context).primaryColor,
                       labelColor: Theme.of(context).primaryColor,
                       unselectedLabelColor: Colors.black,
@@ -170,10 +177,10 @@ class ClientProfile extends StatelessWidget {
             },
             body: TabBarView(
               children: [
-                Icon(Icons.music_note),
-                Icon(Icons.music_video),
-                Icon(Icons.camera_alt),
-                Icon(Icons.grade),
+                ClientProfileContactTab(),
+                ClientProfileRemarksTab(),
+                ClientProfileMeetingsTab(),
+                ClientProfileDealsTab(),
               ],
             ),
           ),
@@ -198,6 +205,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
+      color:Colors.white,
       child: _tabBar,
     );
   }
