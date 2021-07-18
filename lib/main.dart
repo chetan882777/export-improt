@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/ClientInfo/ClientProfile.dart';
 import 'package:agro_worlds/modules/addClient/AddClient.dart';
 import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
@@ -51,7 +52,8 @@ class AgroWorld extends StatelessWidget {
           DashboardScreen.ROUTE_NAME: (ctx) => DashboardScreen(),
           AddClient.ROUTE_NAME: (ctx) => AddClient(),
           AddClientSuccess.ROUTE_NAME: (ctx) => AddClientSuccess(),
-          AllClients.ROUTE_NAME: (ctx) => AllClients()
+          AllClients.ROUTE_NAME: (ctx) => AllClients(),
+          ClientProfile.ROUTE_NAME: (ctx) => ClientProfile(),
         },
       ),
     );

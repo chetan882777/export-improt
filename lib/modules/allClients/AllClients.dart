@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/ClientInfo/ClientProfile.dart';
 import 'package:agro_worlds/modules/addClient/AddClient.dart';
 import 'package:agro_worlds/modules/addClient/AddClientViewModel.dart';
 import 'package:agro_worlds/modules/allClients/AllClientsViewModel.dart';
@@ -319,19 +320,27 @@ class AllClients extends StatelessWidget {
             SizedBox(
               width: 16,
             ),
-            CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              child: Icon(
-                Icons.call,
-                color: Colors.white,
+            InkWell(
+              child: CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Icon(
+                  Icons.call,
+                  color: Colors.white,
+                ),
               ),
+              onTap: () {},
             ),
             SizedBox(
               width: 16,
             ),
-            CircleAvatar(
-              backgroundColor: Theme.of(context).primaryColor,
-              child: Icon(Icons.chevron_right, color: Colors.white),
+            InkWell(
+              child: CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Icon(Icons.chevron_right, color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, ClientProfile.ROUTE_NAME);
+              },
             )
           ],
         ),
