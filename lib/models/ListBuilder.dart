@@ -4,7 +4,7 @@ const LIST_TYPE_ROLE = "LIST_TYPE_ROLE";
 
 class ListBuilder {
 
-  List<Role> roleList = [];
+  List<ListItem> roleList = [];
 
   ListBuilder();
 
@@ -17,7 +17,7 @@ class ListBuilder {
   void feedList(List<dynamic> data, String type) {
     data.forEach((element) {
       if(type == LIST_TYPE_ROLE) {
-        roleList.add(Role.fromJson(element));
+        roleList.add(ListItem.fromJson(element));
       }
     });
   }

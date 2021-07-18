@@ -28,9 +28,29 @@ class ApiService {
     }
   }
 
-  static Future<List<Role>> rolesList() async {
+  static Future<List<ListItem>> rolesList() async {
     var response =
     await ApiService.dio.post("profile/roles");
+    if (response.statusCode == 200)
+      return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
+    else
+      return [];
+  }
+
+  static Future<List<ListItem>> statesList() async {
+    var response =
+    await ApiService.dio.post("profile/states");
+    if (response.statusCode == 200)
+      return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
+    else
+      return [];
+  }
+
+  static Future<List<ListItem>> citiesList(String forState) async {
+    print(forState);
+    var response =
+    await ApiService.dio.post("profile/cities?state_id=${int.parse(forState)}");
+    print("res ${response.requestOptions.uri}");
     if (response.statusCode == 200)
       return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
     else

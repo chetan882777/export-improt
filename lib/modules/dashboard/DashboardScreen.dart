@@ -107,7 +107,7 @@ class DashboardScreen extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: Text(
-                                  "Add a client",
+                                  "Add a prospect",
                                   style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.white,

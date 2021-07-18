@@ -57,3 +57,31 @@ class AgroWorld extends StatelessWidget {
     );
   }
 }
+
+
+
+
+/**
+*
+ *
+ *
+ *
+ *  BDM :
+   COntact
+    Remark
+    Meetings
+    Deals
+
+    BDE:
+    Contact
+    Remark
+    Meeting
+ *
+ *
+ *
+ *
+ *  meeting :
+ *  voice call,
+ *  video call,
+ *  physical
+* */

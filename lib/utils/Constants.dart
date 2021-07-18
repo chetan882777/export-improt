@@ -4,4 +4,5 @@ class Constants {
   static const String ROLE_BDE = "bde";
   static const String ROLE_BDM = "bdm";
   static const String NA = "NA";
+  static const String DROPDOWN_NON_SELECT = "-Select-";
 }

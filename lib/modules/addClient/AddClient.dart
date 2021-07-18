@@ -1,6 +1,6 @@
-
 import 'package:agro_worlds/modules/addClient/AddClientViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
+import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -151,7 +151,8 @@ class AddClient extends StatelessWidget {
                           displayText: "Contact number",
                           textInputType: TextInputType.phone,
                           player: (val) {
-                            if(val.toString().length >=10 && val.toString().length < 15) {
+                            if (val.toString().length >= 10 &&
+                                val.toString().length < 15) {
                               model.isContactValid = true;
                             } else {
                               model.isContactValid = false;
@@ -170,15 +171,102 @@ class AddClient extends StatelessWidget {
                             FormBuilderValidators.required(context),
                           ]),
                         ),
-                        matForms.matEditable(
-                          variable: "city",
-                          displayText: "City",
-                          textInputType: TextInputType.name,
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                          ]),
+
+                        SizedBox(
+                          height: 10,
                         ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Role",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        matForms.borderedDropDown(
+                            borderColor: Theme.of(context).primaryColor,
+                            items: model.rolesNameList,
+                            displayValue: model.selectedRole,
+                            menuColor: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                            borderRadius: 8,
+                            player: model.setSelectedRole),
+                        SizedBox(
+                          height: 16,
+                        ),
+
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "State",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        matForms.borderedDropDown(
+                            borderColor: Theme.of(context).primaryColor,
+                            items: model.statesNameList,
+                            displayValue: model.selectedState,
+                            menuColor: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 16,
+                            borderRadius: 8,
+                            player: model.setSelectedState),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Offstage(
+                            offstage: !model.isStateSelected,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      "City",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.normal,
+                                          color: Colors.black),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                matForms.borderedDropDown(
+                                  borderColor: Theme.of(context).primaryColor,
+                                  items: model.citiesNameList,
+                                  displayValue: model.selectedCity,
+                                  menuColor: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 16,
+                                  borderRadius: 8,
+                                  player: model.setSelectedCity,
+                                ),
+                              ],
+                            )),
                         SizedBox(
                           height: 10,
                         ),
@@ -192,7 +280,7 @@ class AddClient extends StatelessWidget {
                             player: () {
                               if (dynamicFormKey.currentState!
                                   .saveAndValidate()) {
-                                 model.submit();
+                                model.submit();
                               } else {
                                 model.showToast("Fill up all valid data");
                               }
@@ -200,7 +288,7 @@ class AddClient extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 16,
                         ),
                       ],
                     ),

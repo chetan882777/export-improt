@@ -511,7 +511,8 @@ class MATForms {
     Function(dynamic)? player,
     Color menuColor = Colors.black,
     FontWeight fontWeight = FontWeight.bold,
-    double borderRadius = 16
+    double borderRadius = 16,
+    double fontSize = 18
   }) {
     return Container(
       width: double.infinity,
@@ -541,7 +542,7 @@ class MATForms {
                   child: Text(
                     value,
                     style: TextStyle(
-                        fontSize: 18,
+                        fontSize: fontSize,
                         fontWeight: fontWeight,
                         color: menuColor),
                   ),

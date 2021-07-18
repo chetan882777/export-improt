@@ -1,12 +1,12 @@
 import 'package:agro_worlds/models/ListBuilder.dart';
 
-class Role {
+class ListItem {
   late String id;
   late String name;
 
-  Role({required this.id, required this.name});
+  ListItem({required this.id, required this.name});
 
-  Role.fromJson(Map<String, dynamic> json) {
+  ListItem.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
   }

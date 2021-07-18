@@ -15,7 +15,7 @@ class RegisterViewModel extends BaseViewModel {
   bool isNameEntered = false;
   late String name;
 
-  List<Role> roles = [];
+  List<ListItem> roles = [];
   List<String> roleNames = [];
   String selectedRole = "-select";
   bool isContactValid = false;
@@ -65,7 +65,7 @@ class RegisterViewModel extends BaseViewModel {
       reqData.putIfAbsent("image", () => "");
       reqData.putIfAbsent("department", ()
       {
-        Role r = roles.firstWhere((element) => element.name == selectedRole);
+        ListItem r = roles.firstWhere((element) => element.name == selectedRole);
         return r.id;
       });
 
