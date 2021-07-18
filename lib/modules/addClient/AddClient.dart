@@ -101,6 +101,8 @@ class AddClient extends StatelessWidget {
                           items: model.clientTypes,
                           displayValue: model.selectedClientType,
                           player: model.setSelectedClientType,
+                          fontWeight: FontWeight.normal,
+                          borderRadius: 8,
                           menuColor: Theme.of(context).primaryColor,
                         ),
                         SizedBox(
@@ -182,7 +184,7 @@ class AddClient extends StatelessWidget {
                             child: Text(
                               "Role",
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                                   fontWeight: FontWeight.normal,
                                   color: Colors.black),
                             ),
@@ -214,7 +216,7 @@ class AddClient extends StatelessWidget {
                             child: Text(
                               "State",
                               style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                                   fontWeight: FontWeight.normal,
                                   color: Colors.black),
                             ),
@@ -229,7 +231,7 @@ class AddClient extends StatelessWidget {
                             displayValue: model.selectedState,
                             menuColor: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.normal,
-                            fontSize: 16,
+                            fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                             borderRadius: 8,
                             player: model.setSelectedState),
                         SizedBox(
@@ -246,7 +248,7 @@ class AddClient extends StatelessWidget {
                                     child: Text(
                                       "City",
                                       style: TextStyle(
-                                          fontSize: 16,
+                                          fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                                           fontWeight: FontWeight.normal,
                                           color: Colors.black),
                                     ),
@@ -261,7 +263,7 @@ class AddClient extends StatelessWidget {
                                   displayValue: model.selectedCity,
                                   menuColor: Theme.of(context).primaryColor,
                                   fontWeight: FontWeight.normal,
-                                  fontSize: 16,
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                                   borderRadius: 8,
                                   player: model.setSelectedCity,
                                 ),

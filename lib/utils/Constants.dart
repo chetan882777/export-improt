@@ -5,4 +5,10 @@ class Constants {
   static const String ROLE_BDM = "bdm";
   static const String NA = "NA";
   static const String DROPDOWN_NON_SELECT = "-Select-";
+
+
+  // FONT ---
+  static const double FONT_SIZE_BIG_TEXT = 20;
+  static const double FONT_SIZE_NORMAL_TEXT = 16;
+  static const double FONT_SIZE_SMALL_TEXT = 12;
 }

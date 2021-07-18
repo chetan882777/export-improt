@@ -1,5 +1,6 @@
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/modules/register/RegisterViewModel.dart';
+import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,6 +91,36 @@ class RegisterScreen extends StatelessWidget {
                             ),
                           ),
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Role",
+                              style: TextStyle(
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        matForms.borderedDropDown(
+                            borderColor: Theme.of(context).primaryColor,
+                            items: model.roleNames,
+                            displayValue: model.selectedRole,
+                            menuColor: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.normal,
+                            borderRadius: 8,
+                            player: model.updateSelectedDepartment),
+                        SizedBox(
+                          height: 16,
+                        ),
                         matForms.matEditable(
                           variable: "firstName",
                           displayText: "First Name",
@@ -140,18 +171,9 @@ class RegisterScreen extends StatelessWidget {
                         SizedBox(
                           height: 10,
                         ),
-                        matForms.borderedDropDown(
-                            borderColor: Theme.of(context).primaryColor,
-                            items: model.roleNames,
-                            displayValue: model.selectedRole,
-                            menuColor: Theme.of(context).primaryColor,
-                            player: model.updateSelectedDepartment),
-                        SizedBox(
-                          height: 10,
-                        ),
                         SizedBox(
                           width: double.infinity,
-                          height: 70.0,
+                          height: 64.0,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
                             child: matForms.elevatedBtn(

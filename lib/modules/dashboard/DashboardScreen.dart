@@ -1,6 +1,7 @@
 import 'package:agro_worlds/modules/addClient/AddClient.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
+import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -109,13 +110,13 @@ class DashboardScreen extends StatelessWidget {
                                 child: Text(
                                   "Add a prospect",
                                   style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: Constants.FONT_SIZE_BIG_TEXT,
                                       color: Colors.white,
                                       fontWeight: FontWeight.normal),
                                 ),
                               ),
                               IconButton(
-                                iconSize: 36.0,
+                                iconSize: 24.0,
                                 icon:
                                     Icon(Icons.person_add, color: Colors.white),
                                 onPressed: () => Navigator.pushNamed(
@@ -196,7 +197,7 @@ class DashboardScreen extends StatelessWidget {
             Icon(
               icon,
               color: Color(0xff946d20),
-              size: 32,
+              size: 24,
             ),
             Expanded(
               child: Padding(
@@ -204,7 +205,7 @@ class DashboardScreen extends StatelessWidget {
                 child: Text(
                   displayText,
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                     color: Colors.black,
                   ),
                 ),
@@ -256,7 +257,7 @@ class DashboardScreen extends StatelessWidget {
                 smallText,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: Constants.FONT_SIZE_SMALL_TEXT,
                     fontWeight: FontWeight.bold),
               ),
             ],

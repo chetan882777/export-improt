@@ -11,17 +11,17 @@ import 'LoginViewModel.dart';
 class LoginScreen extends StatelessWidget {
   static final String ROUTE_NAME = "/login";
 
-
   final phoneNumberController = TextEditingController();
   late final BuildContext _ctx;
 
   Future<void> _login(LoginViewModel model) async {
     phoneNumberController.text = "9009193663"; // for testing purpose
-    if(phoneNumberController.text.isEmpty) {
+    if (phoneNumberController.text.isEmpty) {
       showToast('Enter Number Please');
       return;
     }
-    if(phoneNumberController.text.length < 10 || phoneNumberController.text.length > 15) {
+    if (phoneNumberController.text.length < 10 ||
+        phoneNumberController.text.length > 15) {
       showToast('Invalid Number');
       return;
     }
@@ -58,10 +58,11 @@ class LoginScreen extends StatelessWidget {
                     padding: EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        buildTextField("text", "Phone number", phoneNumberController),
+                        buildTextField(
+                            "text", "Phone number", phoneNumberController),
                         SizedBox(
                           width: double.infinity,
-                          height: 70.0,
+                          height: 64.0,
                           child: Consumer(
                             builder: (context, LoginViewModel model, child) =>
                                 Padding(
@@ -73,7 +74,8 @@ class LoginScreen extends StatelessWidget {
                                     textStyle: MaterialStateProperty.all(
                                         TextStyle(
                                             color: Colors.black38,
-                                            fontSize: 20)),
+                                            fontSize: Constants
+                                                .FONT_SIZE_NORMAL_TEXT)),
                                     shape: MaterialStateProperty.all<
                                             RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
@@ -81,17 +83,25 @@ class LoginScreen extends StatelessWidget {
                                                 BorderRadius.circular(12.0)))),
                                 child: progressButton(model.busy),
                                 onPressed: () {
-                                    if (!model.busy) {
-                                      _login(model);
-                                    }
+                                  if (!model.busy) {
+                                    _login(model);
+                                  }
                                 },
                               ),
                             ),
                           ),
                         ),
-                        TextButton(onPressed: () {
-                          Navigator.pushNamed(context, RegisterScreen.ROUTE_NAME);
-                        }, child: Text("Register here", style: TextStyle(color: Colors.black, fontSize: 20),))
+                        TextButton(
+                            onPressed: () {
+                              Navigator.pushNamed(
+                                  context, RegisterScreen.ROUTE_NAME);
+                            },
+                            child: Text(
+                              "Register here",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: Constants.FONT_SIZE_BIG_TEXT),
+                            ))
                       ],
                     ),
                   ),
@@ -116,30 +126,30 @@ class LoginScreen extends StatelessWidget {
   Widget buildTextField(
       String type, String labelText, TextEditingController listener) {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-        child: Consumer(
-          builder: (context, LoginViewModel model, child) => TextField(
-            keyboardType: TextInputType.phone,
-            controller: listener,
-            style: TextStyle(fontSize: 20.0, color: Color(0xff313136)),
-            cursorColor: Theme.of(context).accentColor,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              hintText: labelText,
-              hintStyle: TextStyle(fontSize: 20, color: Colors.grey),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white),
-                borderRadius: BorderRadius.circular(16),
-              ),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      child: Consumer(
+        builder: (context, LoginViewModel model, child) => TextField(
+          keyboardType: TextInputType.phone,
+          controller: listener,
+          style: TextStyle(fontSize: 20.0, color: Color(0xff313136)),
+          cursorColor: Theme.of(context).accentColor,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            hintText: labelText,
+            hintStyle: TextStyle(fontSize: Constants.FONT_SIZE_NORMAL_TEXT, color: Colors.grey),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(16),
             ),
-            obscureText: false,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white),
+              borderRadius: BorderRadius.circular(16),
+            ),
           ),
+          obscureText: false,
         ),
+      ),
     );
   }
 

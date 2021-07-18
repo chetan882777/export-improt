@@ -92,7 +92,8 @@ class AllClients extends StatelessWidget {
                               Text(
                                 "Sort:",
                                 style: TextStyle(
-                                    fontSize: 18, color: Colors.black),
+                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                    color: Colors.black),
                               ),
                               SizedBox(
                                 width: 4,
@@ -182,17 +183,23 @@ class AllClients extends StatelessWidget {
                 ),
                 Text(
                   "Search by name",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(
+                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                      color: Colors.black),
                 ),
                 buildTextField("Enter here ..", searchByNameController),
                 Text(
                   "Search by location",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(
+                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                      color: Colors.black),
                 ),
                 buildTextField("Enter state/city", searchByLocationController),
                 Text(
                   "Search by stage",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(
+                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                      color: Colors.black),
                 ),
                 SizedBox(
                   height: 8,
@@ -224,7 +231,8 @@ class AllClients extends StatelessWidget {
   Widget buildTextField(String labelText, TextEditingController listener) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 8, 0, 14),
-      child: SizedBox( height: 48,
+      child: SizedBox(
+        height: 48,
         child: TextField(
           keyboardType: TextInputType.name,
           controller: listener,
@@ -252,16 +260,16 @@ class AllClients extends StatelessWidget {
         Row(
           children: [
             CircleAvatar(
-              radius: 30,
+              radius: 28,
               backgroundColor: Theme.of(context).primaryColor,
               child: CircleAvatar(
-                radius: 26,
+                radius: 24,
                 backgroundColor: Colors.black,
                 child: Text(
                   "A",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 28,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -280,7 +288,7 @@ class AllClients extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 20,
+                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                     ),
                   ),
                   SizedBox(
@@ -292,7 +300,7 @@ class AllClients extends StatelessWidget {
                     maxLines: 1,
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 14,
+                      fontSize: Constants.FONT_SIZE_SMALL_TEXT,
                     ),
                   ),
                   SizedBox(

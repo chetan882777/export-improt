@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
 
+import '../Constants.dart';
 import 'MATUtils.dart';
 import 'ModifiedLengthLimitingTextInputFormatter.dart';
 
@@ -489,31 +490,39 @@ class MATForms {
       required Color textColor,
       required String displayText,
       required Function player,
+      double fontSize = Constants.FONT_SIZE_NORMAL_TEXT,
       EdgeInsets padding = const EdgeInsets.all(8)}) {
     return ElevatedButton(
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(color),
-            textStyle: MaterialStateProperty.all(
-                TextStyle(color: textColor, fontSize: 20)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0)))),
-        child: Padding(padding: padding, child: Text(displayText)),
+          backgroundColor: MaterialStateProperty.all(color),
+          textStyle: MaterialStateProperty.all(
+            TextStyle(
+              color: textColor,
+              fontSize: fontSize,
+            ),
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          ),
+        ),
+        child: Padding(
+          padding: padding,
+          child: Text(displayText),
+        ),
         onPressed: () {
           player();
         });
   }
 
-  Widget borderedDropDown({
-    required Color borderColor,
-    required List<String> items,
-    required String displayValue,
-    Function(dynamic)? player,
-    Color menuColor = Colors.black,
-    FontWeight fontWeight = FontWeight.bold,
-    double borderRadius = 16,
-    double fontSize = 18
-  }) {
+  Widget borderedDropDown(
+      {required Color borderColor,
+      required List<String> items,
+      required String displayValue,
+      Function(dynamic)? player,
+      Color menuColor = Colors.black,
+      FontWeight fontWeight = FontWeight.bold,
+      double borderRadius = 16,
+      double fontSize = Constants.FONT_SIZE_NORMAL_TEXT}) {
     return Container(
       width: double.infinity,
       decoration: ShapeDecoration(

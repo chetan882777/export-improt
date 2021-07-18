@@ -34,7 +34,7 @@ class AgroWorldsDrawer {
                   Text(
                     "${user.firstName} ${user.lastName}",
                     style: TextStyle(
-                        fontSize: 18,
+                        fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor),
                   ),
@@ -44,7 +44,7 @@ class AgroWorldsDrawer {
                   Text(
                     "${user.userRole}",
                     style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                        TextStyle(fontSize: Constants.FONT_SIZE_NORMAL_TEXT, fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
@@ -96,7 +96,7 @@ class AgroWorldsDrawer {
                 child: Text(
                   displayName,
                   style: TextStyle(
-                      fontWeight: FontWeight.w600, fontSize: 16, color: color),
+                      fontWeight: FontWeight.normal, fontSize: Constants.FONT_SIZE_NORMAL_TEXT, color: color),
                 ),
               ),
               Container(
