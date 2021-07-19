@@ -1,4 +1,3 @@
-import 'package:agro_worlds/modules/addClient/AddClientViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
@@ -8,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 
-class AddClient extends StatelessWidget {
-  static final String ROUTE_NAME = "/AddClient";
+import 'AddProspectViewModel.dart';
+
+class AddProspect extends StatelessWidget {
+  static final String ROUTE_NAME = "/AddProspect";
 
   final GlobalKey<FormBuilderState> dynamicFormKey =
       GlobalKey<FormBuilderState>();
@@ -29,13 +30,13 @@ class AddClient extends StatelessWidget {
         mapper: mapper,
         saveController: saveVariable);
 
-    return ChangeNotifierProvider<AddClientViewModel>(
-      create: (context) => AddClientViewModel(context, matForms),
+    return ChangeNotifierProvider<AddProspectViewModel>(
+      create: (context) => AddProspectViewModel(context, matForms),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text(
-            "Add a Client",
+            "Add a prospect",
             style: TextStyle(color: Colors.black),
           ),
           elevation: 0,
@@ -49,9 +50,9 @@ class AddClient extends StatelessWidget {
         body: Stack(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 32, right: 32, top: 8),
+              padding: EdgeInsets.only(left: 16, right: 16, top: 8),
               child: Consumer(
-                builder: (context, AddClientViewModel model, child) =>
+                builder: (context, AddProspectViewModel model, child) =>
                     SingleChildScrollView(
                   child: FormBuilder(
                     key: dynamicFormKey,
@@ -96,21 +97,24 @@ class AddClient extends StatelessWidget {
                         SizedBox(
                           height: 32,
                         ),
-                        matForms.borderedDropDown(
-                          borderColor: Theme.of(context).primaryColor,
-                          items: model.clientTypes,
-                          displayValue: model.selectedClientType,
-                          player: model.setSelectedClientType,
-                          fontWeight: FontWeight.normal,
-                          borderRadius: 8,
-                          menuColor: Theme.of(context).primaryColor,
-                        ),
                         SizedBox(
-                          height: 16,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 0),
+                            child: Text(
+                              "Business details",
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  fontWeight: FontWeight.w600
+                              ),
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
                         ),
                         matForms.matEditable(
-                          variable: "businessName",
-                          displayText: "Business name",
+                          variable: "companyName",
+                          displayText: "Company name",
                           textInputType: TextInputType.name,
                           player: (val) {
                             model.setName(val);
@@ -118,24 +122,6 @@ class AddClient extends StatelessWidget {
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
                             FormBuilderValidators.max(context, 70),
-                          ]),
-                        ),
-                        matForms.matEditable(
-                          variable: "firstName",
-                          displayText: "First name",
-                          textInputType: TextInputType.name,
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                          ]),
-                        ),
-                        matForms.matEditable(
-                          variable: "lastName",
-                          displayText: "Last name",
-                          textInputType: TextInputType.name,
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
                           ]),
                         ),
                         matForms.matEditable(
@@ -173,102 +159,108 @@ class AddClient extends StatelessWidget {
                             FormBuilderValidators.required(context),
                           ]),
                         ),
-
-                        SizedBox(
-                          height: 10,
+                        matForms.matEditable(
+                          variable: "country",
+                          displayText: "Country",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
+                        matForms.matEditable(
+                          variable: "state",
+                          displayText: "State",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "city",
+                          displayText: "City",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "pincode",
+                          displayText: "Pin code",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 16),
                             child: Text(
-                              "Role",
+                              "Contact Person",
                               style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
                                   fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black),
+                                  fontWeight: FontWeight.w600
+                              ),
+                              textAlign: TextAlign.start,
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
+                        matForms.matEditable(
+                          variable: "contactPersonName",
+                          displayText: "Name",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
                         ),
-                        matForms.borderedDropDown(
-                            borderColor: Theme.of(context).primaryColor,
-                            items: model.rolesNameList,
-                            displayValue: model.selectedRole,
-                            menuColor: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16,
-                            borderRadius: 8,
-                            player: model.setSelectedRole),
-                        SizedBox(
-                          height: 16,
+                        matForms.matEditable(
+                          variable: "contactPersonDesigation",
+                          displayText: "Designation",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
                         ),
-
                         SizedBox(
-                          height: 10,
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 10),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
+                          width: double.infinity,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 16),
                             child: Text(
-                              "State",
+                              "Product details",
                               style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
                                   fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black),
+                                fontWeight: FontWeight.w600
+                              ),
+                              textAlign: TextAlign.start,
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
+                        matForms.matEditable(
+                          variable: "productCategory",
+                          displayText: "Product Category",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
                         ),
-                        matForms.borderedDropDown(
-                            borderColor: Theme.of(context).primaryColor,
-                            items: model.statesNameList,
-                            displayValue: model.selectedState,
-                            menuColor: Theme.of(context).primaryColor,
-                            fontWeight: FontWeight.normal,
-                            fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                            borderRadius: 8,
-                            player: model.setSelectedState),
-                        SizedBox(
-                          height: 16,
+                        matForms.matEditable(
+                          variable: "product",
+                          displayText: "Product",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
                         ),
-                        Offstage(
-                            offstage: !model.isStateSelected,
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      "City",
-                                      style: TextStyle(
-                                          fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                          fontWeight: FontWeight.normal,
-                                          color: Colors.black),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                matForms.borderedDropDown(
-                                  borderColor: Theme.of(context).primaryColor,
-                                  items: model.citiesNameList,
-                                  displayValue: model.selectedCity,
-                                  menuColor: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                  borderRadius: 8,
-                                  player: model.setSelectedCity,
-                                ),
-                              ],
-                            )),
                         SizedBox(
                           height: 10,
                         ),
@@ -299,7 +291,7 @@ class AddClient extends StatelessWidget {
               ),
             ),
             Consumer(
-              builder: (context, AddClientViewModel model, child) =>
+              builder: (context, AddProspectViewModel model, child) =>
                   MATUtils.showLoader(
                 context: context,
                 isLoadingVar: model.busy,

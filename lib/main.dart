@@ -1,5 +1,6 @@
 import 'package:agro_worlds/modules/ClientInfo/ClientProfile.dart';
-import 'package:agro_worlds/modules/addClient/AddClient.dart';
+import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
+import 'package:agro_worlds/modules/addProspect/AddProspectSuccess.dart';
 import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/otp/OtpScreen.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
-import 'modules/addClient/AddClientSuccess.dart';
 import 'modules/login/LoginScreen.dart';
 
 void main() {
@@ -50,8 +50,8 @@ class AgroWorld extends StatelessWidget {
           RegisterScreen.ROUTE_NAME : (ctx) => RegisterScreen(),
           OtpScreen.ROUTE_NAME : (ctx) => OtpScreen(),
           DashboardScreen.ROUTE_NAME: (ctx) => DashboardScreen(),
-          AddClient.ROUTE_NAME: (ctx) => AddClient(),
-          AddClientSuccess.ROUTE_NAME: (ctx) => AddClientSuccess(),
+          AddProspect.ROUTE_NAME: (ctx) => AddProspect(),
+          AddProspectSuccess.ROUTE_NAME: (ctx) => AddProspectSuccess(),
           AllClients.ROUTE_NAME: (ctx) => AllClients(),
           ClientProfile.ROUTE_NAME: (ctx) => ClientProfile(),
         },

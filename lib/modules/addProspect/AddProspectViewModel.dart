@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:agro_worlds/models/Role.dart';
 import 'package:agro_worlds/modules/BaseViewModel.dart';
-import 'package:agro_worlds/modules/addClient/AddClientSuccess.dart';
+import 'package:agro_worlds/modules/addProspect/AddProspectSuccess.dart';
 import 'package:agro_worlds/network/ApiService.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
@@ -10,7 +10,7 @@ import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class AddClientViewModel extends BaseViewModel {
+class AddProspectViewModel extends BaseViewModel {
   bool isNameEntered = false;
   String name;
 
@@ -34,7 +34,7 @@ class AddClientViewModel extends BaseViewModel {
   bool isContactValid = false;
   bool isStateSelected = false;
 
-  AddClientViewModel(BuildContext context, this.matForms)
+  AddProspectViewModel(BuildContext context, this.matForms)
       : clientTypes = [],
         statesList = [],
         statesNameList = [],
@@ -200,7 +200,7 @@ class AddClientViewModel extends BaseViewModel {
       if (result["code"] == "300")
         showToast(result["code"]);
       else if (result["code"] == "200")
-        Navigator.pushReplacementNamed(context, AddClientSuccess.ROUTE_NAME);
+        Navigator.pushReplacementNamed(context, AddProspectSuccess.ROUTE_NAME);
       else
         showToast("Something went Wrong!");
     } else {

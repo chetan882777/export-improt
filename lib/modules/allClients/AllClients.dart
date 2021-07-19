@@ -1,6 +1,5 @@
 import 'package:agro_worlds/modules/ClientInfo/ClientProfile.dart';
-import 'package:agro_worlds/modules/addClient/AddClient.dart';
-import 'package:agro_worlds/modules/addClient/AddClientViewModel.dart';
+import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
 import 'package:agro_worlds/modules/allClients/AllClientsViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/Constants.dart';
@@ -53,7 +52,7 @@ class AllClients extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, AddClient.ROUTE_NAME);
+            Navigator.pushNamed(context, AddProspect.ROUTE_NAME);
           },
           child: Icon(
             Icons.add,

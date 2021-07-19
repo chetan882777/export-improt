@@ -4,8 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-class AddClientSuccess extends StatelessWidget {
-  static final String ROUTE_NAME = "/AddClientSuccess";
+class AddProspectSuccess extends StatelessWidget {
+  static final String ROUTE_NAME = "/AddProspectSuccess";
 
   final GlobalKey<FormBuilderState> dynamicFormKey =
       GlobalKey<FormBuilderState>();
@@ -62,7 +62,7 @@ class AddClientSuccess extends StatelessWidget {
                   ),
                   SizedBox(height: 20,),
                   Text(
-                    "Client has been\nadded successfully",
+                    "Propect has been\nadded successfully",
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 32,

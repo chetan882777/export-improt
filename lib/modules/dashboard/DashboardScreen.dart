@@ -1,4 +1,4 @@
-import 'package:agro_worlds/modules/addClient/AddClient.dart';
+import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/Constants.dart';
@@ -103,7 +103,7 @@ class DashboardScreen extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(12))),
                         child: InkWell(
                           onTap: () => Navigator.pushNamed(
-                              context, AddClient.ROUTE_NAME),
+                              context, AddProspect.ROUTE_NAME),
                           child: Row(
                             children: [
                               Expanded(
@@ -120,7 +120,7 @@ class DashboardScreen extends StatelessWidget {
                                 icon:
                                     Icon(Icons.person_add, color: Colors.white),
                                 onPressed: () => Navigator.pushNamed(
-                                    context, AddClient.ROUTE_NAME),
+                                    context, AddProspect.ROUTE_NAME),
                               ),
                             ],
                           ),
