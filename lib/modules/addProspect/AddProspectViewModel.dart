@@ -37,9 +37,15 @@ class AddProspectViewModel extends BaseViewModel {
   String selectedCity;
 
 
+  List<String> productsCategoryNameList;
+  List<ListItem> productsCategoryList;
+  String selectedProductCategory;
+
+
   List<String> productsNameList;
   List<ListItem> productsList;
-  String selectedProduct;
+  Map<String, bool> selectedProductIds = Map();
+
 
   MATForms matForms;
   bool isContactValid = false;
@@ -56,9 +62,11 @@ class AddProspectViewModel extends BaseViewModel {
         citiesList = [],
         citiesNameList = [Constants.DROPDOWN_NON_SELECT],
         rolesList = [],
+        productsCategoryList = [],
+        productsCategoryNameList = [Constants.DROPDOWN_NON_SELECT],
+        selectedProductCategory = Constants.DROPDOWN_NON_SELECT,
         productsList = [],
-        productsNameList = [Constants.DROPDOWN_NON_SELECT],
-        selectedProduct = Constants.DROPDOWN_NON_SELECT,
+        productsNameList = [],
         rolesNameList = [Constants.DROPDOWN_NON_SELECT],
         selectedRole = Constants.DROPDOWN_NON_SELECT,
         selectedCity = Constants.DROPDOWN_NON_SELECT,
@@ -89,14 +97,14 @@ class AddProspectViewModel extends BaseViewModel {
       countriesNameList.sort();
       selectedCountry = countriesNameList[0];
 
-      productsNameList.clear();
-      productsList = await ApiService.productCategories();
-      productsNameList.add(Constants.DROPDOWN_NON_SELECT);
-      productsList.forEach((element) {
-        productsNameList.add(element.name);
+      productsCategoryNameList.clear();
+      productsCategoryList = await ApiService.productCategories();
+      productsCategoryNameList.add(Constants.DROPDOWN_NON_SELECT);
+      productsCategoryList.forEach((element) {
+        productsCategoryNameList.add(element.name);
       });
-      productsNameList.sort();
-      selectedProduct = productsNameList[0];
+      productsCategoryNameList.sort();
+      selectedProductCategory = productsCategoryNameList[0];
 
 
 
@@ -186,8 +194,8 @@ class AddProspectViewModel extends BaseViewModel {
   }
 
 
-  void setSelectedProduct(dynamic product) async {
-    selectedProduct = product;
+  void setSelectedProductCategory(dynamic product) async {
+    selectedProductCategory = product;
     if(product.toString() != Constants.DROPDOWN_NON_SELECT) {
       setBusy(true);
       await loadProducts(product);
@@ -197,7 +205,27 @@ class AddProspectViewModel extends BaseViewModel {
   }
 
   Future<void> loadProducts(String productType) async {
+    try{
+      ListItem mProduct = productsCategoryList.firstWhere((element) => element.name == productType);
+      productsList = await ApiService.productsList(mProduct.id);
+      productsNameList.clear();
+      productsList.forEach((element) {
+        productsNameList.add(element.name);
+        selectedProductIds.putIfAbsent(element.name, () => false);
+      });
+      productsNameList.sort();
 
+      print(productsNameList);
+    } catch(e) {
+      print("catch $e");
+    }
+  }
+
+  void setSelectedProduct(int index, bool isSelected) {
+    if(selectedProductIds.containsKey(productsNameList[index])) {
+      selectedProductIds[productsNameList[index]] = isSelected;
+      notifyListeners();
+    }
   }
 
   void submit() async {

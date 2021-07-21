@@ -322,25 +322,38 @@ class AddProspect extends StatelessWidget {
                         ),
                         matForms.borderedDropDown(
                           borderColor: Theme.of(context).primaryColor,
-                          items: model.productsNameList,
-                          displayValue: model.selectedProduct,
+                          items: model.productsCategoryNameList,
+                          displayValue: model.selectedProductCategory,
                           menuColor: Theme.of(context).primaryColor,
                           fontWeight: FontWeight.normal,
                           fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                           borderRadius: 8,
-                          player: model.setSelectedProduct,
+                          player: model.setSelectedProductCategory,
                         ),
                         SizedBox(
                           height: 16,
                         ),
-                        matForms.matEditable(
-                          variable: "product",
-                          displayText: "Product",
-                          textInputType: TextInputType.name,
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                          ]),
+                        ListView.builder(
+                          itemCount: model.productsNameList.length,
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (context, int index) {
+                            return Row(children: [
+                              Checkbox(
+                                value: model.selectedProductIds.containsKey(
+                                        model.productsNameList[index])
+                                    ? model.selectedProductIds[
+                                        model.productsNameList[index]]
+                                    : false,
+                                onChanged: (val) {
+                                  if(val != null) {
+                                    model.setSelectedProduct(index, val);
+                                  }
+                                },
+                              ),
+                              Text(model.productsNameList[index])
+                            ]);
+                          },
                         ),
                         SizedBox(
                           height: 10,
