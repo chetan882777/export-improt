@@ -5,6 +5,7 @@ import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/otp/OtpScreen.dart';
 import 'package:agro_worlds/modules/register/RegisterScreen.dart';
+import 'package:agro_worlds/modules/remark/AddRemark.dart';
 import 'package:agro_worlds/providers/ApplicationApiProvider.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/MatKeys.dart';
@@ -54,6 +55,7 @@ class AgroWorld extends StatelessWidget {
           AddProspectSuccess.ROUTE_NAME: (ctx) => AddProspectSuccess(),
           AllClients.ROUTE_NAME: (ctx) => AllClients(),
           ClientProfile.ROUTE_NAME: (ctx) => ClientProfile(),
+          AddRemark.ROUTE_NAME: (ctx) => AddRemark(),
         },
       ),
     );

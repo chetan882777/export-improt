@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/remark/AddRemark.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +30,9 @@ class ClientProfileActionsTab extends StatelessWidget {
             belowClickWidgets(
               context: context,
               displayText: "Add a remark",
-              player: () {},
+              player: () {
+                Navigator.pushNamed(context, AddRemark.ROUTE_NAME);
+              },
             ),
             belowClickWidgets(
               context: context,
