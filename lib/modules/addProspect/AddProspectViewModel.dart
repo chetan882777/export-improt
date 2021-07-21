@@ -149,6 +149,7 @@ class AddProspectViewModel extends BaseViewModel {
       ListItem mCountry = countriesList.firstWhere((element) => element.name == country);
       statesList = await ApiService.statesList(mCountry.id);
       statesNameList.clear();
+      statesNameList.add(Constants.DROPDOWN_NON_SELECT);
       statesList.forEach((element) {
         statesNameList.add(element.name);
       });
@@ -178,6 +179,7 @@ class AddProspectViewModel extends BaseViewModel {
       ListItem mState = statesList.firstWhere((element) => element.name == state);
       citiesList = await ApiService.citiesList(mState.id);
       citiesNameList.clear();
+      citiesNameList.add(Constants.DROPDOWN_NON_SELECT);
       citiesList.forEach((element) {
         citiesNameList.add(element.name);
       });
@@ -233,12 +235,20 @@ class AddProspectViewModel extends BaseViewModel {
       showToast("Enter valid Contact");
       return;
     }
-    if(selectedRole == Constants.DROPDOWN_NON_SELECT) {
-      showToast("Select a role");
+    if(selectedCountry == Constants.DROPDOWN_NON_SELECT) {
+      showToast("Select a country");
       return;
     }
     if(selectedState == Constants.DROPDOWN_NON_SELECT) {
       showToast("Select a state");
+      return;
+    }
+    if(selectedCity == Constants.DROPDOWN_NON_SELECT) {
+      showToast("Select a city");
+      return;
+    }
+    if(selectedProductCategory == Constants.DROPDOWN_NON_SELECT) {
+      showToast("Select a product category");
       return;
     }
     if (matForms.dynamicFormKey.currentState != null) {
@@ -249,23 +259,35 @@ class AddProspectViewModel extends BaseViewModel {
         formData.forEach((key, value) {
           reqData[key] = value;
         });
-        reqData.putIfAbsent("clientType", () {
-          return clientTypes
-              .firstWhere((element) => element == selectedClientType);
-        });
         String? id = await SharedPrefUtils.getUserId();
         reqData.putIfAbsent("id", () => id);
 
-        ListItem mRole = rolesList.firstWhere((element) => element.name == selectedRole);
+        ListItem mCountry = countriesList.firstWhere((element) => element.name == selectedCountry);
         ListItem mState = statesList.firstWhere((element) => element.name == selectedState);
         ListItem mCity = citiesList.firstWhere((element) => element.name == selectedCity);
+        ListItem mProductCategory = productsCategoryList.firstWhere((element) => element.name == selectedProductCategory);
 
+        reqData.putIfAbsent("country", () => mCountry.id);
         reqData.putIfAbsent("state", () => mState.id);
         reqData.putIfAbsent("city", () => mCity.id);
-        reqData.putIfAbsent("role", () => mRole.id);
+        reqData.putIfAbsent("productCategory", () => mProductCategory.id);
 
+        List<String> mSelectedProductIds = [];
+        selectedProductIds.forEach((key, value) {
+          if(value) {
+            var thisProduct = productsList.firstWhere((element) => key == element.name);
+            mSelectedProductIds.add(thisProduct.id);
+          }
+        });
+
+        if(mSelectedProductIds.isNotEmpty) {
+          reqData.putIfAbsent("products", () => mSelectedProductIds);
+        } else {
+          showToast("Select at least one product");
+          setBusy(false);
+          return;
+        }
         print(reqData);
-
         await addClientApiCall(formData);
 
         setBusy(false);

@@ -252,7 +252,30 @@ class AddProspect extends StatelessWidget {
                           textInputType: TextInputType.name,
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "landlineNumber",
+                          displayText: "Landline Number",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "website",
+                          displayText: "Website",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "socialHandles",
+                          displayText: "Social handles",
+                          textInputType: TextInputType.name,
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
                           ]),
                         ),
                         SizedBox(
