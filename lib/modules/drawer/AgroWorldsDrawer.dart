@@ -61,9 +61,7 @@ class AgroWorldsDrawer {
               Navigator.pushNamed(context, AllClients.ROUTE_NAME);
             }),
             drawerMenuItem(displayName: "Meetings"),
-            drawerMenuItem(displayName: "Activity logs"),
             drawerMenuItem(displayName: "Deals"),
-            drawerMenuItem(displayName: "Help"),
             drawerMenuItem(
                 displayName: "Logout",
                 color: Colors.red,

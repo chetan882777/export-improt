@@ -21,6 +21,12 @@ class AddProspectViewModel extends BaseViewModel {
   List<ListItem> rolesList;
   String selectedRole;
 
+
+  List<String> countriesNameList;
+  List<ListItem> countriesList;
+  String selectedCountry;
+
+
   List<String> statesNameList;
   List<ListItem> statesList;
   String selectedState;
@@ -33,18 +39,22 @@ class AddProspectViewModel extends BaseViewModel {
   MATForms matForms;
   bool isContactValid = false;
   bool isStateSelected = false;
+  bool isCountrySelected = false;
 
   AddProspectViewModel(BuildContext context, this.matForms)
       : clientTypes = [],
         statesList = [],
-        statesNameList = [],
+        statesNameList = [Constants.DROPDOWN_NON_SELECT],
+        countriesNameList = [Constants.DROPDOWN_NON_SELECT],
+        countriesList = [],
+        selectedCountry = Constants.DROPDOWN_NON_SELECT,
         citiesList = [],
-        citiesNameList = [],
+        citiesNameList = [Constants.DROPDOWN_NON_SELECT],
         rolesList = [],
-        rolesNameList = [],
-        selectedRole = "",
-        selectedCity = "",
-        selectedState = "",
+        rolesNameList = [Constants.DROPDOWN_NON_SELECT],
+        selectedRole = Constants.DROPDOWN_NON_SELECT,
+        selectedCity = Constants.DROPDOWN_NON_SELECT,
+        selectedState = Constants.DROPDOWN_NON_SELECT,
         selectedClientType = 'Prospect',
         name = "",
         super(context) {
@@ -61,13 +71,16 @@ class AddProspectViewModel extends BaseViewModel {
   Future<void> asyncInit() async {
     try {
       setBusy(true);
-      statesList = await ApiService.statesList();
-      statesNameList.add(Constants.DROPDOWN_NON_SELECT);
-      statesList.forEach((element) {
-        statesNameList.add(element.name);
+
+      countriesNameList.clear();
+
+      countriesList = await ApiService.countriesList();
+      countriesNameList.add(Constants.DROPDOWN_NON_SELECT);
+      countriesList.forEach((element) {
+        countriesNameList.add(element.name);
       });
-      statesNameList.sort();
-      selectedState = statesNameList[0];
+      countriesNameList.sort();
+      selectedCountry = countriesNameList[0];
 
       rolesList = await ApiService.rolesList();
       print(rolesList.length);
@@ -88,6 +101,35 @@ class AddProspectViewModel extends BaseViewModel {
   void setSelectedRole(dynamic role) async {
     selectedRole = role;
     notifyListeners();
+  }
+
+  void setSelectedCountry(dynamic country) async {
+    selectedCountry = country;
+    print("state $country");
+    if(country.toString() == Constants.DROPDOWN_NON_SELECT) {
+      isCountrySelected = false;
+    } else {
+      isCountrySelected = true;
+      setBusy(true);
+      await loadStates(country);
+      setBusy(false);
+    }
+    notifyListeners();
+  }
+
+  Future<void> loadStates(String country) async {
+    try{
+      ListItem mCountry = countriesList.firstWhere((element) => element.name == country);
+      statesList = await ApiService.statesList(mCountry.id);
+      statesNameList.clear();
+      statesList.forEach((element) {
+        statesNameList.add(element.name);
+      });
+      statesNameList.sort();
+      selectedState = statesNameList[0];
+    } catch(e) {
+      print("catch $e");
+    }
   }
 
   void setSelectedState(dynamic state) async {

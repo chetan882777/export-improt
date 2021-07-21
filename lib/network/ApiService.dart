@@ -37,9 +37,18 @@ class ApiService {
       return [];
   }
 
-  static Future<List<ListItem>> statesList() async {
+  static Future<List<ListItem>> countriesList() async {
     var response =
-    await ApiService.dio.post("profile/states");
+    await ApiService.dio.post("profile/countries");
+    if (response.statusCode == 200)
+      return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
+    else
+      return [];
+  }
+
+  static Future<List<ListItem>> statesList(String forCountry) async {
+    var response =
+    await ApiService.dio.post("profile/states?country_id=${int.parse(forCountry)}");
     if (response.statusCode == 200)
       return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
     else

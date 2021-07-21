@@ -104,10 +104,9 @@ class AddProspect extends StatelessWidget {
                             child: Text(
                               "Business details",
                               style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                  fontWeight: FontWeight.w600
-                              ),
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  fontWeight: FontWeight.w600),
                               textAlign: TextAlign.start,
                             ),
                           ),
@@ -159,32 +158,93 @@ class AddProspect extends StatelessWidget {
                             FormBuilderValidators.required(context),
                           ]),
                         ),
-                        matForms.matEditable(
-                          variable: "country",
-                          displayText: "Country",
-                          textInputType: TextInputType.name,
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                          ]),
+                        SizedBox(
+                          height: 10,
                         ),
-                        matForms.matEditable(
-                          variable: "state",
-                          displayText: "State",
-                          textInputType: TextInputType.name,
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                          ]),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Country",
+                              style: TextStyle(
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black),
+                            ),
+                          ),
                         ),
-                        matForms.matEditable(
-                          variable: "city",
-                          displayText: "City",
-                          textInputType: TextInputType.name,
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                          ]),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        matForms.borderedDropDown(
+                            borderColor: Theme.of(context).primaryColor,
+                            items: model.countriesNameList,
+                            displayValue: model.selectedCountry,
+                            menuColor: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                            borderRadius: 8,
+                            player: model.setSelectedCountry),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "State",
+                              style: TextStyle(
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        matForms.borderedDropDown(
+                            borderColor: Theme.of(context).primaryColor,
+                            items: model.statesNameList,
+                            displayValue: model.selectedState,
+                            menuColor: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                            borderRadius: 8,
+                            player: model.setSelectedState),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "City",
+                              style: TextStyle(
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        matForms.borderedDropDown(
+                          borderColor: Theme.of(context).primaryColor,
+                          items: model.citiesNameList,
+                          displayValue: model.selectedCity,
+                          menuColor: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.normal,
+                          fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                          borderRadius: 8,
+                          player: model.setSelectedCity,
+                        ),
+                        SizedBox(
+                          height: 16,
                         ),
                         matForms.matEditable(
                           variable: "pincode",
@@ -204,8 +264,7 @@ class AddProspect extends StatelessWidget {
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                  fontWeight: FontWeight.w600
-                              ),
+                                  fontWeight: FontWeight.w600),
                               textAlign: TextAlign.start,
                             ),
                           ),
@@ -237,8 +296,7 @@ class AddProspect extends StatelessWidget {
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,
                                   fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                fontWeight: FontWeight.w600
-                              ),
+                                  fontWeight: FontWeight.w600),
                               textAlign: TextAlign.start,
                             ),
                           ),
