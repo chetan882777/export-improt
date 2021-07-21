@@ -36,6 +36,11 @@ class AddProspectViewModel extends BaseViewModel {
   List<ListItem> citiesList;
   String selectedCity;
 
+
+  List<String> productsNameList;
+  List<ListItem> productsList;
+  String selectedProduct;
+
   MATForms matForms;
   bool isContactValid = false;
   bool isStateSelected = false;
@@ -51,6 +56,9 @@ class AddProspectViewModel extends BaseViewModel {
         citiesList = [],
         citiesNameList = [Constants.DROPDOWN_NON_SELECT],
         rolesList = [],
+        productsList = [],
+        productsNameList = [Constants.DROPDOWN_NON_SELECT],
+        selectedProduct = Constants.DROPDOWN_NON_SELECT,
         rolesNameList = [Constants.DROPDOWN_NON_SELECT],
         selectedRole = Constants.DROPDOWN_NON_SELECT,
         selectedCity = Constants.DROPDOWN_NON_SELECT,
@@ -73,7 +81,6 @@ class AddProspectViewModel extends BaseViewModel {
       setBusy(true);
 
       countriesNameList.clear();
-
       countriesList = await ApiService.countriesList();
       countriesNameList.add(Constants.DROPDOWN_NON_SELECT);
       countriesList.forEach((element) {
@@ -81,6 +88,18 @@ class AddProspectViewModel extends BaseViewModel {
       });
       countriesNameList.sort();
       selectedCountry = countriesNameList[0];
+
+      productsNameList.clear();
+      productsList = await ApiService.productCategories();
+      productsNameList.add(Constants.DROPDOWN_NON_SELECT);
+      productsList.forEach((element) {
+        productsNameList.add(element.name);
+      });
+      productsNameList.sort();
+      selectedProduct = productsNameList[0];
+
+
+
 
       rolesList = await ApiService.rolesList();
       print(rolesList.length);
@@ -164,6 +183,21 @@ class AddProspectViewModel extends BaseViewModel {
   void setSelectedCity(dynamic city) async {
     selectedCity = city;
     notifyListeners();
+  }
+
+
+  void setSelectedProduct(dynamic product) async {
+    selectedProduct = product;
+    if(product.toString() != Constants.DROPDOWN_NON_SELECT) {
+      setBusy(true);
+      await loadProducts(product);
+      setBusy(false);
+    }
+    notifyListeners();
+  }
+
+  Future<void> loadProducts(String productType) async {
+
   }
 
   void submit() async {

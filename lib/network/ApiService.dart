@@ -66,6 +66,15 @@ class ApiService {
       return [];
   }
 
+  static Future<List<ListItem>> productCategories() async {
+    var response =
+    await ApiService.dio.post("profile/product_categories");
+    print("res ${response.requestOptions.uri}");
+    if (response.statusCode == 200)
+      return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
+    else
+      return [];
+  }
 
   static Future<User> getUser() async {
     var response =

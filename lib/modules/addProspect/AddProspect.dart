@@ -301,14 +301,37 @@ class AddProspect extends StatelessWidget {
                             ),
                           ),
                         ),
-                        matForms.matEditable(
-                          variable: "productCategory",
-                          displayText: "Product Category",
-                          textInputType: TextInputType.name,
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                          ]),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Product Category",
+                              style: TextStyle(
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        matForms.borderedDropDown(
+                          borderColor: Theme.of(context).primaryColor,
+                          items: model.productsNameList,
+                          displayValue: model.selectedProduct,
+                          menuColor: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.normal,
+                          fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                          borderRadius: 8,
+                          player: model.setSelectedProduct,
+                        ),
+                        SizedBox(
+                          height: 16,
                         ),
                         matForms.matEditable(
                           variable: "product",
