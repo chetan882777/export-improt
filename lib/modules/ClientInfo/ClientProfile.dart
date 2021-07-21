@@ -1,5 +1,5 @@
-import 'package:agro_worlds/modules/ClientInfo/ClientProfileContactTab.dart';
-import 'package:agro_worlds/modules/ClientInfo/ClientProfileDealsTab.dart';
+import 'package:agro_worlds/modules/ClientInfo/ClientProfileActionsTab.dart';
+import 'package:agro_worlds/modules/ClientInfo/ClientProfileProfileTab.dart';
 import 'package:agro_worlds/modules/ClientInfo/ClientProfileMeetigsTab.dart';
 import 'package:agro_worlds/modules/ClientInfo/ClientProfileRemarksTab.dart';
 import 'package:agro_worlds/modules/ClientInfo/ClientProfileViewModel.dart';
@@ -34,7 +34,6 @@ class ClientProfile extends StatelessWidget {
         saveController: saveVariable);
 
     final title = 'Client profile';
-
     return Scaffold(
       backgroundColor: Colors.white,
       endDrawer: AgroWorldsDrawer.drawer(context: context),
@@ -97,7 +96,7 @@ class ClientProfile extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.normal,
                                     fontSize: Constants.FONT_SIZE_BIG_TEXT,
                                   ),
                                 ),
@@ -150,23 +149,23 @@ class ClientProfile extends StatelessWidget {
                 SliverPersistentHeader(
                   delegate: _SliverAppBarDelegate(
                     TabBar(
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                      labelStyle: TextStyle(fontWeight: FontWeight.normal),
                       overlayColor: MaterialStateProperty.all(Colors.white),
                       indicatorColor: Theme.of(context).primaryColor,
                       labelColor: Theme.of(context).primaryColor,
                       unselectedLabelColor: Colors.black,
                       tabs: [
                         Tab(
-                          text: "Contact",
+                          text: "Actions",
+                        ),
+                        Tab(
+                          text: "Profile",
                         ),
                         Tab(
                           text: "Remarks",
                         ),
                         Tab(
                           text: "Meetings",
-                        ),
-                        Tab(
-                          text: "Deals",
                         ),
                       ],
                     ),
@@ -177,10 +176,10 @@ class ClientProfile extends StatelessWidget {
             },
             body: TabBarView(
               children: [
-                ClientProfileContactTab(),
+                ClientProfileActionsTab(),
+                ClientProfileProfileTab(),
                 ClientProfileRemarksTab(),
                 ClientProfileMeetingsTab(),
-                ClientProfileDealsTab(),
               ],
             ),
           ),

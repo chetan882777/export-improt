@@ -58,5 +58,64 @@ class MATUtils {
     return items;
   }
 
+  static Map<String, dynamic> getClientDisplayInfo(Map<String, dynamic> element) {
+    Map<String, dynamic> map = Map();
+    map.putIfAbsent("name", () {
+      if (element["companyName"] != null) {
+        return element["companyName"];
+      } else {
+        return "N/A";
+      }
+    });
+    map.putIfAbsent("address", () {
+      String address = "";
+      if (element["address_line1"] != null) address = element["address_line1"];
+      if (element["city"] != null) {
+        if (address.isNotEmpty)
+          address += ", ${element["city"]}";
+        else
+          address = element["city"];
+      }
+      if (element["state"] != null) {
+        if (address.isNotEmpty)
+          address += ", ${element["state"]}";
+        else
+          address = element["state"];
+      }
+      if (element["country"] != null) {
+        if (address.isNotEmpty)
+          address += ", ${element["country"]}";
+        else
+          address = element["country"];
+      }
+      return address;
+    });
+
+    map.putIfAbsent("clientStatus", () {
+      if (element["client_status"] != null) {
+        return element["client_status"];
+      } else {
+        return "N/A";
+      }
+    });
+
+    map.putIfAbsent("contact", () {
+      if (element["contact"] != null) {
+        return element["contact"];
+      } else {
+        return "N/A";
+      }
+    });
+
+    map.putIfAbsent("id", () {
+      if (element["id"] != null) {
+        return element["id"];
+      } else {
+        return "N/A";
+      }
+    });
+
+    return map;
+  }
 
 }

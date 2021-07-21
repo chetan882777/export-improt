@@ -1,4 +1,5 @@
 import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
+import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/Constants.dart';
@@ -47,8 +48,10 @@ class DashboardScreen extends StatelessWidget {
             onPressed: () => SystemNavigator.pop(),
           ),
         ),
-        endDrawer: Consumer(builder: (context, DashboardViewModel model, child) => AgroWorldsDrawer.drawer(
-            context: context),),
+        endDrawer: Consumer(
+          builder: (context, DashboardViewModel model, child) =>
+              AgroWorldsDrawer.drawer(context: context),
+        ),
         body: Stack(
           children: [
             Padding(
@@ -125,12 +128,6 @@ class DashboardScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        // decoration: BoxDecoration(
-                        //   image: DecorationImage(
-                        //     image: AssetImage(""),
-                        //     fit: BoxFit.cover
-                        //   )
-                        // ),
                       ),
                       SizedBox(
                         height: 20,
@@ -138,27 +135,14 @@ class DashboardScreen extends StatelessWidget {
                       belowClickWidgets(
                           context: context,
                           icon: CupertinoIcons.clock,
-                          displayText: "Recent clients"),
-                      Container(
-                        height: 1,
-                        width: double.infinity,
-                        margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        color: Color(0xffd6d6d6),
-                      ),
-                      belowClickWidgets(
-                          context: context,
-                          icon: CupertinoIcons.doc_chart,
-                          displayText: "Activity logs"),
-                      Container(
-                        height: 1,
-                        width: double.infinity,
-                        margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
-                        color: Color(0xffd6d6d6),
-                      ),
+                          displayText: "View clients",
+                          player: () {
+                            Navigator.pushNamed(context, AllClients.ROUTE_NAME);
+                          }),
                       belowClickWidgets(
                           context: context,
                           icon: CupertinoIcons.rectangle_stack_person_crop,
-                          displayText: "Meetings",
+                          displayText: "My Meetings",
                           player: () {
                             print("meetings");
                           }),
@@ -192,31 +176,40 @@ class DashboardScreen extends StatelessWidget {
       child: Container(
         width: double.infinity,
         padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              color: Color(0xff946d20),
-              size: 24,
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(25, 0, 20, 0),
-                child: Text(
-                  displayText,
-                  style: TextStyle(
-                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                    color: Colors.black,
+        child: Column(children: [
+          SizedBox(height: 10,),
+          Row(
+            children: [
+              Icon(
+                icon,
+                color: Color(0xff946d20),
+                size: 24,
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(25, 0, 20, 0),
+                  child: Text(
+                    displayText,
+                    style: TextStyle(
+                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Icon(
-              CupertinoIcons.right_chevron,
-              color: Color(0xff946d20),
-            )
-          ],
-        ),
+              Icon(
+                CupertinoIcons.right_chevron,
+                color: Color(0xff946d20),
+              )
+            ],
+          ),
+          SizedBox(height: 16,),
+          Container(
+            height: 1,
+            width: double.infinity,
+            color: Color(0xffd6d6d6),
+          ),
+        ]),
       ),
     );
   }

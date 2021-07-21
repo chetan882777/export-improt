@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AllClients extends StatelessWidget {
   static final String ROUTE_NAME = "/AllClients";
@@ -125,10 +126,10 @@ class AllClients extends StatelessWidget {
                           Expanded(
                             flex: 1,
                             child: ListView.builder(
-                              itemCount: 15,
+                              itemCount: model.clientsList.length,
                               physics: BouncingScrollPhysics(),
                               itemBuilder: (context, int index) {
-                                return clientListItem(context);
+                                return clientListItem(context, model.clientsList[index], model);
                               },
                             ),
                           )
@@ -251,7 +252,7 @@ class AllClients extends StatelessWidget {
     );
   }
 
-  Widget clientListItem(BuildContext context) {
+  Widget clientListItem(BuildContext context, Map<String, dynamic> data, AllClientsViewModel model) {
     return Column(
       children: [
         SizedBox(
@@ -266,7 +267,7 @@ class AllClients extends StatelessWidget {
                 radius: 24,
                 backgroundColor: Colors.black,
                 child: Text(
-                  "A",
+                  data["name"].toString().substring(0, 1).toUpperCase(),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
@@ -283,7 +284,7 @@ class AllClients extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "N S Enterprises",
+                    data["name"].toString(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -295,7 +296,7 @@ class AllClients extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    "Sunil Grover, Lucknow",
+                    data["address"].toString(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
@@ -307,7 +308,7 @@ class AllClients extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    "Prospect",
+                    data["clientStatus"].toString(),
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 12,
@@ -327,7 +328,13 @@ class AllClients extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              onTap: () {},
+              onTap: () async {
+                if (await canLaunch('tel:${data["contact"]}')) {
+                await launch('tel:${data["contact"]}');
+                } else {
+                  model.showToast("Failed to call ${data["contact"]}");
+                }
+              },
             ),
             SizedBox(
               width: 16,
