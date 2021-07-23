@@ -97,6 +97,17 @@ class ApiService {
       return User.error();
   }
 
+  static Future<Map<String, dynamic>> getClient(String clientId) async {
+    var response =
+    await ApiService.dio.post("profile/get_client", queryParameters: {
+      "clientId" : clientId
+    });
+    if (response.statusCode == 200)
+      return json.decode(response.data);
+    else
+      return {};
+  }
+
 
 
 }

@@ -345,6 +345,7 @@ class AllClients extends StatelessWidget {
                 child: Icon(Icons.chevron_right, color: Colors.white),
               ),
               onTap: () {
+                model.flowDataProvider.currClientId = data["id"];
                 Navigator.pushNamed(context, ClientProfile.ROUTE_NAME);
               },
             )

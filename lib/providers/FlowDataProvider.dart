@@ -6,11 +6,14 @@ class FlowDataProvider {
   late String phone;
   late String id;
   late User user;
+  late String currClientId;
+  late Map<String, dynamic> currClient;
 
   FlowDataProvider() {
     id = NA;
     otp = NA;
     phone = NA;
+    currClientId = NA;
     user = User.error();
   }
 }
