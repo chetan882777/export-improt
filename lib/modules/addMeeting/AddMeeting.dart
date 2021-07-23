@@ -53,70 +53,107 @@ class AddMeeting extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Consumer(
                   builder: (context, AddMeetingViewModel model, child) =>
-                      Column(
-                    children: [
-                      clientInfoWidget(
-                          context,
-                          model.clientDisplayData,
-                          model),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      matForms.matEditable(
-                        variable: "meetingTitle",
-                        displayText: "Meeting title",
-                        validator: FormBuilderValidators.compose([]),
-                      ),
-                      matForms.matDatePicker(
-                        variable: "date",
-                        displayText: "Meeting date",
-                        lastDate: DateTime.now(),
-                        player: (val) {},
-                        validator: FormBuilderValidators.compose([]),
-                      ),
-                      matForms.matDatePicker(
-                        variable: "time",
-                        displayText: "Meeting time",
-                        inputType: InputType.time,
-                        lastDate: DateTime.now(),
-                        player: (val) {},
-                        validator: FormBuilderValidators.compose([]),
-                      ),
-                      matForms.matEditable(
-                        variable: "place",
-                        displayText: "Meeting place",
-                        validator: FormBuilderValidators.compose([]),
-                      ),
-                      matForms.matEditable(
-                        variable: "address",
-                        displayText: "Meeting address",
-                        validator: FormBuilderValidators.compose([]),
-                      ),
-                      matForms.matEditable(
-                        variable: "agenda",
-                        displayText: "Meeting agenda",
-                        validator: FormBuilderValidators.compose([]),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      SizedBox(
-                        height: 48,
-                        width: double.infinity,
-                        child: matForms.elevatedBtn(
-                          color: Theme.of(context).primaryColor,
-                          textColor: Colors.white,
-                          displayText: "Submit",
-                          player: () {
-                            if (dynamicFormKey.currentState!
-                                .saveAndValidate()) {
-                            } else {
-                              model.showToast("Fill up all valid data");
-                            }
-                          },
+                      FormBuilder(
+                    key: dynamicFormKey,
+                    autovalidateMode: AutovalidateMode.disabled,
+                    child: Column(
+                      children: [
+                        clientInfoWidget(
+                            context, model.clientDisplayData, model),
+                        SizedBox(
+                          height: 10,
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Meeting Mode",
+                              style: TextStyle(
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        matForms.borderedDropDown(
+                            borderColor: Theme.of(context).primaryColor,
+                            items: model.meetingModeNameList,
+                            displayValue: model.selectedMeetingMode,
+                            menuColor: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                            borderRadius: 8,
+                            player: model.setSelectedMode),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        matForms.matEditable(
+                          variable: "title",
+                          displayText: "Meeting title",
+                          validator: FormBuilderValidators.compose(
+                              [FormBuilderValidators.required(context)]),
+                        ),
+                        matForms.matDatePicker(
+                          variable: "date",
+                          displayText: "Meeting date",
+                          lastDate: DateTime.now(),
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        matForms.matDatePicker(
+                          variable: "time",
+                          displayText: "Meeting time",
+                          inputType: InputType.time,
+                          lastDate: DateTime.now(),
+                          player: (val) {},
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(context),
+                          ]),
+                        ),
+                        matForms.matEditable(
+                          variable: "place",
+                          displayText: "Meeting place",
+                          validator: FormBuilderValidators.compose([]),
+                        ),
+                        matForms.matEditable(
+                          variable: "address",
+                          displayText: "Meeting address",
+                          validator: FormBuilderValidators.compose([]),
+                        ),
+                        matForms.matEditable(
+                          variable: "agenda",
+                          displayText: "Meeting agenda",
+                          validator: FormBuilderValidators.compose([]),
+                        ),
+                        SizedBox(
+                          height: 16,
+                        ),
+                        SizedBox(
+                          height: 48,
+                          width: double.infinity,
+                          child: matForms.elevatedBtn(
+                            color: Theme.of(context).primaryColor,
+                            textColor: Colors.white,
+                            displayText: "Submit",
+                            player: () {
+                              print("submit");
+                              if (dynamicFormKey.currentState!
+                                  .saveAndValidate()) {
+                                model.submit();
+                              } else {
+                                model.showToast("Fill up all valid data");
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

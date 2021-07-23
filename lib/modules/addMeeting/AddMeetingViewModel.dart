@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:agro_worlds/modules/BaseViewModel.dart';
+import 'package:agro_worlds/network/ApiService.dart';
 import 'package:agro_worlds/utils/Constants.dart';
+import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +14,14 @@ class AddMeetingViewModel extends BaseViewModel {
 
   Map<String, dynamic> clientDisplayData = {};
 
-  AddMeetingViewModel(BuildContext context, this.matForms) : super(context) {
+
+  List<String> meetingModeNameList;
+  String selectedMeetingMode;
+
+  AddMeetingViewModel(BuildContext context, this.matForms) :
+        meetingModeNameList = [Constants.DROPDOWN_NON_SELECT, "Voice call", "Video call", "Physical"],
+        selectedMeetingMode = Constants.DROPDOWN_NON_SELECT,
+        super(context) {
     asyncInit();
   }
 
@@ -24,6 +35,63 @@ class AddMeetingViewModel extends BaseViewModel {
     } else {
       clientDisplayData =
           MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
+    }
+  }
+
+  void setSelectedMode(dynamic val) {
+    selectedMeetingMode = val;
+    notifyListeners();
+  }
+
+  Future<void> submit() async {
+    print("Submit CALLED");
+   if(selectedMeetingMode == Constants.DROPDOWN_NON_SELECT) {
+      showToast("Select meeting mode");
+     return;
+   }
+   if(matForms.dynamicFormKey.currentState != null) {
+     print("in");
+     try{
+       setBusy(true);
+       var formData = matForms.dynamicFormKey.currentState!.value;
+       var reqData = Map<String, dynamic>();
+       formData.forEach((key, value) {
+         reqData[key] = value;
+       });
+       String? id = await SharedPrefUtils.getUserId();
+       reqData.putIfAbsent("userId", () => id);
+       reqData.putIfAbsent("clientId", () => flowDataProvider.currClient["id"]);
+       reqData.putIfAbsent("mode", () => selectedMeetingMode);
+
+       await addMeetingApiCall(reqData);
+       setBusy(false);
+
+     } catch(e) {
+       showToast("Something went Wrong!");
+       setBusy(false);
+     }
+   }
+  }
+
+
+  Future<void> addMeetingApiCall(Map<String, dynamic> formData) async {
+    var response = await ApiService.dio.post("profile/add_meeting", queryParameters: formData);
+
+    print(response.requestOptions.uri);
+    if (response.statusCode == 200) {
+      var result = json.decode(response.data);
+      if (result["code"] == "300")
+        showToast(result["message"]);
+      else if (result["code"] == "200")
+        MATUtils.showAlertDialog(
+          "Added meeting with ${clientDisplayData["name"]}", context, () {
+        Navigator.pop(context);
+        Navigator.pop(context);
+      });
+      else
+        showToast("Something went Wrong!");
+    } else {
+      showToast("Something went Wrong!");
     }
   }
 }
