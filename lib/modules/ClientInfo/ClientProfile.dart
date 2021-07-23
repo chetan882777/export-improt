@@ -222,7 +222,7 @@ class ClientProfile extends StatelessWidget {
                         ClientProfileActionsTab(),
                         ClientProfileProfileTab(),
                         ClientProfileRemarksTab(model),
-                        ClientProfileMeetingsTab(),
+                        ClientProfileMeetingsTab(model),
                       ],
                     ),
                   ),

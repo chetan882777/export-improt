@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class ClientProfileRemarksTab extends StatelessWidget {
 
-  ClientProfileViewModel model;
+  final ClientProfileViewModel model;
   ClientProfileRemarksTab(this.model);
 
   @override
