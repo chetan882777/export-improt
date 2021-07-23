@@ -1,3 +1,5 @@
+import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
+import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:flutter/cupertino.dart';
@@ -80,7 +82,9 @@ class AddProspectSuccess extends StatelessWidget {
                         textColor: Colors.white,
                         displayText: "View profile",
                         padding: EdgeInsets.only(left: 20, right: 20),
-                        player: () {},
+                        player: () {
+                          Navigator.pushNamed(context, AllClients.ROUTE_NAME);
+                        },
                       ),
                     ),
                   ),
@@ -99,7 +103,9 @@ class AddProspectSuccess extends StatelessWidget {
                         displayTextSize: 20,
                         padding: EdgeInsets.only(
                             left: 28, right: 28, top: 4, bottom: 4),
-                        player: () {},
+                        player: () {
+                          Navigator.pushReplacementNamed(context, AddProspect.ROUTE_NAME);
+                        },
                       ),
                     ),
                   ),

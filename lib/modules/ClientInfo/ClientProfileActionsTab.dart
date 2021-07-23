@@ -1,3 +1,4 @@
+import 'package:agro_worlds/modules/addMeeting/AddMeeting.dart';
 import 'package:agro_worlds/modules/remark/AddRemark.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,7 +38,9 @@ class ClientProfileActionsTab extends StatelessWidget {
             belowClickWidgets(
               context: context,
               displayText: "Add a meeting",
-              player: () {},
+              player: () {
+                Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
+              },
             ),
           ],
         ),

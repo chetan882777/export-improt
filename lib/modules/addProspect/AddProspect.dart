@@ -255,7 +255,7 @@ class AddProspect extends StatelessWidget {
                           ]),
                         ),
                         matForms.matEditable(
-                          variable: "landlineNumber",
+                          variable: "landLineNumber",
                           displayText: "Landline Number",
                           textInputType: TextInputType.name,
                           player: (val) {},
@@ -302,7 +302,7 @@ class AddProspect extends StatelessWidget {
                           ]),
                         ),
                         matForms.matEditable(
-                          variable: "contactPersonDesigation",
+                          variable: "contactPersonDesignation",
                           displayText: "Designation",
                           textInputType: TextInputType.name,
                           player: (val) {},

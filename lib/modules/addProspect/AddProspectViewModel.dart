@@ -21,31 +21,25 @@ class AddProspectViewModel extends BaseViewModel {
   List<ListItem> rolesList;
   String selectedRole;
 
-
   List<String> countriesNameList;
   List<ListItem> countriesList;
   String selectedCountry;
-
 
   List<String> statesNameList;
   List<ListItem> statesList;
   String selectedState;
 
-
   List<String> citiesNameList;
   List<ListItem> citiesList;
   String selectedCity;
-
 
   List<String> productsCategoryNameList;
   List<ListItem> productsCategoryList;
   String selectedProductCategory;
 
-
   List<String> productsNameList;
   List<ListItem> productsList;
   Map<String, bool> selectedProductIds = Map();
-
 
   MATForms matForms;
   bool isContactValid = false;
@@ -106,15 +100,13 @@ class AddProspectViewModel extends BaseViewModel {
       productsCategoryNameList.sort();
       selectedProductCategory = productsCategoryNameList[0];
 
-
-
-
       rolesList = await ApiService.rolesList();
       print(rolesList.length);
       rolesNameList.add(Constants.DROPDOWN_NON_SELECT);
       rolesList.forEach((element) {
         print(element.name);
-        if(element.name.toString().toLowerCase().contains("importer") || element.name.toString().toLowerCase().contains("exporter"))
+        if (element.name.toString().toLowerCase().contains("importer") ||
+            element.name.toString().toLowerCase().contains("exporter"))
           rolesNameList.add(element.name);
       });
       selectedRole = rolesNameList[0];
@@ -133,7 +125,7 @@ class AddProspectViewModel extends BaseViewModel {
   void setSelectedCountry(dynamic country) async {
     selectedCountry = country;
     print("state $country");
-    if(country.toString() == Constants.DROPDOWN_NON_SELECT) {
+    if (country.toString() == Constants.DROPDOWN_NON_SELECT) {
       isCountrySelected = false;
     } else {
       isCountrySelected = true;
@@ -145,8 +137,9 @@ class AddProspectViewModel extends BaseViewModel {
   }
 
   Future<void> loadStates(String country) async {
-    try{
-      ListItem mCountry = countriesList.firstWhere((element) => element.name == country);
+    try {
+      ListItem mCountry =
+          countriesList.firstWhere((element) => element.name == country);
       statesList = await ApiService.statesList(mCountry.id);
       statesNameList.clear();
       statesNameList.add(Constants.DROPDOWN_NON_SELECT);
@@ -155,7 +148,7 @@ class AddProspectViewModel extends BaseViewModel {
       });
       statesNameList.sort();
       selectedState = statesNameList[0];
-    } catch(e) {
+    } catch (e) {
       print("catch $e");
     }
   }
@@ -163,7 +156,7 @@ class AddProspectViewModel extends BaseViewModel {
   void setSelectedState(dynamic state) async {
     selectedState = state;
     print("state $state");
-    if(state.toString() == Constants.DROPDOWN_NON_SELECT) {
+    if (state.toString() == Constants.DROPDOWN_NON_SELECT) {
       isStateSelected = false;
     } else {
       isStateSelected = true;
@@ -175,8 +168,9 @@ class AddProspectViewModel extends BaseViewModel {
   }
 
   Future<void> loadCities(String state) async {
-    try{
-      ListItem mState = statesList.firstWhere((element) => element.name == state);
+    try {
+      ListItem mState =
+          statesList.firstWhere((element) => element.name == state);
       citiesList = await ApiService.citiesList(mState.id);
       citiesNameList.clear();
       citiesNameList.add(Constants.DROPDOWN_NON_SELECT);
@@ -185,7 +179,7 @@ class AddProspectViewModel extends BaseViewModel {
       });
       citiesNameList.sort();
       selectedCity = citiesNameList[0];
-    } catch(e) {
+    } catch (e) {
       print("catch $e");
     }
   }
@@ -195,10 +189,9 @@ class AddProspectViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-
   void setSelectedProductCategory(dynamic product) async {
     selectedProductCategory = product;
-    if(product.toString() != Constants.DROPDOWN_NON_SELECT) {
+    if (product.toString() != Constants.DROPDOWN_NON_SELECT) {
       setBusy(true);
       await loadProducts(product);
       setBusy(false);
@@ -207,8 +200,9 @@ class AddProspectViewModel extends BaseViewModel {
   }
 
   Future<void> loadProducts(String productType) async {
-    try{
-      ListItem mProduct = productsCategoryList.firstWhere((element) => element.name == productType);
+    try {
+      ListItem mProduct = productsCategoryList
+          .firstWhere((element) => element.name == productType);
       productsList = await ApiService.productsList(mProduct.id);
       productsNameList.clear();
       productsList.forEach((element) {
@@ -218,13 +212,13 @@ class AddProspectViewModel extends BaseViewModel {
       productsNameList.sort();
 
       print(productsNameList);
-    } catch(e) {
+    } catch (e) {
       print("catch $e");
     }
   }
 
   void setSelectedProduct(int index, bool isSelected) {
-    if(selectedProductIds.containsKey(productsNameList[index])) {
+    if (selectedProductIds.containsKey(productsNameList[index])) {
       selectedProductIds[productsNameList[index]] = isSelected;
       notifyListeners();
     }
@@ -255,7 +249,7 @@ class AddProspectViewModel extends BaseViewModel {
       try {
         setBusy(true);
         var formData = matForms.dynamicFormKey.currentState!.value;
-        var reqData = Map();
+        var reqData = Map<String, dynamic>();
         formData.forEach((key, value) {
           reqData[key] = value;
         });
@@ -272,11 +266,14 @@ class AddProspectViewModel extends BaseViewModel {
         reqData.putIfAbsent("city", () => mCity.id);
         reqData.putIfAbsent("productCategory", () => mProductCategory.id);
 
-        List<String> mSelectedProductIds = [];
+        String mSelectedProductIds = "";
         selectedProductIds.forEach((key, value) {
           if(value) {
             var thisProduct = productsList.firstWhere((element) => key == element.name);
-            mSelectedProductIds.add(thisProduct.id);
+            if(mSelectedProductIds.isEmpty)
+              mSelectedProductIds = thisProduct.id;
+            else
+              mSelectedProductIds += ","+thisProduct.id;
           }
         });
 
@@ -288,7 +285,7 @@ class AddProspectViewModel extends BaseViewModel {
           return;
         }
         print(reqData);
-        await addClientApiCall(formData);
+        await addClientApiCall(reqData);
 
         setBusy(false);
       } catch (e) {
@@ -318,13 +315,31 @@ class AddProspectViewModel extends BaseViewModel {
   }
 
   Future<void> addClientApiCall(Map<String, dynamic> formData) async {
-    var response = await ApiService.dio
-        .post("profile/add_prospect", queryParameters: formData);
+    var response =
+        await ApiService.dio.post("profile/add_prospect", queryParameters: {
+      "companyName": formData["companyName"],
+      "email": formData["email"],
+      "contact": formData["contact"],
+      "addressLine1": formData["addressLine1"],
+      "pincode": formData["pincode"],
+      "landLineNumber": formData["landLineNumber"],
+      "website": formData["website"],
+      "socialHandles": formData["socialHandles"],
+      "contactPersonName": formData["contactPersonName"],
+      "contactPersonDesignation": formData["contactPersonDesignation"],
+      "id": "" + formData["id"],
+      "country": formData["country"],
+      "state": formData["state"],
+      "city": formData["city"],
+      "productCategory": formData["productCategory"],
+      "products": formData["products"]
+    });
 
+    print(response.requestOptions.uri);
     if (response.statusCode == 200) {
       var result = json.decode(response.data);
       if (result["code"] == "300")
-        showToast(result["code"]);
+        showToast(result["message"]);
       else if (result["code"] == "200")
         Navigator.pushReplacementNamed(context, AddProspectSuccess.ROUTE_NAME);
       else
