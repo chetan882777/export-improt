@@ -1,6 +1,4 @@
-import 'package:agro_worlds/modules/ClientInfo/ClientProfile.dart';
-import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
-import 'package:agro_worlds/modules/allClients/AllClientsViewModel.dart';
+import 'package:agro_worlds/modules/addMeeting/AddMeetingViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
@@ -9,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AddMeeting extends StatelessWidget {
   static final String ROUTE_NAME = "/AddMeeting";
@@ -32,8 +29,8 @@ class AddMeeting extends StatelessWidget {
         mapper: mapper,
         saveController: saveVariable);
 
-    return ChangeNotifierProvider<AllClientsViewModel>(
-      create: (context) => AllClientsViewModel(context, matForms),
+    return ChangeNotifierProvider<AddMeetingViewModel>(
+      create: (context) => AddMeetingViewModel(context, matForms),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -55,17 +52,12 @@ class AddMeeting extends StatelessWidget {
               padding: EdgeInsets.only(left: 16, right: 16, top: 0),
               child: SingleChildScrollView(
                 child: Consumer(
-                  builder: (context, AllClientsViewModel model, child) =>
+                  builder: (context, AddMeetingViewModel model, child) =>
                       Column(
                     children: [
                       clientInfoWidget(
                           context,
-                          {
-                            "name": "N S Enterprises",
-                            "address": "Sunil Grover",
-                            "clientStatus": "Prospect",
-                            "contact": "8827770497"
-                          },
+                          model.clientDisplayData,
                           model),
                       SizedBox(
                         height: 8,
@@ -130,7 +122,7 @@ class AddMeeting extends StatelessWidget {
               ),
             ),
             Consumer(
-              builder: (context, AllClientsViewModel model, child) =>
+              builder: (context, AddMeetingViewModel model, child) =>
                   MATUtils.showLoader(
                 context: context,
                 isLoadingVar: model.busy,
@@ -145,7 +137,7 @@ class AddMeeting extends StatelessWidget {
   }
 
   Widget clientInfoWidget(BuildContext context, Map<String, dynamic> data,
-      AllClientsViewModel model) {
+      AddMeetingViewModel model) {
     return Column(
       children: [
         SizedBox(

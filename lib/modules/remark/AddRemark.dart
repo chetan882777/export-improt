@@ -1,6 +1,4 @@
-import 'package:agro_worlds/modules/ClientInfo/ClientProfile.dart';
-import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
-import 'package:agro_worlds/modules/allClients/AllClientsViewModel.dart';
+import 'package:agro_worlds/modules/remark/AddRemarkViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
@@ -9,7 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import 'AddRemarkViewModel.dart';
 
 class AddRemark extends StatelessWidget {
   static final String ROUTE_NAME = "/AddRemark";
@@ -32,8 +31,8 @@ class AddRemark extends StatelessWidget {
         mapper: mapper,
         saveController: saveVariable);
 
-    return ChangeNotifierProvider<AllClientsViewModel>(
-      create: (context) => AllClientsViewModel(context, matForms),
+    return ChangeNotifierProvider<AddRemarkViewModel>(
+      create: (context) => AddRemarkViewModel(context, matForms),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -54,16 +53,11 @@ class AddRemark extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16, top: 0),
               child: Consumer(
-                builder: (context, AllClientsViewModel model, child) => Column(
+                builder: (context, AddRemarkViewModel model, child) => Column(
                   children: [
                     clientInfoWidget(
                         context,
-                        {
-                          "name": "Cats",
-                          "address": "asdsd, asd",
-                          "clientStatus": "Prospect",
-                          "contact": "8827770497"
-                        },
+                        model.clientDisplayData,
                         model),
                     SizedBox(
                       height: 24,
@@ -132,7 +126,7 @@ class AddRemark extends StatelessWidget {
               ),
             ),
             Consumer(
-              builder: (context, AllClientsViewModel model, child) =>
+              builder: (context, AddRemarkViewModel model, child) =>
                   MATUtils.showLoader(
                 context: context,
                 isLoadingVar: model.busy,
@@ -147,7 +141,7 @@ class AddRemark extends StatelessWidget {
   }
 
   Widget clientInfoWidget(BuildContext context, Map<String, dynamic> data,
-      AllClientsViewModel model) {
+      AddRemarkViewModel model) {
     return Column(
       children: [
         SizedBox(

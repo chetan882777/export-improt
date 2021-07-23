@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ClientProfile extends StatelessWidget {
   static final String ROUTE_NAME = "/ClientProfile";
@@ -67,93 +68,120 @@ class ClientProfile extends StatelessWidget {
                         flexibleSpace: Padding(
                           padding: EdgeInsets.only(
                               top: 64, left: 16, right: 16, bottom: 16),
-                          child: SingleChildScrollView(
-                            child: Container(
+                          child: Consumer(
+                            builder: (context, ClientProfileViewModel model,
+                                    child) =>
+                                SingleChildScrollView(
+                              child: Container(
                                 child: Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 36,
-                                  backgroundColor:
-                                      Theme.of(context).primaryColor,
-                                  child: CircleAvatar(
-                                    radius: 32,
-                                    backgroundColor: Colors.black,
-                                    child: Text(
-                                      "A",
-                                      style: TextStyle(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 36,
+                                      backgroundColor:
+                                          Theme.of(context).primaryColor,
+                                      child: CircleAvatar(
+                                        radius: 32,
+                                        backgroundColor: Colors.black,
+                                        child: Text(
+                                          model.clientDisplayData.isNotEmpty
+                                              ? model.clientDisplayData["name"]
+                                                  .toString()
+                                                  .substring(0, 1)
+                                                  .toUpperCase()
+                                              : "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 36,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 16,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            model.clientDisplayData.isNotEmpty
+                                                ? model
+                                                    .clientDisplayData["name"]
+                                                : "",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize:
+                                                  Constants.FONT_SIZE_BIG_TEXT,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            model.clientDisplayData.isNotEmpty
+                                                ? model.clientDisplayData[
+                                                    "address"]
+                                                : "",
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: Constants
+                                                  .FONT_SIZE_NORMAL_TEXT,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4,
+                                          ),
+                                          Text(
+                                            model.clientDisplayData.isNotEmpty
+                                                ? model.clientDisplayData[
+                                                    "clientStatus"]
+                                                : "",
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: Constants
+                                                    .FONT_SIZE_SMALL_TEXT,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    InkWell(
+                                      child: CircleAvatar(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        child: Icon(
+                                          Icons.call,
                                           color: Colors.white,
-                                          fontSize: 36,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "N S Enterprises",
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.normal,
-                                          fontSize:
-                                              Constants.FONT_SIZE_BIG_TEXT,
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        "Sunil Grover, Lucknow",
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize:
-                                              Constants.FONT_SIZE_NORMAL_TEXT,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Text(
-                                        "Prospect",
-                                        style: TextStyle(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            fontSize:
-                                                Constants.FONT_SIZE_SMALL_TEXT,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                                InkWell(
-                                  child: CircleAvatar(
-                                    backgroundColor:
-                                        Theme.of(context).primaryColor,
-                                    child: Icon(
-                                      Icons.call,
-                                      color: Colors.white,
+                                      onTap: () async {
+                                        if (await canLaunch(
+                                            'tel:${model.clientDisplayData["contact"]}'))
+                                          await launch(
+                                              'tel:${model.clientDisplayData["contact"]}');
+                                        else
+                                          model.showToast(
+                                              "Failed to call ${model.clientDisplayData["contact"]}");
+                                      },
                                     ),
-                                  ),
-                                  onTap: () {},
+                                    SizedBox(
+                                      width: 16,
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  width: 16,
-                                ),
-                              ],
-                            )),
+                              ),
+                            ),
                           ),
                         ),
                       ),

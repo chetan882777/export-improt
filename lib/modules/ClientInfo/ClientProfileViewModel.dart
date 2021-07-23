@@ -9,6 +9,8 @@ import 'package:flutter/src/widgets/framework.dart';
 class ClientProfileViewModel extends BaseViewModel {
   MATForms matForms;
 
+  Map<String, dynamic> clientDisplayData = {};
+
   ClientProfileViewModel(BuildContext context, this.matForms) : super(context) {
     asyncInit();
   }
@@ -28,6 +30,7 @@ class ClientProfileViewModel extends BaseViewModel {
         if(client["code"] == "200") {
           flowDataProvider.currClient = client["data"];
           print("flow => ${flowDataProvider.currClient}");
+          clientDisplayData = MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
         } else if(client["code"] == "300"){
           showToast(client["message"]);
         } else {
