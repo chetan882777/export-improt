@@ -13,6 +13,8 @@ import 'AddRemarkViewModel.dart';
 class AddRemark extends StatelessWidget {
   static final String ROUTE_NAME = "/AddRemark";
 
+  final remarkInputController = TextEditingController();
+
   final GlobalKey<FormBuilderState> dynamicFormKey =
       GlobalKey<FormBuilderState>();
   final Map<String, TextEditingController> mapper = Map();
@@ -53,75 +55,76 @@ class AddRemark extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16, top: 0),
               child: Consumer(
-                builder: (context, AddRemarkViewModel model, child) => Column(
-                  children: [
-                    clientInfoWidget(
-                        context,
-                        model.clientDisplayData,
-                        model),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 16),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Remark",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                              fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                              color: Color(0xff9a9b9f)
-                          ),
-                        ),
-                      ),),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16, bottom: 16),
-                      child: Container(
-                        child: TextField(
-                          keyboardType: TextInputType.phone,
-                          maxLines: 5,
-                          style: TextStyle(
-                              fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                              color: Color(0xff313136)),
-                          cursorColor: Theme.of(context).accentColor,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: const Color(0xffebecec),
-                            hintText: "Type here ..",
-                            hintStyle: TextStyle(
+                builder: (context, AddRemarkViewModel model, child) =>
+                    SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      clientInfoWidget(context, model.clientDisplayData, model),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 16),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Remark",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
                                 fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                color: Colors.grey),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
+                                color: Color(0xff9a9b9f)),
                           ),
-                          obscureText: false,
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 48,
-                      width: double.infinity,
-                      child: matForms.elevatedBtn(
-                        color: Theme.of(context).primaryColor,
-                        textColor: Colors.white,
-                        displayText: "Submit",
-                        player: () {
-                          if (dynamicFormKey.currentState!
-                              .saveAndValidate()) {
-                          } else {
-                            model.showToast("Fill up all valid data");
-                          }
-                        },
+                      Padding(
+                        padding: EdgeInsets.only(top: 16, bottom: 16),
+                        child: Container(
+                          child: TextField(
+                            controller: remarkInputController,
+                            keyboardType: TextInputType.name,
+                            maxLines: 5,
+                            style: TextStyle(
+                                fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                color: Color(0xff313136)),
+                            cursorColor: Theme.of(context).accentColor,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: const Color(0xffebecec),
+                              hintText: "Type here ..",
+                              hintStyle: TextStyle(
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  color: Colors.grey),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            obscureText: false,
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 48,
+                        width: double.infinity,
+                        child: matForms.elevatedBtn(
+                          color: Theme.of(context).primaryColor,
+                          textColor: Colors.white,
+                          displayText: "Submit",
+                          player: () {
+                            if (remarkInputController.text.isNotEmpty) {
+                              model.submit(remarkInputController.text);
+                            } else {
+                              model.showToast("Fill up all valid data");
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
