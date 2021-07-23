@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import '../Constants.dart';
+
 class MATUtils {
   static Widget showLoader(
       {required BuildContext context,
@@ -56,6 +58,35 @@ class MATUtils {
       ));
     }
     return items;
+  }
+
+  static Widget elevatedBtn(
+      {required Color color,
+        required Color textColor,
+        required String displayText,
+        required Function player,
+        double fontSize = Constants.FONT_SIZE_NORMAL_TEXT,
+        EdgeInsets padding = const EdgeInsets.all(8)}) {
+    return ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(color),
+          textStyle: MaterialStateProperty.all(
+            TextStyle(
+              color: textColor,
+              fontSize: fontSize,
+            ),
+          ),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+          ),
+        ),
+        child: Padding(
+          padding: padding,
+          child: Text(displayText),
+        ),
+        onPressed: () {
+          player();
+        });
   }
 
   static Map<String, dynamic> getClientDisplayInfo(Map<String, dynamic> element) {

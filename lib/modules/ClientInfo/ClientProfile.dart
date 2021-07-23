@@ -215,13 +215,16 @@ class ClientProfile extends StatelessWidget {
                       ),
                     ];
                   },
-                  body: TabBarView(
-                    children: [
-                      ClientProfileActionsTab(),
-                      ClientProfileProfileTab(),
-                      ClientProfileRemarksTab(),
-                      ClientProfileMeetingsTab(),
-                    ],
+                  body: Consumer(
+                    builder: (context, ClientProfileViewModel model, child) =>
+                        TabBarView(
+                      children: [
+                        ClientProfileActionsTab(),
+                        ClientProfileProfileTab(),
+                        ClientProfileRemarksTab(model),
+                        ClientProfileMeetingsTab(),
+                      ],
+                    ),
                   ),
                 ),
               ),
