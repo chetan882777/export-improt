@@ -1,4 +1,5 @@
 import 'package:agro_worlds/modules/addMeeting/AddMeeting.dart';
+import 'package:agro_worlds/modules/meeting/MeetingInfo.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
@@ -97,7 +98,9 @@ class ClientProfileMeetingsTab extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, MeetingInfo.ROUTE_NAME);
+                  },
                 ),
               ],
             ),

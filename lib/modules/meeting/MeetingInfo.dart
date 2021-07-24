@@ -1,4 +1,4 @@
-import 'package:agro_worlds/modules/remark/MeetingInfoViewModel.dart';
+import 'package:agro_worlds/modules/meeting/MeetingInfoViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
@@ -13,10 +13,8 @@ import 'MeetingInfoViewModel.dart';
 class MeetingInfo extends StatelessWidget {
   static final String ROUTE_NAME = "/MeetingInfo";
 
-  final remarkInputController = TextEditingController();
-
   final GlobalKey<FormBuilderState> dynamicFormKey =
-  GlobalKey<FormBuilderState>();
+      GlobalKey<FormBuilderState>();
   final Map<String, TextEditingController> mapper = Map();
 
   void saveVariable(String variable, String data) {
@@ -34,12 +32,12 @@ class MeetingInfo extends StatelessWidget {
         saveController: saveVariable);
 
     return ChangeNotifierProvider<MeetingInfoViewModel>(
-      create: (context) => MeetingInfoViewModel(context, matForms),
+      create: (context) => MeetingInfoViewModel(context),
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text(
-            "Add a remark",
+            "Meeting",
             style: TextStyle(color: Colors.black),
           ),
           elevation: 0,
@@ -57,85 +55,117 @@ class MeetingInfo extends StatelessWidget {
               child: Consumer(
                 builder: (context, MeetingInfoViewModel model, child) =>
                     SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          clientInfoWidget(context, model.clientDisplayData, model),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 16),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Remark",
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                    color: Color(0xff9a9b9f)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 16, bottom: 16),
-                            child: Container(
-                              child: TextField(
-                                controller: remarkInputController,
-                                keyboardType: TextInputType.name,
-                                maxLines: 5,
-                                style: TextStyle(
-                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                    color: Color(0xff313136)),
-                                cursorColor: Theme.of(context).accentColor,
-                                decoration: InputDecoration(
-                                  filled: true,
-                                  fillColor: const Color(0xffebecec),
-                                  hintText: "Type here ..",
-                                  hintStyle: TextStyle(
-                                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                      color: Colors.grey),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                                obscureText: false,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 48,
-                            width: double.infinity,
-                            child: matForms.elevatedBtn(
-                              color: Theme.of(context).primaryColor,
-                              textColor: Colors.white,
-                              displayText: "Submit",
-                              player: () {
-                                if (remarkInputController.text.isNotEmpty) {
-                                  model.submit(remarkInputController.text);
-                                } else {
-                                  model.showToast("Fill up all valid data");
-                                }
-                              },
-                            ),
-                          ),
-                        ],
+                  child: Column(
+                    children: [
+                      clientInfoWidget(context, model.clientDisplayData, model),
+                      SizedBox(
+                        height: 16,
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Project Discussion",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: Constants.FONT_SIZE_BIG_TEXT,
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Meeting agenda",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: Constants.FONT_SIZE_SMALL_TEXT,
+                              color: Color(0xff9a9b9f)),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Discussing the formalities and price closure.",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                              color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      meetingTimeAddress(context, Icons.calendar_today_outlined,
+                          "25/05/2021 12:00", "(20 hours left)"),
+                      meetingTimeAddress(
+                          context,
+                          Icons.location_on_outlined,
+                          "V R Tower head office",
+                          "30, business park, Airport Road"),
+                      SizedBox(height: 24,),
+                      Container(
+                        height: 0.25,
+                        color: Colors.black38,
+                      ),
+                      SizedBox(height: 24,),
+                      Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Meeting status",
+                            style: TextStyle(
+                                fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      matForms.borderedDropDown(
+                          borderColor: Theme.of(context).primaryColor,
+                          items: ["-Select-"],
+                          displayValue: "-Select-",
+                          menuColor: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.normal,
+                          fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                          borderRadius: 8,
+                          player:(val){}),
+                      SizedBox(height: 24,),
+                      SizedBox(
+                        height: 48,
+                        width: double.infinity,
+                        child: matForms.elevatedBtn(
+                          color: Theme.of(context).primaryColor,
+                          textColor: Colors.white,
+                          displayText: "Update status",
+                          player: () {
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
             Consumer(
               builder: (context, MeetingInfoViewModel model, child) =>
                   MATUtils.showLoader(
-                    context: context,
-                    isLoadingVar: model.busy,
-                    size: 20,
-                    opacity: 0.95,
-                  ),
+                context: context,
+                isLoadingVar: model.busy,
+                size: 20,
+                opacity: 0.95,
+              ),
             ),
           ],
         ),
@@ -213,6 +243,49 @@ class MeetingInfo extends StatelessWidget {
         ),
         SizedBox(
           height: 16,
+        ),
+      ],
+    );
+  }
+
+  Widget meetingTimeAddress(BuildContext context, IconData iconData,
+      String primaryText, String secondaryText) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 16,
+        ),
+        Row(
+          children: [
+            Icon(
+              iconData,
+              color: Theme.of(context).primaryColor,
+            ),
+            SizedBox(
+              width: 16,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  primaryText,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      fontSize: Constants.FONT_SIZE_BIG_TEXT,
+                      color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  secondaryText,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                      color: Color(0xff9a9b9f)),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ],
         ),
       ],
     );

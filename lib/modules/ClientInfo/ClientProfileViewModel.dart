@@ -63,7 +63,11 @@ class ClientProfileViewModel extends BaseViewModel {
       print(data);
       if(data["code"] == "200") {
         remarksList = data["data"];
-        remarksList.sort((a, b) => DateTime.parse(b["date_time"].toString()).compareTo(DateTime.parse(a["date_time"].toString())));
+        try {
+          remarksList.sort((a, b) =>
+              DateTime.parse(b["date_time"].toString()).compareTo(
+                  DateTime.parse(a["date_time"].toString())));
+        }catch(e) {}
       } else if(data["code"] == "300"){
         if(!data["message"].toString().toLowerCase().contains("result")) {
           showToast(data["message"]);
@@ -85,7 +89,12 @@ class ClientProfileViewModel extends BaseViewModel {
       print(data);
       if(data["code"] == "200") {
         meetingsList = data["data"];
-        meetingsList.sort((a, b) => DateTime.parse(b["date"].toString()).compareTo(DateTime.parse(a["date"].toString())));
+        try {
+          meetingsList.sort((a, b) =>
+              DateTime.parse(b["date"].toString()).compareTo(
+                  DateTime.parse(a["date"].toString())));
+        } catch(e) {
+        }
       } else if(data["code"] == "300"){
         if(!data["message"].toString().toLowerCase().contains("result")) {
           showToast(data["message"]);

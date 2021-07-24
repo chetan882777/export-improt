@@ -4,6 +4,7 @@ import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
 import 'package:agro_worlds/modules/addProspect/AddProspectSuccess.dart';
 import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
+import 'package:agro_worlds/modules/meeting/MeetingInfo.dart';
 import 'package:agro_worlds/modules/otp/OtpScreen.dart';
 import 'package:agro_worlds/modules/register/RegisterScreen.dart';
 import 'package:agro_worlds/modules/remark/AddRemark.dart';
@@ -58,6 +59,7 @@ class AgroWorld extends StatelessWidget {
           ClientProfile.ROUTE_NAME: (ctx) => ClientProfile(),
           AddRemark.ROUTE_NAME: (ctx) => AddRemark(),
           AddMeeting.ROUTE_NAME: (ctx) => AddMeeting(),
+          MeetingInfo.ROUTE_NAME: (ctx) => MeetingInfo(),
         },
       ),
     );
