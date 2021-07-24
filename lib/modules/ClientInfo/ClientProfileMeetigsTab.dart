@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'ClientProfileViewModel.dart';
 
 class ClientProfileMeetingsTab extends StatelessWidget {
-
   final ClientProfileViewModel model;
+
   ClientProfileMeetingsTab(this.model);
 
   @override
@@ -23,7 +23,7 @@ class ClientProfileMeetingsTab extends StatelessWidget {
               color: Colors.black38,
             ),
             Padding(
-              padding: EdgeInsets.only( left: 16, top: 16, bottom: 8, right: 16),
+              padding: EdgeInsets.only(left: 16, top: 16, bottom: 8, right: 16),
               child: MATUtils.elevatedBtn(
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
@@ -33,15 +33,11 @@ class ClientProfileMeetingsTab extends StatelessWidget {
                   }),
             ),
             ListView.builder(
-              itemCount: 4,
+              itemCount: model.meetingsList.length,
               shrinkWrap: true,
               physics: BouncingScrollPhysics(),
               itemBuilder: (context, int index) {
-                return remarkListItem(context, {
-                  "title" : "this is title",
-                  "status" : "Scheduled",
-                  "date" : "31-May-2021"
-                });
+                return remarkListItem(context, model.meetingsList[index]);
               },
             ),
           ],
@@ -53,36 +49,40 @@ class ClientProfileMeetingsTab extends StatelessWidget {
   Widget remarkListItem(BuildContext context, Map<String, dynamic> data) {
     return Container(
       child: Padding(
-        padding: EdgeInsets.only( left: 16, top: 8, bottom: 16, right: 16),
+        padding: EdgeInsets.only(left: 24, top: 12, bottom: 12, right: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Expanded(child: Column(
+                Expanded(
+                    child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      data["title"],
+                      data["title"].toString(),
                       style: TextStyle(
                         fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                       ),
                     ),
-                    SizedBox(height: 8,),
+                    SizedBox(
+                      height: 8,
+                    ),
                     Row(
                       children: [
                         Text(
-                          data["status"],
+                          "Scheduled",
                           style: TextStyle(
                               fontSize: Constants.FONT_SIZE_SMALL_TEXT,
-                              color: Theme.of(context).primaryColor
-                          ),
+                              color: Theme.of(context).primaryColor),
                         ),
-                        SizedBox(width: 48,),
+                        SizedBox(
+                          width: 48,
+                        ),
                         Text(
-                          data["date"],
+                          data["date"].toString().substring(0, 10),
                           style: TextStyle(
-                              fontSize: Constants.FONT_SIZE_SMALL_TEXT,
+                            fontSize: Constants.FONT_SIZE_SMALL_TEXT,
                           ),
                         ),
                       ],
@@ -97,13 +97,13 @@ class ClientProfileMeetingsTab extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  onTap: () {
-
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
-            SizedBox(height: 16,),
+            SizedBox(
+              height: 16,
+            ),
             Container(
               height: 0.25,
               color: Colors.black38,

@@ -14,6 +14,7 @@ class ClientProfileViewModel extends BaseViewModel {
 
   Map<String, dynamic> clientDisplayData = {};
   List<dynamic> remarksList = [];
+  List<dynamic> meetingsList = [];
 
   ClientProfileViewModel(BuildContext context, this.matForms) : super(context) {
     asyncInit();
@@ -30,6 +31,7 @@ class ClientProfileViewModel extends BaseViewModel {
       setBusy(true);
       await getClientData();
       await getRemarksData();
+      await getMeetingsData();
       setBusy(false);
     }
   }
@@ -40,10 +42,10 @@ class ClientProfileViewModel extends BaseViewModel {
     if(client.isNotEmpty) {
       if(client["code"] == "200") {
         flowDataProvider.currClient = client["data"];
-        print("flow => ${flowDataProvider.currClient}");
         clientDisplayData = MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
       } else if(client["code"] == "300"){
         showToast(client["message"]);
+
       } else {
         showToast("Something went Wrong!");
       }
@@ -61,8 +63,33 @@ class ClientProfileViewModel extends BaseViewModel {
       print(data);
       if(data["code"] == "200") {
         remarksList = data["data"];
+        remarksList.sort((a, b) => DateTime.parse(b["date_time"].toString()).compareTo(DateTime.parse(a["date_time"].toString())));
       } else if(data["code"] == "300"){
-        showToast(data["message"]);
+        if(!data["message"].toString().toLowerCase().contains("result")) {
+          showToast(data["message"]);
+        }
+      } else {
+        showToast("Something went Wrong!");
+      }
+    }
+  }
+
+  Future<void> getMeetingsData() async {
+    var id = await SharedPrefUtils.getUserId();
+    var response = await ApiService.dio.post("profile/get_client_meetings", queryParameters: {
+      "userId" : id,
+      "clientId" : flowDataProvider.currClientId
+    });
+    if(response.statusCode == 200) {
+      var data = json.decode(response.data);
+      print(data);
+      if(data["code"] == "200") {
+        meetingsList = data["data"];
+        meetingsList.sort((a, b) => DateTime.parse(b["date"].toString()).compareTo(DateTime.parse(a["date"].toString())));
+      } else if(data["code"] == "300"){
+        if(!data["message"].toString().toLowerCase().contains("result")) {
+          showToast(data["message"]);
+        }
       } else {
         showToast("Something went Wrong!");
       }

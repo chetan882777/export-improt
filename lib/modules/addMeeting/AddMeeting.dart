@@ -100,7 +100,7 @@ class AddMeeting extends StatelessWidget {
                         matForms.matDatePicker(
                           variable: "date",
                           displayText: "Meeting date",
-                          lastDate: DateTime.now(),
+                          startDate: DateTime.now(),
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
@@ -110,7 +110,7 @@ class AddMeeting extends StatelessWidget {
                           variable: "time",
                           displayText: "Meeting time",
                           inputType: InputType.time,
-                          lastDate: DateTime.now(),
+                          startDate: DateTime.now(),
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),

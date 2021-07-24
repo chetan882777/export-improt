@@ -10,9 +10,13 @@ class ClientProfileActionsTab extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child: Padding(
-        padding: EdgeInsets.only(top: 10),
+        padding: EdgeInsets.only(top: 0),
         child: Column(
           children: [
+            Container(
+              height: 0.25,
+              color: Colors.black38,
+            ),
             SizedBox(
               height: 10,
             ),
@@ -56,7 +60,7 @@ class ClientProfileActionsTab extends StatelessWidget {
       onTap: player,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+        padding: EdgeInsets.fromLTRB(24, 5, 24, 5),
         child: Column(children: [
           SizedBox(
             height: 10,
@@ -65,7 +69,7 @@ class ClientProfileActionsTab extends StatelessWidget {
             children: [
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(25, 0, 20, 0),
+                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                   child: Text(
                     displayText,
                     style: TextStyle(
