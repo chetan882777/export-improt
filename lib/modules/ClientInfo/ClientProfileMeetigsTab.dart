@@ -30,6 +30,7 @@ class ClientProfileMeetingsTab extends StatelessWidget {
                   textColor: Colors.white,
                   displayText: "Add a meeting",
                   player: () {
+                    model.flowDataProvider.currMeeting = {};
                     Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
                   }),
             ),
@@ -99,7 +100,8 @@ class ClientProfileMeetingsTab extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    Navigator.pushNamed(context, MeetingInfo.ROUTE_NAME);
+                    model.flowDataProvider.currMeeting = data;
+                    Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
                   },
                 ),
               ],

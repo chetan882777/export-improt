@@ -64,7 +64,7 @@ class MeetingInfo extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Project Discussion",
+                          model.meetingData["title"].toString(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: Constants.FONT_SIZE_BIG_TEXT,
@@ -92,7 +92,9 @@ class MeetingInfo extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Discussing the formalities and price closure.",
+                          model.meetingData["agenda"].toString().isEmpty
+                              ? "N/A"
+                              : model.meetingData["agenda"].toString(),
                           textAlign: TextAlign.start,
                           style: TextStyle(
                               fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
@@ -103,19 +105,26 @@ class MeetingInfo extends StatelessWidget {
                       SizedBox(
                         height: 8,
                       ),
-                      meetingTimeAddress(context, Icons.calendar_today_outlined,
-                          "25/05/2021 12:00", "(20 hours left)"),
+                      meetingTimeAddress(
+                          context,
+                          Icons.calendar_today_outlined,
+                          "${model.meetingData["date"].toString().substring(0, 10)} ${model.meetingData["time"].toString().substring(10, 16)}",
+                          "(20 hours left)"),
                       meetingTimeAddress(
                           context,
                           Icons.location_on_outlined,
                           "V R Tower head office",
                           "30, business park, Airport Road"),
-                      SizedBox(height: 24,),
+                      SizedBox(
+                        height: 24,
+                      ),
                       Container(
                         height: 0.25,
                         color: Colors.black38,
                       ),
-                      SizedBox(height: 24,),
+                      SizedBox(
+                        height: 24,
+                      ),
                       Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: Align(
@@ -140,8 +149,10 @@ class MeetingInfo extends StatelessWidget {
                           fontWeight: FontWeight.normal,
                           fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                           borderRadius: 8,
-                          player:(val){}),
-                      SizedBox(height: 24,),
+                          player: (val) {}),
+                      SizedBox(
+                        height: 24,
+                      ),
                       SizedBox(
                         height: 48,
                         width: double.infinity,
@@ -149,8 +160,7 @@ class MeetingInfo extends StatelessWidget {
                           color: Theme.of(context).primaryColor,
                           textColor: Colors.white,
                           displayText: "Update status",
-                          player: () {
-                          },
+                          player: () {},
                         ),
                       ),
                     ],
@@ -271,7 +281,7 @@ class MeetingInfo extends StatelessWidget {
                   primaryText,
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      fontSize: Constants.FONT_SIZE_BIG_TEXT,
+                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                       color: Colors.black),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -279,7 +289,7 @@ class MeetingInfo extends StatelessWidget {
                   secondaryText,
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                      fontSize: Constants.FONT_SIZE_SMALL_TEXT,
                       color: Color(0xff9a9b9f)),
                   overflow: TextOverflow.ellipsis,
                 ),

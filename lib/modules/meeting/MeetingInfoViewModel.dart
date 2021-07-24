@@ -12,6 +12,9 @@ import 'package:flutter/src/widgets/framework.dart';
 class MeetingInfoViewModel extends BaseViewModel {
 
   Map<String, dynamic> clientDisplayData = {};
+  Map<String, dynamic> meetingData = {};
+  String displayTime = "";
+
 
   MeetingInfoViewModel(BuildContext context) : super(context) {
     asyncInit();
@@ -19,14 +22,16 @@ class MeetingInfoViewModel extends BaseViewModel {
 
   Future<void> asyncInit() async {
     if (flowDataProvider.currClientId == Constants.NA ||
-        flowDataProvider.currClientId.isEmpty) {
+        flowDataProvider.currClientId.isEmpty || flowDataProvider.currMeeting.isEmpty) {
       MATUtils.showAlertDialog(
-          "Something went wrong with this client, please try again!",
+          "Something went wrong with this meeting, please try again!",
           context,
               () => Navigator.pop(context));
     } else {
       clientDisplayData =
           MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
+      meetingData = flowDataProvider.currMeeting;
+
     }
   }
 }

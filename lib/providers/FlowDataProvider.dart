@@ -8,6 +8,7 @@ class FlowDataProvider {
   late User user;
   late String currClientId;
   late Map<String, dynamic> currClient = {};
+  late Map<String, dynamic> currMeeting = {};
 
   FlowDataProvider() {
     id = NA;

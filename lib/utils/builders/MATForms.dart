@@ -66,7 +66,7 @@ class MATForms {
           dynamicFormKey.currentState!.fields[variable]!.didChange(data);
       }
     } catch (e) {
-      // print("Some wierd thing happened, $e");
+      print("Some wierd thing happened, $e");
     }
   }
 

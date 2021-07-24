@@ -18,6 +18,10 @@ class AddMeetingViewModel extends BaseViewModel {
   List<String> meetingModeNameList;
   String selectedMeetingMode;
 
+  List<String> meetingStatusNameList = [ "Scheduled", "Delayed", "Cancelled", "Completed"];
+  String selectedMeetingStatus = "Scheduled";
+  bool showMeetingStatus = false;
+
   AddMeetingViewModel(BuildContext context, this.matForms) :
         meetingModeNameList = [Constants.DROPDOWN_NON_SELECT, "Voice call", "Video call", "Physical"],
         selectedMeetingMode = Constants.DROPDOWN_NON_SELECT,
@@ -35,11 +39,29 @@ class AddMeetingViewModel extends BaseViewModel {
     } else {
       clientDisplayData =
           MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
+      showMeetingStatus = false;
+      if(flowDataProvider.currMeeting.isNotEmpty) {
+        await Future.delayed(Duration(milliseconds: 300));
+        matForms.setVariableData("title", flowDataProvider.currMeeting["title"]);
+        matForms.setVariableData("agenda", flowDataProvider.currMeeting["agenda"]);
+        matForms.setVariableData("address", flowDataProvider.currMeeting["address"]);
+        matForms.setVariableData("place", flowDataProvider.currMeeting["place"]);
+        matForms.setVariableData("time", flowDataProvider.currMeeting["time"].toString().substring(11, 16));
+        matForms.setVariableData("date", flowDataProvider.currMeeting["date"].toString().substring(0, 10));
+        selectedMeetingMode = flowDataProvider.currMeeting["mode"];
+        showMeetingStatus = true;
+        notifyListeners();
+      }
     }
   }
 
   void setSelectedMode(dynamic val) {
     selectedMeetingMode = val;
+    notifyListeners();
+  }
+
+  void setSelectedStatus(dynamic val) {
+    selectedMeetingStatus = val;
     notifyListeners();
   }
 

@@ -131,6 +131,38 @@ class AddMeeting extends StatelessWidget {
                           displayText: "Meeting agenda",
                           validator: FormBuilderValidators.compose([]),
                         ),
+                        Offstage(
+                          offstage: !model.showMeetingStatus,
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Meeting status",
+                                    style: TextStyle(
+                                        fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              matForms.borderedDropDown(
+                                  borderColor: Theme.of(context).primaryColor,
+                                  items: model.meetingStatusNameList,
+                                  displayValue: model.selectedMeetingStatus,
+                                  menuColor: Theme.of(context).primaryColor,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                  borderRadius: 8,
+                                  player: model.setSelectedStatus),
+                            ],
+                          ),
+                        ),
                         SizedBox(
                           height: 16,
                         ),
