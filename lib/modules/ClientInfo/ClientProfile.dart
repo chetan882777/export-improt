@@ -16,27 +16,12 @@ import 'package:url_launcher/url_launcher.dart';
 class ClientProfile extends StatelessWidget {
   static final String ROUTE_NAME = "/ClientProfile";
 
-  final GlobalKey<FormBuilderState> dynamicFormKey =
-      GlobalKey<FormBuilderState>();
-  final Map<String, TextEditingController> mapper = Map();
-
-  void saveVariable(String variable, String data) {
-    mapper[variable]!.text = data;
-  }
-
-  late final MATForms matForms;
-
   @override
   Widget build(BuildContext context) {
-    matForms = MATForms(
-        context: context,
-        dynamicFormKey: dynamicFormKey,
-        mapper: mapper,
-        saveController: saveVariable);
 
     final title = 'Client profile';
     return ChangeNotifierProvider<ClientProfileViewModel>(
-      create: (context) => ClientProfileViewModel(context, matForms),
+      create: (context) => ClientProfileViewModel(context),
       child: Scaffold(
         backgroundColor: Colors.white,
         endDrawer: AgroWorldsDrawer.drawer(context: context),
@@ -219,8 +204,8 @@ class ClientProfile extends StatelessWidget {
                     builder: (context, ClientProfileViewModel model, child) =>
                         TabBarView(
                       children: [
-                        ClientProfileActionsTab(),
-                        ClientProfileProfileTab(),
+                        ClientProfileActionsTab(model),
+                        ClientProfileProfileTab(model),
                         ClientProfileRemarksTab(model),
                         ClientProfileMeetingsTab(model),
                       ],

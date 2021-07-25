@@ -4,7 +4,12 @@ import 'package:agro_worlds/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'ClientProfileViewModel.dart';
+
 class ClientProfileActionsTab extends StatelessWidget {
+  final ClientProfileViewModel model;
+
+  ClientProfileActionsTab(this.model);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,6 +48,7 @@ class ClientProfileActionsTab extends StatelessWidget {
               context: context,
               displayText: "Add a meeting",
               player: () {
+                model.flowDataProvider.currMeeting = {};
                 Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
               },
             ),
