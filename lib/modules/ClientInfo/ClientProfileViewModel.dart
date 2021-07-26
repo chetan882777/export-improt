@@ -138,7 +138,6 @@ class ClientProfileViewModel extends BaseViewModel {
   Future<void> getClientData() async {
     Map<String, dynamic> client =
         await ApiService.getClient(flowDataProvider.currClientId);
-    print(client);
     if (client.isNotEmpty) {
       if (client["code"] == "200") {
         flowDataProvider.currClient = client["data"];
@@ -161,7 +160,6 @@ class ClientProfileViewModel extends BaseViewModel {
         });
     if (response.statusCode == 200) {
       var data = json.decode(response.data);
-      print(data);
       if (data["code"] == "200") {
         remarksList = data["data"];
         try {
@@ -187,7 +185,6 @@ class ClientProfileViewModel extends BaseViewModel {
         });
     if (response.statusCode == 200) {
       var data = json.decode(response.data);
-      print(data);
       if (data["code"] == "200") {
         meetingsList = data["data"];
         try {
@@ -287,8 +284,6 @@ class ClientProfileViewModel extends BaseViewModel {
         selectedProductIds.putIfAbsent(element.name, () => false);
       });
       productsNameList.sort();
-
-      print(productsNameList);
     } catch (e) {
       print("catch $e");
     }

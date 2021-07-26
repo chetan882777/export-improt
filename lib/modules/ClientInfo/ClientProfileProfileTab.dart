@@ -13,7 +13,6 @@ class ClientProfileProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("build");
     return Container(
       child: SingleChildScrollView(
         child: Column(
@@ -34,6 +33,7 @@ class ClientProfileProfileTab extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 16, top: 8, bottom: 8, right: 16),
               child: ExpansionPanelList(
+                  animationDuration: Duration(seconds: 1),
                   elevation: 0,
                   dividerColor: Colors.black12,
                   expansionCallback: (int index, bool isExpanded) {
@@ -62,7 +62,7 @@ class ClientProfileProfileTab extends StatelessWidget {
                                 val.toString().length < 15) {
                               //model.isContactValid = true;
                             } else {
-                             // model.isContactValid = false;
+                              // model.isContactValid = false;
                             }
                           },
                           validator: FormBuilderValidators.compose([
@@ -171,38 +171,284 @@ class ClientProfileProfileTab extends StatelessWidget {
                           displayText: "Pin code",
                           textInputType: TextInputType.name,
                           player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                          ]),
+                          validator: FormBuilderValidators.compose([]),
                         ),
                         model.data[0].matForms.matEditable(
                           variable: "landLineNumber",
                           displayText: "Landline Number",
                           textInputType: TextInputType.name,
                           player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                          ]),
+                          validator: FormBuilderValidators.compose([]),
                         ),
                         model.data[0].matForms.matEditable(
                           variable: "website",
                           displayText: "Website",
                           textInputType: TextInputType.name,
                           player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                          ]),
+                          validator: FormBuilderValidators.compose([]),
                         ),
                         model.data[0].matForms.matEditable(
                           variable: "socialHandles",
                           displayText: "Social handles",
                           textInputType: TextInputType.name,
                           player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                          ]),
+                          validator: FormBuilderValidators.compose([]),
                         ),
                       ]),
                     ),
                     createExpansionTile(
                       model.data[1],
-                      Container(),
+                      Column(
+                        children: [
+                          model.data[1].matForms.matEditable(
+                            variable: "contactPersonName",
+                            displayText: "Name",
+                            textInputType: TextInputType.name,
+                            player: (val) {},
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
+                          ),
+                          model.data[1].matForms.matEditable(
+                            variable: "contactPersonDesignation",
+                            displayText: "Designation",
+                            textInputType: TextInputType.name,
+                            player: (val) {},
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
+                          ),
+                        ],
+                      ),
+                    ),
+                    createExpansionTile(
+                      model.data[2],
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Product Category",
+                                style: TextStyle(
+                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          model.data[2].matForms.borderedDropDown(
+                            borderColor: Theme.of(context).primaryColor,
+                            items: model.productsCategoryNameList,
+                            displayValue: model.selectedProductCategory,
+                            menuColor: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                            borderRadius: 8,
+                            player: model.setSelectedProductCategory,
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          ListView.builder(
+                            itemCount: model.productsNameList.length,
+                            shrinkWrap: true,
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, int index) {
+                              return Row(children: [
+                                Checkbox(
+                                  value: model.selectedProductIds.containsKey(
+                                          model.productsNameList[index])
+                                      ? model.selectedProductIds[
+                                          model.productsNameList[index]]
+                                      : false,
+                                  onChanged: (val) {
+                                    if (val != null) {
+                                      model.setSelectedProduct(index, val);
+                                    }
+                                  },
+                                ),
+                                Text(model.productsNameList[index])
+                              ]);
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                    createExpansionTile(
+                      model.data[3],
+                      Column(
+                        children: [
+                          model.data[3].matForms.matEditable(
+                            variable: "keyManagementPersonal",
+                            displayText: "Key Management personnel",
+                            textInputType: TextInputType.name,
+                            player: (val) {},
+                            validator: FormBuilderValidators.compose([
+                            ]),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Client Business Type",
+                                style: TextStyle(
+                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          model.data[3].matForms.borderedDropDown(
+                            borderColor: Theme.of(context).primaryColor,
+                            items: ["Importer", "Exporter"],
+                            displayValue: "Importer",
+                            menuColor: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.normal,
+                            fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                            borderRadius: 8,
+                            player: (val) {}
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Business Size",
+                                style: TextStyle(
+                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          model.data[3].matForms.borderedDropDown(
+                              borderColor: Theme.of(context).primaryColor,
+                              items: ["Small", "Medium", "Large"],
+                              displayValue: "Small",
+                              menuColor: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                              borderRadius: 8,
+                              player: (val) {}
+                          ),
+                          model.data[3].matForms.matEditable(
+                            variable: "teamSize",
+                            displayText: "Team Size",
+                            textInputType: TextInputType.name,
+                            player: (val) {},
+                            validator: FormBuilderValidators.compose([
+                            ]),
+                          ),
+                          model.data[3].matForms.matEditable(
+                            variable: "businessTurnoverApprx",
+                            displayText: "Business Turnover Apprx",
+                            textInputType: TextInputType.name,
+                            player: (val) {},
+                            validator: FormBuilderValidators.compose([
+                            ]),
+                          ),
+                          model.data[3].matForms.matEditable(
+                            variable: "companyIncorporationDetail",
+                            displayText: "Company Incorporation Detail",
+                            textInputType: TextInputType.name,
+                            player: (val) {},
+                            validator: FormBuilderValidators.compose([
+                            ]),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Business Set up's /Demographic details",
+                                style: TextStyle(
+                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          model.data[3].matForms.borderedDropDown(
+                              borderColor: Theme.of(context).primaryColor,
+                              items: ["India", "Foreign"],
+                              displayValue: "India",
+                              menuColor: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                              borderRadius: 8,
+                              player: (val) {}
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Business Interest (High, moderate, low)",
+                                style: TextStyle(
+                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.black),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          model.data[3].matForms.borderedDropDown(
+                              borderColor: Theme.of(context).primaryColor,
+                              items: ["High", "Moderate", "Low"],
+                              displayValue: "High",
+                              menuColor: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                              borderRadius: 8,
+                              player: (val) {}
+                          ),
+                          model.data[3].matForms.matEditable(
+                            variable: "businessReferences",
+                            displayText: "Business References",
+                            textInputType: TextInputType.name,
+                            player: (val) {},
+                            validator: FormBuilderValidators.compose([
+                            ]),
+                          ),
+                          model.data[3].matForms.matEditable(
+                            variable: "additionalDetails",
+                            displayText: "Additional details",
+                            textInputType: TextInputType.name,
+                            player: (val) {},
+                            validator: FormBuilderValidators.compose([
+                            ]),
+                          ),
+                        ],
+                      ),
                     ),
                   ]),
             ),
@@ -216,7 +462,10 @@ class ClientProfileProfileTab extends StatelessWidget {
     return ExpansionPanel(
       headerBuilder: (BuildContext context, bool isExpanded) {
         return ListTile(
-          title: Text(item.headerValue),
+          title: Text(
+            item.headerValue,
+            style: TextStyle(color: Theme.of(model.context).primaryColor),
+          ),
         );
       },
       body: body,
