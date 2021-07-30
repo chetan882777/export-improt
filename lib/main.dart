@@ -1,4 +1,5 @@
 import 'package:agro_worlds/modules/ClientInfo/ClientProfile.dart';
+import 'package:agro_worlds/modules/ClientInfo/ConvertToPotentialSuccess.dart';
 import 'package:agro_worlds/modules/addMeeting/AddMeeting.dart';
 import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
 import 'package:agro_worlds/modules/addProspect/AddProspectSuccess.dart';
@@ -38,7 +39,7 @@ class AgroWorld extends StatelessWidget {
         navigatorKey: MATKeys.navKey,
         theme: ThemeData(
           colorScheme: ColorScheme.light(
-            primary:  Color.fromARGB(255, 145, 105, 26),
+            primary: Color.fromARGB(255, 145, 105, 26),
             secondary: Color.fromARGB(255, 231, 211, 142),
           ),
           primaryColor: Color.fromARGB(255, 145, 105, 26),
@@ -49,9 +50,9 @@ class AgroWorld extends StatelessWidget {
         initialRoute: LoginScreen.ROUTE_NAME,
         routes: {
           '/': (ctx) => LoginScreen(),
-          LoginScreen.ROUTE_NAME : (ctx) => LoginScreen(),
-          RegisterScreen.ROUTE_NAME : (ctx) => RegisterScreen(),
-          OtpScreen.ROUTE_NAME : (ctx) => OtpScreen(),
+          LoginScreen.ROUTE_NAME: (ctx) => LoginScreen(),
+          RegisterScreen.ROUTE_NAME: (ctx) => RegisterScreen(),
+          OtpScreen.ROUTE_NAME: (ctx) => OtpScreen(),
           DashboardScreen.ROUTE_NAME: (ctx) => DashboardScreen(),
           AddProspect.ROUTE_NAME: (ctx) => AddProspect(),
           AddProspectSuccess.ROUTE_NAME: (ctx) => AddProspectSuccess(),
@@ -60,22 +61,21 @@ class AgroWorld extends StatelessWidget {
           AddRemark.ROUTE_NAME: (ctx) => AddRemark(),
           AddMeeting.ROUTE_NAME: (ctx) => AddMeeting(),
           MeetingInfo.ROUTE_NAME: (ctx) => MeetingInfo(),
+          ConvertToPotentialSuccess.ROUTE_NAME: (ctx) =>
+              ConvertToPotentialSuccess(),
         },
       ),
     );
   }
 }
 
-
-
-
 /**
-*
+ *
  *
  *
  *
  *  BDM :
-   COntact
+    COntact
     Remark
     Meetings
     Deals
@@ -92,4 +92,4 @@ class AgroWorld extends StatelessWidget {
  *  voice call,
  *  video call,
  *  physical
-* */
+ * */

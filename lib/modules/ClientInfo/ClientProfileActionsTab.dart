@@ -35,7 +35,9 @@ class ClientProfileActionsTab extends StatelessWidget {
             belowClickWidgets(
               context: context,
               displayText: "Convert to potential",
-              player: () {},
+              player: () {
+                model.convertToPotential();
+              },
             ),
             belowClickWidgets(
               context: context,

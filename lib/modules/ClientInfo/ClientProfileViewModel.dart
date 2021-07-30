@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:agro_worlds/models/Role.dart';
 import 'package:agro_worlds/modules/BaseViewModel.dart';
+import 'package:agro_worlds/modules/ClientInfo/ConvertToPotentialSuccess.dart';
 import 'package:agro_worlds/network/ApiService.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
@@ -746,7 +747,7 @@ class ClientProfileViewModel extends BaseViewModel {
         if (result["code"] == "300")
           showToast(result["message"]);
         else if (result["code"] == "200")
-          showToast(result["message"]);
+          Navigator.pushNamed(context, ConvertToPotentialSuccess.ROUTE_NAME);
         else
           showToast("Something went Wrong!");
       } else {
