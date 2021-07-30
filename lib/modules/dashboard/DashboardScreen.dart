@@ -2,6 +2,7 @@ import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
 import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
+import 'package:agro_worlds/modules/myMeetings/MyMeetings.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
@@ -160,7 +161,7 @@ class DashboardScreen extends StatelessWidget {
                           icon: CupertinoIcons.rectangle_stack_person_crop,
                           displayText: "My Meetings",
                           player: () {
-                            print("meetings");
+                            Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
                           }),
                     ],
                   ),

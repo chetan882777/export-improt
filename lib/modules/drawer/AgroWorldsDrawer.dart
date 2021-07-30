@@ -2,6 +2,7 @@ import 'package:agro_worlds/models/User.dart';
 import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginScreen.dart';
+import 'package:agro_worlds/modules/myMeetings/MyMeetings.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
@@ -43,8 +44,9 @@ class AgroWorldsDrawer {
                   ),
                   Text(
                     "${user.userRole}",
-                    style:
-                        TextStyle(fontSize: Constants.FONT_SIZE_NORMAL_TEXT, fontWeight: FontWeight.normal),
+                    style: TextStyle(
+                        fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                        fontWeight: FontWeight.normal),
                   ),
                 ],
               ),
@@ -57,10 +59,16 @@ class AgroWorldsDrawer {
                 player: () {
                   Navigator.pushNamed(context, DashboardScreen.ROUTE_NAME);
                 }),
-            drawerMenuItem(displayName: "Clients", player: () {
-              Navigator.pushNamed(context, AllClients.ROUTE_NAME);
-            }),
-            drawerMenuItem(displayName: "Meetings"),
+            drawerMenuItem(
+                displayName: "Clients",
+                player: () {
+                  Navigator.pushNamed(context, AllClients.ROUTE_NAME);
+                }),
+            drawerMenuItem(
+                displayName: "Meetings",
+                player: () {
+                  Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
+                }),
             drawerMenuItem(displayName: "Deals"),
             drawerMenuItem(
                 displayName: "Logout",
@@ -94,7 +102,9 @@ class AgroWorldsDrawer {
                 child: Text(
                   displayName,
                   style: TextStyle(
-                      fontWeight: FontWeight.normal, fontSize: Constants.FONT_SIZE_NORMAL_TEXT, color: color),
+                      fontWeight: FontWeight.normal,
+                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                      color: color),
                 ),
               ),
               Container(
