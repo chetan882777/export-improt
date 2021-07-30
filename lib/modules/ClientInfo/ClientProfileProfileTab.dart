@@ -47,7 +47,8 @@ class ClientProfileProfileTab extends StatelessWidget {
                         autovalidateMode: AutovalidateMode.disabled,
                         child: Column(children: [
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_EMAIL,
+                            variable:
+                                ClientProfileViewModel.COMPANY_DETAIL_EMAIL,
                             displayText: "Email Address",
                             textInputType: TextInputType.emailAddress,
                             player: (val) {},
@@ -57,15 +58,16 @@ class ClientProfileProfileTab extends StatelessWidget {
                             ]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_CONTACT,
+                            variable:
+                                ClientProfileViewModel.COMPANY_DETAIL_CONTACT,
                             displayText: "Contact number",
                             textInputType: TextInputType.phone,
                             player: (val) {
                               if (val.toString().length >= 10 &&
                                   val.toString().length < 15) {
-                                //model.isContactValid = true;
+                                model.isContactValid = true;
                               } else {
-                                // model.isContactValid = false;
+                                model.isContactValid = false;
                               }
                             },
                             validator: FormBuilderValidators.compose([
@@ -73,7 +75,8 @@ class ClientProfileProfileTab extends StatelessWidget {
                             ]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_ADD_LINE_1,
+                            variable: ClientProfileViewModel
+                                .COMPANY_DETAIL_ADD_LINE_1,
                             displayText: "Address (line 1)",
                             textInputType: TextInputType.name,
                             player: (val) {},
@@ -170,63 +173,98 @@ class ClientProfileProfileTab extends StatelessWidget {
                             height: 16,
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_PINCODE,
+                            variable:
+                                ClientProfileViewModel.COMPANY_DETAIL_PINCODE,
                             displayText: "Pin code",
                             textInputType: TextInputType.name,
                             player: (val) {},
                             validator: FormBuilderValidators.compose([]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_LANDLINE_NUMBER,
+                            variable: ClientProfileViewModel
+                                .COMPANY_DETAIL_LANDLINE_NUMBER,
                             displayText: "Landline Number",
                             textInputType: TextInputType.name,
                             player: (val) {},
                             validator: FormBuilderValidators.compose([]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_WEBSITE,
+                            variable:
+                                ClientProfileViewModel.COMPANY_DETAIL_WEBSITE,
                             displayText: "Website",
                             textInputType: TextInputType.name,
                             player: (val) {},
                             validator: FormBuilderValidators.compose([]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_SOCIAL_HANDLES,
+                            variable: ClientProfileViewModel
+                                .COMPANY_DETAIL_SOCIAL_HANDLES,
                             displayText: "Social handles",
                             textInputType: TextInputType.name,
                             player: (val) {},
                             validator: FormBuilderValidators.compose([]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_BUSINESS_EMAIL,
+                            variable: ClientProfileViewModel
+                                .COMPANY_DETAIL_BUSINESS_EMAIL,
                             displayText: "Business email",
                             textInputType: TextInputType.name,
                             player: (val) {},
                             validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.email(context)
+                              FormBuilderValidators.email(context),
+                              FormBuilderValidators.required(context),
                             ]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_BUSINESS_POC_1,
+                            variable: ClientProfileViewModel
+                                .COMPANY_DETAIL_BUSINESS_POC_1,
                             displayText: "Business POC Name 1",
                             textInputType: TextInputType.name,
                             player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_BUSINESS_POC_2,
+                            variable: ClientProfileViewModel
+                                .COMPANY_DETAIL_BUSINESS_POC_2,
                             displayText: "Business POC Name 2",
                             textInputType: TextInputType.name,
                             player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
                           ),
                           model.data[0].matForms.matEditable(
-                            variable: ClientProfileViewModel.COMPANY_DETAIL_BUSINESS_NUMBER,
+                            variable: ClientProfileViewModel
+                                .COMPANY_DETAIL_BUSINESS_NUMBER,
                             displayText: "POC business number",
                             textInputType: TextInputType.phone,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
+                            player: (val) {
+                              if (val.toString().length >= 10 &&
+                                  val.toString().length < 15) {
+                                model.isBusinessContactValid = true;
+                              } else {
+                                model.isBusinessContactValid = false;
+                              }
+                            },
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(context),
+                            ]),
                           ),
+                          model.data[0].matForms.matTextButton(
+                            textColor: Theme.of(context).primaryColor,
+                            displayText: "Save Company Details",
+                            player: () {
+                              if (model
+                                  .data[0].matForms.dynamicFormKey.currentState!
+                                  .saveAndValidate()) {
+                                model.saveCompanyDetails();
+                              } else {
+                                model.showToast("Fill up all valid data");
+                              }
+                            },
+                          )
                         ]),
                       ),
                     ),
@@ -235,7 +273,8 @@ class ClientProfileProfileTab extends StatelessWidget {
                       Column(
                         children: [
                           model.data[1].matForms.matEditable(
-                            variable: ClientProfileViewModel.CONTACT_PERSON_NAME,
+                            variable:
+                                ClientProfileViewModel.CONTACT_PERSON_NAME,
                             displayText: "Name",
                             textInputType: TextInputType.name,
                             player: (val) {},
@@ -244,7 +283,8 @@ class ClientProfileProfileTab extends StatelessWidget {
                             ]),
                           ),
                           model.data[1].matForms.matEditable(
-                            variable: ClientProfileViewModel.CONTACT_PERSON_DESIGNATION,
+                            variable: ClientProfileViewModel
+                                .CONTACT_PERSON_DESIGNATION,
                             displayText: "Designation",
                             textInputType: TextInputType.name,
                             player: (val) {},
@@ -381,21 +421,24 @@ class ClientProfileProfileTab extends StatelessWidget {
                               borderRadius: 8,
                               player: (val) {}),
                           model.data[3].matForms.matEditable(
-                            variable: ClientProfileViewModel.CORPORATE_TEAM_SIZE,
+                            variable:
+                                ClientProfileViewModel.CORPORATE_TEAM_SIZE,
                             displayText: "Team Size",
                             textInputType: TextInputType.name,
                             player: (val) {},
                             validator: FormBuilderValidators.compose([]),
                           ),
                           model.data[3].matForms.matEditable(
-                            variable: ClientProfileViewModel.CORPORATE_BUSINESS_TURNOVER_APX,
+                            variable: ClientProfileViewModel
+                                .CORPORATE_BUSINESS_TURNOVER_APX,
                             displayText: "Business Turnover Apprx",
                             textInputType: TextInputType.name,
                             player: (val) {},
                             validator: FormBuilderValidators.compose([]),
                           ),
                           model.data[3].matForms.matEditable(
-                            variable: ClientProfileViewModel.CORPORATE_COMPANY_INCORP_DETAILS,
+                            variable: ClientProfileViewModel
+                                .CORPORATE_COMPANY_INCORP_DETAILS,
                             displayText: "Company Incorporation Detail",
                             textInputType: TextInputType.name,
                             player: (val) {},
@@ -458,14 +501,16 @@ class ClientProfileProfileTab extends StatelessWidget {
                               borderRadius: 8,
                               player: (val) {}),
                           model.data[3].matForms.matEditable(
-                            variable: ClientProfileViewModel.CORPORATE_BUSINESS_REF,
+                            variable:
+                                ClientProfileViewModel.CORPORATE_BUSINESS_REF,
                             displayText: "Business References",
                             textInputType: TextInputType.name,
                             player: (val) {},
                             validator: FormBuilderValidators.compose([]),
                           ),
                           model.data[3].matForms.matEditable(
-                            variable: ClientProfileViewModel.CORPORATE_ADDITIONAL_DETAILS,
+                            variable: ClientProfileViewModel
+                                .CORPORATE_ADDITIONAL_DETAILS,
                             displayText: "Additional details",
                             textInputType: TextInputType.name,
                             player: (val) {},

@@ -11,15 +11,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-
-
 class ClientProfileViewModel extends BaseViewModel {
-
   static const String COMPANY_DETAIL_EMAIL = "email";
   static const String COMPANY_DETAIL_CONTACT = "contact";
   static const String COMPANY_DETAIL_ADD_LINE_1 = "addressLine1";
   static const String COMPANY_DETAIL_PINCODE = "pincode";
-  static const String COMPANY_DETAIL_LANDLINE_NUMBER = "landLineNumber";
+  static const String COMPANY_DETAIL_LANDLINE_NUMBER = "land_line_number";
   static const String COMPANY_DETAIL_WEBSITE = "website";
   static const String COMPANY_DETAIL_COUNTRY = "country";
   static const String COMPANY_DETAIL_STATE = "state";
@@ -33,10 +30,12 @@ class ClientProfileViewModel extends BaseViewModel {
   static const String CONTACT_PERSON_NAME = "contactPersonName";
   static const String CONTACT_PERSON_DESIGNATION = "contactPersonDesignation";
 
-  static const String CORPORATE_KEY_MANAGEMENT_PERSONAL = "keyManagementPersonal";
+  static const String CORPORATE_KEY_MANAGEMENT_PERSONAL =
+      "keyManagementPersonal";
   static const String CORPORATE_TEAM_SIZE = "teamSize";
   static const String CORPORATE_BUSINESS_TURNOVER_APX = "businessTurnoverApprx";
-  static const String CORPORATE_COMPANY_INCORP_DETAILS = "companyIncorporationDetail";
+  static const String CORPORATE_COMPANY_INCORP_DETAILS =
+      "companyIncorporationDetail";
   static const String CORPORATE_BUSINESS_REF = "businessReferences";
   static const String CORPORATE_ADDITIONAL_DETAILS = "additionalDetails";
 
@@ -73,8 +72,11 @@ class ClientProfileViewModel extends BaseViewModel {
   List<ListItem> productsList;
   Map<String, bool> selectedProductIds = Map();
 
-  ClientProfileViewModel(BuildContext context) :
-        statesList = [],
+  bool isContactValid = false;
+  bool isBusinessContactValid = false;
+
+  ClientProfileViewModel(BuildContext context)
+      : statesList = [],
         statesNameList = [Constants.DROPDOWN_NON_SELECT],
         countriesNameList = [Constants.DROPDOWN_NON_SELECT],
         countriesList = [],
@@ -103,10 +105,6 @@ class ClientProfileViewModel extends BaseViewModel {
       "Corporate profile"
     ];
     names.forEach((element) {
-
-      final GlobalKey<FormBuilderState> dynamicFormKey =
-      GlobalKey<FormBuilderState>();
-
       data.add(
         Item(
           headerValue: element,
@@ -124,7 +122,7 @@ class ClientProfileViewModel extends BaseViewModel {
   void setExpandedTile(int index, bool isExpanded) {
     data[index].isExpanded = isExpanded;
     notifyListeners();
-    if(index == 0) {
+    if (index == 0) {
       setCompanyDetails();
     }
   }
@@ -141,7 +139,6 @@ class ClientProfileViewModel extends BaseViewModel {
       await getClientData();
       await getRemarksData();
       await getMeetingsData();
-
 
       countriesNameList.clear();
       countriesList = await ApiService.countriesList();
@@ -235,7 +232,6 @@ class ClientProfileViewModel extends BaseViewModel {
     }
   }
 
-
   Future<void> setSelectedCountry(dynamic country) async {
     selectedCountry = country;
     print("state $country");
@@ -250,7 +246,7 @@ class ClientProfileViewModel extends BaseViewModel {
   Future<void> loadStates(String country) async {
     try {
       ListItem mCountry =
-      countriesList.firstWhere((element) => element.name == country);
+          countriesList.firstWhere((element) => element.name == country);
       statesList = await ApiService.statesList(mCountry.id);
       statesNameList.clear();
       statesNameList.add(Constants.DROPDOWN_NON_SELECT);
@@ -278,7 +274,7 @@ class ClientProfileViewModel extends BaseViewModel {
   Future<void> loadCities(String state) async {
     try {
       ListItem mState =
-      statesList.firstWhere((element) => element.name == state);
+          statesList.firstWhere((element) => element.name == state);
       citiesList = await ApiService.citiesList(mState.id);
       citiesNameList.clear();
       citiesNameList.add(Constants.DROPDOWN_NON_SELECT);
@@ -333,44 +329,118 @@ class ClientProfileViewModel extends BaseViewModel {
   void setCompanyDetails() async {
     await Future.delayed(Duration(milliseconds: 300));
     print(clientData);
-    data[0].matForms.setVariableData(COMPANY_DETAIL_EMAIL, clientData[COMPANY_DETAIL_EMAIL]);
-    data[0].matForms.setVariableData(COMPANY_DETAIL_CONTACT, clientData[COMPANY_DETAIL_CONTACT]);
+    data[0].matForms.setVariableData(
+        COMPANY_DETAIL_EMAIL, clientData[COMPANY_DETAIL_EMAIL]);
+    data[0].matForms.setVariableData(
+        COMPANY_DETAIL_CONTACT, clientData[COMPANY_DETAIL_CONTACT]);
 
-    if(clientData["address_line1"] != null && clientData["address_line1"].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_ADD_LINE_1, clientData["address_line1"]);
+    if (clientData["address_line1"] != null &&
+        clientData["address_line1"].toString().isNotEmpty)
+      data[0].matForms.setVariableData(
+          COMPANY_DETAIL_ADD_LINE_1, clientData["address_line1"]);
 
-    if(clientData[COMPANY_DETAIL_PINCODE] != null && clientData[COMPANY_DETAIL_PINCODE].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_PINCODE, clientData[COMPANY_DETAIL_PINCODE]);
+    if (clientData[COMPANY_DETAIL_PINCODE] != null &&
+        clientData[COMPANY_DETAIL_PINCODE].toString().isNotEmpty)
+      data[0].matForms.setVariableData(
+          COMPANY_DETAIL_PINCODE, clientData[COMPANY_DETAIL_PINCODE]);
 
-    if(clientData[COMPANY_DETAIL_LANDLINE_NUMBER] != null && clientData[COMPANY_DETAIL_LANDLINE_NUMBER].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_LANDLINE_NUMBER, clientData[COMPANY_DETAIL_LANDLINE_NUMBER]);
+    if (clientData["landLineNumber"] != null &&
+        clientData["landLineNumber"].toString().isNotEmpty)
+      data[0].matForms.setVariableData(
+          COMPANY_DETAIL_LANDLINE_NUMBER, clientData["landLineNumber"]);
 
-    if(clientData[COMPANY_DETAIL_WEBSITE] != null && clientData[COMPANY_DETAIL_WEBSITE].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_WEBSITE, clientData[COMPANY_DETAIL_WEBSITE]);
+    if (clientData[COMPANY_DETAIL_WEBSITE] != null &&
+        clientData[COMPANY_DETAIL_WEBSITE].toString().isNotEmpty)
+      data[0].matForms.setVariableData(
+          COMPANY_DETAIL_WEBSITE, clientData[COMPANY_DETAIL_WEBSITE]);
 
-    if(clientData[COMPANY_DETAIL_SOCIAL_HANDLES] != null && clientData[COMPANY_DETAIL_SOCIAL_HANDLES].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_SOCIAL_HANDLES, clientData[COMPANY_DETAIL_SOCIAL_HANDLES]);
+    if (clientData[COMPANY_DETAIL_SOCIAL_HANDLES] != null &&
+        clientData[COMPANY_DETAIL_SOCIAL_HANDLES].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_SOCIAL_HANDLES,
+          clientData[COMPANY_DETAIL_SOCIAL_HANDLES]);
 
-    if(clientData[COMPANY_DETAIL_BUSINESS_EMAIL] != null && clientData[COMPANY_DETAIL_BUSINESS_EMAIL].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_EMAIL, clientData[COMPANY_DETAIL_BUSINESS_EMAIL]);
+    if (clientData[COMPANY_DETAIL_BUSINESS_EMAIL] != null &&
+        clientData[COMPANY_DETAIL_BUSINESS_EMAIL].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_EMAIL,
+          clientData[COMPANY_DETAIL_BUSINESS_EMAIL]);
 
-    if(clientData[COMPANY_DETAIL_BUSINESS_POC_1] != null && clientData[COMPANY_DETAIL_BUSINESS_POC_1].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_POC_1, clientData[COMPANY_DETAIL_BUSINESS_POC_1]);
+    if (clientData[COMPANY_DETAIL_BUSINESS_POC_1] != null &&
+        clientData[COMPANY_DETAIL_BUSINESS_POC_1].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_POC_1,
+          clientData[COMPANY_DETAIL_BUSINESS_POC_1]);
 
-    if(clientData[COMPANY_DETAIL_BUSINESS_POC_2] != null && clientData[COMPANY_DETAIL_BUSINESS_POC_2].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_POC_2, clientData[COMPANY_DETAIL_BUSINESS_POC_2]);
+    if (clientData[COMPANY_DETAIL_BUSINESS_POC_2] != null &&
+        clientData[COMPANY_DETAIL_BUSINESS_POC_2].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_POC_2,
+          clientData[COMPANY_DETAIL_BUSINESS_POC_2]);
 
-    if(clientData[COMPANY_DETAIL_BUSINESS_NUMBER] != null && clientData[COMPANY_DETAIL_BUSINESS_NUMBER].toString().isNotEmpty)
-      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_NUMBER, clientData[COMPANY_DETAIL_BUSINESS_NUMBER]);
+    if (clientData[COMPANY_DETAIL_BUSINESS_NUMBER] != null &&
+        clientData[COMPANY_DETAIL_BUSINESS_NUMBER].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_NUMBER,
+          clientData[COMPANY_DETAIL_BUSINESS_NUMBER]);
 
-    if(clientData[COMPANY_DETAIL_COUNTRY] != null && clientData[COMPANY_DETAIL_COUNTRY].toString().isNotEmpty)
+    if (clientData[COMPANY_DETAIL_COUNTRY] != null &&
+        clientData[COMPANY_DETAIL_COUNTRY].toString().isNotEmpty)
       await setSelectedCountry(clientData[COMPANY_DETAIL_COUNTRY]);
 
-    if(clientData[COMPANY_DETAIL_STATE] != null && clientData[COMPANY_DETAIL_STATE].toString().isNotEmpty)
+    if (clientData[COMPANY_DETAIL_STATE] != null &&
+        clientData[COMPANY_DETAIL_STATE].toString().isNotEmpty)
       await setSelectedState(clientData[COMPANY_DETAIL_STATE]);
 
-    if(clientData[COMPANY_DETAIL_CITY] != null && clientData[COMPANY_DETAIL_CITY].toString().isNotEmpty)
+    if (clientData[COMPANY_DETAIL_CITY] != null &&
+        clientData[COMPANY_DETAIL_CITY].toString().isNotEmpty)
       setSelectedCity(clientData[COMPANY_DETAIL_CITY]);
+  }
+
+  Future<void> saveCompanyDetails() async {
+    if (!isContactValid) {
+      showToast("Enter Valid Contact");
+      return;
+    }
+    if (!isBusinessContactValid) {
+      showToast("Enter Valid Business Contact");
+      return;
+    }
+    if (data[0].matForms.dynamicFormKey.currentState != null) {
+      try {
+        setBusy(true);
+        var formData = data[0].matForms.dynamicFormKey.currentState!.value;
+        var reqData = Map<String, dynamic>();
+        formData.forEach((key, value) {
+          reqData[key] = value;
+        });
+        reqData.putIfAbsent("clientId", () => flowDataProvider.currClientId);
+        ListItem mCountry = countriesList
+            .firstWhere((element) => element.name == selectedCountry);
+        ListItem mState =
+            statesList.firstWhere((element) => element.name == selectedState);
+        ListItem mCity =
+            citiesList.firstWhere((element) => element.name == selectedCity);
+        reqData.putIfAbsent("country", () => mCountry.id);
+        reqData.putIfAbsent("state", () => mState.id);
+        reqData.putIfAbsent("city", () => mCity.id);
+        reqData.putIfAbsent("companyName", () => clientData["companyName"]);
+
+        var response = await ApiService.dio
+            .post("profile/update_company_details", queryParameters: reqData);
+        if (response.statusCode == 200) {
+          var result = json.decode(response.data);
+          if (result["code"] == "300")
+            showToast(result["message"]);
+          else if (result["code"] == "200")
+            showToast("Successfully Updated Company details");
+          else
+            showToast("Something went Wrong!");
+        } else {
+          showToast("Something went Wrong!");
+        }
+        setBusy(false);
+      } catch (e) {
+        showToast("Something went wrong!");
+        print("error => $e");
+        setBusy(false);
+      }
+    }
   }
 }
 
