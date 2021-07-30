@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 
 class AgroWorldsDrawer {
   static Drawer drawer({required BuildContext context, bool listen = false}) {
-    FlowDataProvider provider = Provider.of(context, listen: true);
+    FlowDataProvider provider = Provider.of(context, listen: false);
     User user = provider.user;
 
     return Drawer(

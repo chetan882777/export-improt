@@ -68,13 +68,13 @@ class DashboardScreen extends StatelessWidget {
                         children: [
                           infoWidget(
                               context: context,
-                              largeText: "38",
-                              smallText: "Prospects active",
+                              largeText: model.totalLeads,
+                              smallText: "Total Leads",
                               bgColor: const Color(0xffaf8b46),
                               player: () {}),
                           infoWidget(
                               context: context,
-                              largeText: "21",
+                              largeText: model.meetingsInline,
                               smallText: "Meetings inline",
                               bgColor: const Color(0xffbd9b5b),
                               player: () {})
@@ -84,13 +84,29 @@ class DashboardScreen extends StatelessWidget {
                         children: [
                           infoWidget(
                               context: context,
-                              largeText: "20%",
+                              largeText: model.meetingsDone,
+                              smallText: "Meetings done",
+                              bgColor: const Color(0xffbd9b5b),
+                              player: () {}),
+                          infoWidget(
+                              context: context,
+                              largeText: model.followUpMeetings,
+                              smallText: "Follow up meetings",
+                              bgColor: const Color(0xffaf8b46),
+                              player: () {})
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          infoWidget(
+                              context: context,
+                              largeText: model.conversionRate,
                               smallText: "Conversion rate",
                               bgColor: const Color(0xffa07a30),
                               player: () {}),
                           infoWidget(
                               context: context,
-                              largeText: "4",
+                              largeText: model.dealsOfTheMonth,
                               smallText: "Deals this month",
                               bgColor: const Color(0xff91691a),
                               player: () {})
