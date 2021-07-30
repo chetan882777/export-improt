@@ -27,7 +27,7 @@ class AddRemarkViewModel extends BaseViewModel {
           () => Navigator.pop(context));
     } else {
       clientDisplayData =
-          MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
+          MATUtils.getClientDisplayInfo(flowDataProvider.currClient, "clientStatus");
     }
   }
 

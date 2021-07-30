@@ -89,7 +89,7 @@ class MATUtils {
         });
   }
 
-  static Map<String, dynamic> getClientDisplayInfo(Map<String, dynamic> element) {
+  static Map<String, dynamic> getClientDisplayInfo(Map<String, dynamic> element, String statusKey) {
     Map<String, dynamic> map = Map();
     map.putIfAbsent("name", () {
       if (element["companyName"] != null) {
@@ -123,8 +123,8 @@ class MATUtils {
     });
 
     map.putIfAbsent("clientStatus", () {
-      if (element["client_status"] != null) {
-        return element["client_status"];
+      if (element[statusKey] != null) {
+        return element[statusKey];
       } else {
         return "N/A";
       }

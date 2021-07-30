@@ -30,7 +30,7 @@ class AllClientsViewModel extends BaseViewModel {
       if (result["code"] == "200") {
         List list = result["data"];
         list.forEach((element) {
-          clientsList.add(MATUtils.getClientDisplayInfo(element));
+          clientsList.add(MATUtils.getClientDisplayInfo(element, "client_status"));
         });
         print(clientsList);
 

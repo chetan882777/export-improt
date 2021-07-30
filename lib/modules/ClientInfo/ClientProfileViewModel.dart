@@ -211,7 +211,7 @@ class ClientProfileViewModel extends BaseViewModel {
       if (client["code"] == "200") {
         flowDataProvider.currClient = client["data"];
         clientDisplayData =
-            MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
+            MATUtils.getClientDisplayInfo(flowDataProvider.currClient, "clientStatus");
 
         clientData = flowDataProvider.currClient;
 
@@ -675,7 +675,7 @@ class ClientProfileViewModel extends BaseViewModel {
         if (result["code"] == "300")
           showToast(result["message"]);
         else if (result["code"] == "200")
-          showToast("Successfully Updated person details");
+          showToast("Successfully Updated product details");
         else
           showToast("Something went Wrong!");
       } else {
@@ -717,7 +717,7 @@ class ClientProfileViewModel extends BaseViewModel {
           if (result["code"] == "300")
             showToast(result["message"]);
           else if (result["code"] == "200")
-            showToast("Successfully Updated Company details");
+            showToast("Successfully Updated Corporate details");
           else
             showToast("Something went Wrong!");
         } else {
@@ -729,6 +729,34 @@ class ClientProfileViewModel extends BaseViewModel {
         print("error => $e");
         setBusy(false);
       }
+    }
+  }
+
+  Future<void> convertToPotential() async {
+    try{
+      setBusy(true);
+      var response = await ApiService.dio
+          .post("profile/convert_client_status", queryParameters: {
+            CLIENT_ID_KEY : flowDataProvider.currClientId,
+            "clientStatus" : "Potential"
+      });
+      print(response.data);
+      if (response.statusCode == 200) {
+        var result = json.decode(response.data);
+        if (result["code"] == "300")
+          showToast(result["message"]);
+        else if (result["code"] == "200")
+          showToast(result["message"]);
+        else
+          showToast("Something went Wrong!");
+      } else {
+        showToast("Something went Wrong!");
+      }
+      setBusy(false);
+    } catch(e) {
+      showToast("Something went wrong!");
+      print("error => $e");
+      setBusy(false);
     }
   }
 }

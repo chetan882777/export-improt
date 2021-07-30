@@ -28,7 +28,9 @@ class ClientProfileProfileTab extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   displayText: "Convert to Potential",
-                  player: () {}),
+                  player: () {
+                    model.convertToPotential();
+                  }),
             ),
             Padding(
               padding: EdgeInsets.only(left: 16, top: 8, bottom: 8, right: 16),
@@ -385,11 +387,14 @@ class ClientProfileProfileTab extends StatelessWidget {
                         child: Column(
                           children: [
                             model.data[3].matForms.matEditable(
-                              variable: ClientProfileViewModel.CORPORATE_KEY_MANAGEMENT_PERSONAL,
+                              variable: ClientProfileViewModel
+                                  .CORPORATE_KEY_MANAGEMENT_PERSONAL,
                               displayText: "Key Management personnel",
                               textInputType: TextInputType.name,
                               player: (val) {},
-                              validator: FormBuilderValidators.compose([]),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context),
+                              ]),
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: 10),
@@ -452,7 +457,9 @@ class ClientProfileProfileTab extends StatelessWidget {
                               displayText: "Team Size",
                               textInputType: TextInputType.number,
                               player: (val) {},
-                              validator: FormBuilderValidators.compose([]),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context),
+                              ]),
                             ),
                             model.data[3].matForms.matEditable(
                               variable: ClientProfileViewModel
@@ -460,7 +467,9 @@ class ClientProfileProfileTab extends StatelessWidget {
                               displayText: "Business Turnover Apprx",
                               textInputType: TextInputType.number,
                               player: (val) {},
-                              validator: FormBuilderValidators.compose([]),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context),
+                              ]),
                             ),
                             model.data[3].matForms.matEditable(
                               variable: ClientProfileViewModel
@@ -468,7 +477,9 @@ class ClientProfileProfileTab extends StatelessWidget {
                               displayText: "Company Incorporation Detail",
                               textInputType: TextInputType.name,
                               player: (val) {},
-                              validator: FormBuilderValidators.compose([]),
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context),
+                              ]),
                             ),
                             SizedBox(
                               height: 16,
