@@ -299,8 +299,8 @@ class ClientProfileProfileTab extends StatelessWidget {
                               textColor: Theme.of(context).primaryColor,
                               displayText: "Save Person Details",
                               player: () {
-                                if (model
-                                    .data[1].matForms.dynamicFormKey.currentState!
+                                if (model.data[1].matForms.dynamicFormKey
+                                    .currentState!
                                     .saveAndValidate()) {
                                   model.savePersonDetails();
                                 } else {
@@ -371,174 +371,195 @@ class ClientProfileProfileTab extends StatelessWidget {
                             height: 10,
                           ),
                           model.data[2].matForms.matTextButton(
-                            textColor: Theme.of(context).primaryColor,
-                            displayText: "Save Product Details",
-                            player: model.saveProductDetails
-                          )
+                              textColor: Theme.of(context).primaryColor,
+                              displayText: "Save Product Details",
+                              player: model.saveProductDetails)
                         ],
                       ),
                     ),
                     createExpansionTile(
                       model.data[3],
-                      Column(
-                        children: [
-                          model.data[3].matForms.matEditable(
-                            variable: "keyManagementPersonal",
-                            displayText: "Key Management personnel",
-                            textInputType: TextInputType.name,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Client Business Type",
-                                style: TextStyle(
-                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black),
+                      FormBuilder(
+                        key: model.data[3].matForms.dynamicFormKey,
+                        autovalidateMode: AutovalidateMode.disabled,
+                        child: Column(
+                          children: [
+                            model.data[3].matForms.matEditable(
+                              variable: ClientProfileViewModel.CORPORATE_KEY_MANAGEMENT_PERSONAL,
+                              displayText: "Key Management personnel",
+                              textInputType: TextInputType.name,
+                              player: (val) {},
+                              validator: FormBuilderValidators.compose([]),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Client Business Type",
+                                  style: TextStyle(
+                                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          model.data[3].matForms.borderedDropDown(
+                            SizedBox(
+                              height: 10,
+                            ),
+                            model.data[3].matForms.borderedDropDown(
                               borderColor: Theme.of(context).primaryColor,
-                              items: ["Importer", "Exporter"],
-                              displayValue: "Importer",
+                              items: model.clientBusinessTypeNameList,
+                              displayValue: model.selectedClientBusinessType,
                               menuColor: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.normal,
                               fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                               borderRadius: 8,
-                              player: (val) {}),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Business Size",
-                                style: TextStyle(
-                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black),
+                              player: model.setSelectedBusinessType,
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Business Size",
+                                  style: TextStyle(
+                                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          model.data[3].matForms.borderedDropDown(
+                            SizedBox(
+                              height: 10,
+                            ),
+                            model.data[3].matForms.borderedDropDown(
                               borderColor: Theme.of(context).primaryColor,
-                              items: ["Small", "Medium", "Large"],
-                              displayValue: "Small",
+                              items: model.businessSizeNameList,
+                              displayValue: model.selectedBusinessSize,
                               menuColor: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.normal,
                               fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                               borderRadius: 8,
-                              player: (val) {}),
-                          model.data[3].matForms.matEditable(
-                            variable:
-                                ClientProfileViewModel.CORPORATE_TEAM_SIZE,
-                            displayText: "Team Size",
-                            textInputType: TextInputType.name,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
-                          ),
-                          model.data[3].matForms.matEditable(
-                            variable: ClientProfileViewModel
-                                .CORPORATE_BUSINESS_TURNOVER_APX,
-                            displayText: "Business Turnover Apprx",
-                            textInputType: TextInputType.name,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
-                          ),
-                          model.data[3].matForms.matEditable(
-                            variable: ClientProfileViewModel
-                                .CORPORATE_COMPANY_INCORP_DETAILS,
-                            displayText: "Company Incorporation Detail",
-                            textInputType: TextInputType.name,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
-                          ),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Business Set up's /Demographic details",
-                                style: TextStyle(
-                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black),
+                              player: model.setSelectedBusinessSize,
+                            ),
+                            model.data[3].matForms.matEditable(
+                              variable:
+                                  ClientProfileViewModel.CORPORATE_TEAM_SIZE,
+                              displayText: "Team Size",
+                              textInputType: TextInputType.number,
+                              player: (val) {},
+                              validator: FormBuilderValidators.compose([]),
+                            ),
+                            model.data[3].matForms.matEditable(
+                              variable: ClientProfileViewModel
+                                  .CORPORATE_BUSINESS_TURNOVER_APX,
+                              displayText: "Business Turnover Apprx",
+                              textInputType: TextInputType.number,
+                              player: (val) {},
+                              validator: FormBuilderValidators.compose([]),
+                            ),
+                            model.data[3].matForms.matEditable(
+                              variable: ClientProfileViewModel
+                                  .CORPORATE_COMPANY_INCORP_DETAILS,
+                              displayText: "Company Incorporation Detail",
+                              textInputType: TextInputType.name,
+                              player: (val) {},
+                              validator: FormBuilderValidators.compose([]),
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Business Set up's /Demographic details",
+                                  style: TextStyle(
+                                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          model.data[3].matForms.borderedDropDown(
+                            SizedBox(
+                              height: 10,
+                            ),
+                            model.data[3].matForms.borderedDropDown(
                               borderColor: Theme.of(context).primaryColor,
-                              items: ["India", "Foreign"],
-                              displayValue: "India",
+                              items: model.businessDemographicDetailsNameList,
+                              displayValue:
+                                  model.selectedBusinessDemographicDetails,
                               menuColor: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.normal,
                               fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                               borderRadius: 8,
-                              player: (val) {}),
-                          SizedBox(
-                            height: 16,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Business Interest (High, moderate, low)",
-                                style: TextStyle(
-                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                    fontWeight: FontWeight.normal,
-                                    color: Colors.black),
+                              player: model.setSelectedBusinessDemographic,
+                            ),
+                            SizedBox(
+                              height: 16,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Business Interest (High, moderate, low)",
+                                  style: TextStyle(
+                                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          model.data[3].matForms.borderedDropDown(
+                            SizedBox(
+                              height: 10,
+                            ),
+                            model.data[3].matForms.borderedDropDown(
                               borderColor: Theme.of(context).primaryColor,
-                              items: ["High", "Moderate", "Low"],
-                              displayValue: "High",
+                              items: model.businessInterestNameList,
+                              displayValue: model.selectedBusinessInterest,
                               menuColor: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.normal,
                               fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                               borderRadius: 8,
-                              player: (val) {}),
-                          model.data[3].matForms.matEditable(
-                            variable:
-                                ClientProfileViewModel.CORPORATE_BUSINESS_REF,
-                            displayText: "Business References",
-                            textInputType: TextInputType.name,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
-                          ),
-                          model.data[3].matForms.matEditable(
-                            variable: ClientProfileViewModel
-                                .CORPORATE_ADDITIONAL_DETAILS,
-                            displayText: "Additional details",
-                            textInputType: TextInputType.name,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([]),
-                          ),
-                        ],
+                              player: model.setSelectedBusinessInterest,
+                            ),
+                            model.data[3].matForms.matEditable(
+                              variable:
+                                  ClientProfileViewModel.CORPORATE_BUSINESS_REF,
+                              displayText: "Business References",
+                              textInputType: TextInputType.name,
+                              player: (val) {},
+                              validator: FormBuilderValidators.compose([]),
+                            ),
+                            model.data[3].matForms.matEditable(
+                              variable: ClientProfileViewModel
+                                  .CORPORATE_ADDITIONAL_DETAILS,
+                              displayText: "Additional details",
+                              textInputType: TextInputType.name,
+                              player: (val) {},
+                              validator: FormBuilderValidators.compose([]),
+                            ),
+                            model.data[3].matForms.matTextButton(
+                              textColor: Theme.of(context).primaryColor,
+                              displayText: "Save Corporate Details",
+                              player: () {
+                                if (model.data[3].matForms.dynamicFormKey
+                                    .currentState!
+                                    .saveAndValidate()) {
+                                  model.saveCorporateDetails();
+                                } else {
+                                  model.showToast("Fill up all valid data");
+                                }
+                              },
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ]),

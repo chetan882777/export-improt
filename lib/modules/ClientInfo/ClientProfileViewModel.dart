@@ -9,9 +9,10 @@ import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class ClientProfileViewModel extends BaseViewModel {
+  static const String CLIENT_ID_KEY = "clientId";
+
   static const String COMPANY_DETAIL_EMAIL = "email";
   static const String COMPANY_DETAIL_CONTACT = "contact";
   static const String COMPANY_DETAIL_ADD_LINE_1 = "addressLine1";
@@ -34,13 +35,18 @@ class ClientProfileViewModel extends BaseViewModel {
   static const String PRODUCTS = "clientProducts";
 
   static const String CORPORATE_KEY_MANAGEMENT_PERSONAL =
-      "keyManagementPersonal";
+      "keyManagementPersonnel";
   static const String CORPORATE_TEAM_SIZE = "teamSize";
   static const String CORPORATE_BUSINESS_TURNOVER_APX = "businessTurnoverApprx";
   static const String CORPORATE_COMPANY_INCORP_DETAILS =
       "companyIncorporationDetail";
   static const String CORPORATE_BUSINESS_REF = "businessReferences";
   static const String CORPORATE_ADDITIONAL_DETAILS = "additionalDetails";
+  static const String CORPORATE_CLIENT_BUSINESS_TYPE = "clientBusinessType";
+  static const String CORPORATE_BUSINESS_SIZE = "businessSize";
+  static const String CORPORATE_BUSINESS_DEMOGRAPHIC =
+      "businessDemographicDetails";
+  static const String CORPORATE_BUSINESS_INTEREST = "businessInterest";
 
   final Map<String, TextEditingController> mapper = Map();
 
@@ -71,6 +77,18 @@ class ClientProfileViewModel extends BaseViewModel {
   List<ListItem> productsCategoryList;
   String selectedProductCategory;
 
+  List<String> clientBusinessTypeNameList;
+  String selectedClientBusinessType;
+
+  List<String> businessSizeNameList;
+  String selectedBusinessSize;
+
+  List<String> businessDemographicDetailsNameList;
+  String selectedBusinessDemographicDetails;
+
+  List<String> businessInterestNameList;
+  String selectedBusinessInterest;
+
   List<String> productsNameList;
   List<ListItem> productsList;
   Map<String, bool> selectedProductIds = Map();
@@ -79,7 +97,15 @@ class ClientProfileViewModel extends BaseViewModel {
   bool isBusinessContactValid = false;
 
   ClientProfileViewModel(BuildContext context)
-      : statesList = [],
+      : clientBusinessTypeNameList = ["Importer", "Exporter"],
+        selectedClientBusinessType = "Importer",
+        businessSizeNameList = ["Small", "Medium", "Large"],
+        selectedBusinessSize = "Small",
+        businessDemographicDetailsNameList = ["India", "Foreign"],
+        selectedBusinessDemographicDetails = "India",
+        businessInterestNameList = ["High", "Moderate", "Low"],
+        selectedBusinessInterest = "High",
+        statesList = [],
         statesNameList = [Constants.DROPDOWN_NON_SELECT],
         countriesNameList = [Constants.DROPDOWN_NON_SELECT],
         countriesList = [],
@@ -125,11 +151,22 @@ class ClientProfileViewModel extends BaseViewModel {
   void setExpandedTile(int index, bool isExpanded) {
     data[index].isExpanded = isExpanded;
     notifyListeners();
-    if (index == 0)
-      setCompanyDetails();
-    else if (index == 1)
-      setPersonDetails();
-    else if (index == 2) setProductDetails();
+    if (isExpanded) {
+      switch (index) {
+        case 0:
+          setCompanyDetails();
+          break;
+        case 1:
+          setPersonDetails();
+          break;
+        case 2:
+          setProductDetails();
+          break;
+        case 3:
+          setCorporateDetails();
+          break;
+      }
+    }
   }
 
   Future<void> asyncInit() async {
@@ -192,7 +229,7 @@ class ClientProfileViewModel extends BaseViewModel {
     var response = await ApiService.dio.post("profile/get_client_remarks",
         queryParameters: {
           "userId": id,
-          "clientId": flowDataProvider.currClientId
+          CLIENT_ID_KEY: flowDataProvider.currClientId
         });
     if (response.statusCode == 200) {
       var data = json.decode(response.data);
@@ -217,7 +254,7 @@ class ClientProfileViewModel extends BaseViewModel {
     var response = await ApiService.dio.post("profile/get_client_meetings",
         queryParameters: {
           "userId": id,
-          "clientId": flowDataProvider.currClientId
+          CLIENT_ID_KEY: flowDataProvider.currClientId
         });
     if (response.statusCode == 200) {
       var data = json.decode(response.data);
@@ -331,6 +368,26 @@ class ClientProfileViewModel extends BaseViewModel {
     }
   }
 
+  void setSelectedBusinessType(dynamic val) {
+    selectedClientBusinessType = val;
+    notifyListeners();
+  }
+
+  void setSelectedBusinessSize(dynamic val) {
+    selectedBusinessSize = val;
+    notifyListeners();
+  }
+
+  void setSelectedBusinessDemographic(dynamic val) {
+    selectedBusinessDemographicDetails = val;
+    notifyListeners();
+  }
+
+  void setSelectedBusinessInterest(dynamic val) {
+    selectedBusinessInterest = val;
+    notifyListeners();
+  }
+
   void setCompanyDetails() async {
     await Future.delayed(Duration(milliseconds: 300));
     data[0].matForms.setVariableData(
@@ -398,7 +455,6 @@ class ClientProfileViewModel extends BaseViewModel {
 
   void setPersonDetails() async {
     await Future.delayed(Duration(milliseconds: 300));
-    print(clientData);
 
     if (clientData[CONTACT_PERSON_NAME] != null &&
         clientData[CONTACT_PERSON_NAME].toString().isNotEmpty)
@@ -413,7 +469,6 @@ class ClientProfileViewModel extends BaseViewModel {
 
   void setProductDetails() async {
     await Future.delayed(Duration(milliseconds: 300));
-    print(clientData);
 
     if (clientData[PRODUCT_CATEGORY] != null &&
         clientData[PRODUCT_CATEGORY].toString().isNotEmpty)
@@ -430,6 +485,71 @@ class ClientProfileViewModel extends BaseViewModel {
         setSelectedProduct(i, true);
       });
     }
+  }
+
+  void setCorporateDetails() async {
+    await Future.delayed(Duration(milliseconds: 300));
+    print(clientData);
+    if (clientData[CORPORATE_KEY_MANAGEMENT_PERSONAL] != null &&
+        clientData[CORPORATE_KEY_MANAGEMENT_PERSONAL].toString().isNotEmpty)
+      data[3].matForms.setVariableData(CORPORATE_KEY_MANAGEMENT_PERSONAL,
+          clientData[CORPORATE_KEY_MANAGEMENT_PERSONAL]);
+
+    print("1");
+    if (clientData[CORPORATE_TEAM_SIZE] != null &&
+        clientData[CORPORATE_TEAM_SIZE].toString().isNotEmpty)
+      data[3].matForms.setVariableData(
+          CORPORATE_TEAM_SIZE, clientData[CORPORATE_TEAM_SIZE]);
+
+    print("2");
+    if (clientData[CORPORATE_BUSINESS_TURNOVER_APX] != null &&
+        clientData[CORPORATE_BUSINESS_TURNOVER_APX].toString().isNotEmpty)
+      data[3].matForms.setVariableData(CORPORATE_BUSINESS_TURNOVER_APX,
+          clientData[CORPORATE_BUSINESS_TURNOVER_APX]);
+
+    print("3");
+    if (clientData[CORPORATE_COMPANY_INCORP_DETAILS] != null &&
+        clientData[CORPORATE_COMPANY_INCORP_DETAILS].toString().isNotEmpty)
+      data[3].matForms.setVariableData(CORPORATE_COMPANY_INCORP_DETAILS,
+          clientData[CORPORATE_COMPANY_INCORP_DETAILS]);
+
+    print("4");
+    if (clientData[CORPORATE_BUSINESS_REF] != null &&
+        clientData[CORPORATE_BUSINESS_REF].toString().isNotEmpty)
+      data[3].matForms.setVariableData(
+          CORPORATE_BUSINESS_REF, clientData[CORPORATE_BUSINESS_REF]);
+
+    print("5");
+    if (clientData[CORPORATE_ADDITIONAL_DETAILS] != null &&
+        clientData[CORPORATE_ADDITIONAL_DETAILS].toString().isNotEmpty)
+      data[3].matForms.setVariableData(CORPORATE_ADDITIONAL_DETAILS,
+          clientData[CORPORATE_ADDITIONAL_DETAILS]);
+
+    print("6");
+    if (clientData[CORPORATE_CLIENT_BUSINESS_TYPE] != null &&
+        clientData[CORPORATE_CLIENT_BUSINESS_TYPE].toString().isNotEmpty)
+      selectedClientBusinessType = clientData[CORPORATE_CLIENT_BUSINESS_TYPE];
+
+
+    print("7");
+    if (clientData[CORPORATE_BUSINESS_SIZE] != null &&
+        clientData[CORPORATE_BUSINESS_SIZE].toString().isNotEmpty)
+      selectedBusinessSize = clientData[CORPORATE_BUSINESS_SIZE];
+
+
+    print("8");
+    if (clientData[CORPORATE_BUSINESS_DEMOGRAPHIC] != null &&
+        clientData[CORPORATE_BUSINESS_DEMOGRAPHIC].toString().isNotEmpty)
+      selectedBusinessDemographicDetails =
+          clientData[CORPORATE_BUSINESS_DEMOGRAPHIC];
+
+
+    print("9");
+    if (clientData[CORPORATE_BUSINESS_INTEREST] != null &&
+        clientData[CORPORATE_BUSINESS_INTEREST].toString().isNotEmpty)
+      selectedBusinessInterest = clientData[CORPORATE_BUSINESS_INTEREST];
+
+    notifyListeners();
   }
 
   Future<void> saveCompanyDetails() async {
@@ -449,7 +569,7 @@ class ClientProfileViewModel extends BaseViewModel {
         formData.forEach((key, value) {
           reqData[key] = value;
         });
-        reqData.putIfAbsent("clientId", () => flowDataProvider.currClientId);
+        reqData.putIfAbsent(CLIENT_ID_KEY, () => flowDataProvider.currClientId);
         ListItem mCountry = countriesList
             .firstWhere((element) => element.name == selectedCountry);
         ListItem mState =
@@ -492,7 +612,7 @@ class ClientProfileViewModel extends BaseViewModel {
         formData.forEach((key, value) {
           reqData[key] = value;
         });
-        reqData.putIfAbsent("clientId", () => flowDataProvider.currClientId);
+        reqData.putIfAbsent(CLIENT_ID_KEY, () => flowDataProvider.currClientId);
         print(reqData);
         var response = await ApiService.dio.post(
             "profile/update_contact_person_details",
@@ -522,7 +642,7 @@ class ClientProfileViewModel extends BaseViewModel {
       setBusy(true);
       var reqData = Map<String, dynamic>();
 
-      reqData.putIfAbsent("clientId", () => flowDataProvider.currClientId);
+      reqData.putIfAbsent(CLIENT_ID_KEY, () => flowDataProvider.currClientId);
 
       ListItem mProductCategory = productsCategoryList
           .firstWhere((element) => element.name == selectedProductCategory);
@@ -566,6 +686,49 @@ class ClientProfileViewModel extends BaseViewModel {
       showToast("Something went wrong!");
       print("error => $e");
       setBusy(false);
+    }
+  }
+
+  Future<void> saveCorporateDetails() async {
+    if (data[3].matForms.dynamicFormKey.currentState != null) {
+      try {
+        setBusy(true);
+        var formData = data[3].matForms.dynamicFormKey.currentState!.value;
+        var reqData = Map<String, dynamic>();
+        formData.forEach((key, value) {
+          reqData[key] = value;
+        });
+        reqData.putIfAbsent(CLIENT_ID_KEY, () => flowDataProvider.currClientId);
+
+        reqData.putIfAbsent(
+            CORPORATE_CLIENT_BUSINESS_TYPE, () => selectedClientBusinessType);
+        reqData.putIfAbsent(
+            CORPORATE_BUSINESS_SIZE, () => selectedBusinessSize);
+        reqData.putIfAbsent(CORPORATE_BUSINESS_DEMOGRAPHIC,
+            () => selectedBusinessDemographicDetails);
+        reqData.putIfAbsent(
+            CORPORATE_BUSINESS_INTEREST, () => selectedBusinessInterest);
+
+        print(reqData);
+        var response = await ApiService.dio
+            .post("profile/update_corporate_profile", queryParameters: reqData);
+        if (response.statusCode == 200) {
+          var result = json.decode(response.data);
+          if (result["code"] == "300")
+            showToast(result["message"]);
+          else if (result["code"] == "200")
+            showToast("Successfully Updated Company details");
+          else
+            showToast("Something went Wrong!");
+        } else {
+          showToast("Something went Wrong!");
+        }
+        setBusy(false);
+      } catch (e) {
+        showToast("Something went wrong!");
+        print("error => $e");
+        setBusy(false);
+      }
     }
   }
 }
