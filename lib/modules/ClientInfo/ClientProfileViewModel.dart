@@ -11,9 +11,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
+
+
 class ClientProfileViewModel extends BaseViewModel {
-  final GlobalKey<FormBuilderState> dynamicFormKey =
-      GlobalKey<FormBuilderState>();
+
+  static const String COMPANY_DETAIL_EMAIL = "email";
+  static const String COMPANY_DETAIL_CONTACT = "contact";
+  static const String COMPANY_DETAIL_ADD_LINE_1 = "addressLine1";
+  static const String COMPANY_DETAIL_PINCODE = "pincode";
+  static const String COMPANY_DETAIL_LANDLINE_NUMBER = "landLineNumber";
+  static const String COMPANY_DETAIL_WEBSITE = "website";
+  static const String COMPANY_DETAIL_COUNTRY = "country";
+  static const String COMPANY_DETAIL_STATE = "state";
+  static const String COMPANY_DETAIL_CITY = "city";
+  static const String COMPANY_DETAIL_SOCIAL_HANDLES = "socialHandles";
+  static const String COMPANY_DETAIL_BUSINESS_EMAIL = "businessEmailAddress";
+  static const String COMPANY_DETAIL_BUSINESS_POC_1 = "businessPOCName1";
+  static const String COMPANY_DETAIL_BUSINESS_POC_2 = "businessPOCName2";
+  static const String COMPANY_DETAIL_BUSINESS_NUMBER = "pocBusinessNumber";
+
+  static const String CONTACT_PERSON_NAME = "contactPersonName";
+  static const String CONTACT_PERSON_DESIGNATION = "contactPersonDesignation";
+
+  static const String CORPORATE_KEY_MANAGEMENT_PERSONAL = "keyManagementPersonal";
+  static const String CORPORATE_TEAM_SIZE = "teamSize";
+  static const String CORPORATE_BUSINESS_TURNOVER_APX = "businessTurnoverApprx";
+  static const String CORPORATE_COMPANY_INCORP_DETAILS = "companyIncorporationDetail";
+  static const String CORPORATE_BUSINESS_REF = "businessReferences";
+  static const String CORPORATE_ADDITIONAL_DETAILS = "additionalDetails";
+
   final Map<String, TextEditingController> mapper = Map();
 
   void saveVariable(String variable, String data) {
@@ -21,6 +47,8 @@ class ClientProfileViewModel extends BaseViewModel {
   }
 
   Map<String, dynamic> clientDisplayData = {};
+  Map<String, dynamic> clientData = {};
+
   List<dynamic> remarksList = [];
   List<dynamic> meetingsList = [];
   List<Item> data = [];
@@ -75,12 +103,16 @@ class ClientProfileViewModel extends BaseViewModel {
       "Corporate profile"
     ];
     names.forEach((element) {
+
+      final GlobalKey<FormBuilderState> dynamicFormKey =
+      GlobalKey<FormBuilderState>();
+
       data.add(
         Item(
           headerValue: element,
           matForms: MATForms(
               context: context,
-              dynamicFormKey: dynamicFormKey,
+              dynamicFormKey: GlobalKey(debugLabel: element),
               mapper: mapper,
               saveController: saveVariable),
           isExpanded: false,
@@ -92,11 +124,9 @@ class ClientProfileViewModel extends BaseViewModel {
   void setExpandedTile(int index, bool isExpanded) {
     data[index].isExpanded = isExpanded;
     notifyListeners();
-  }
-
-  void onExpansionTileClick(Item item) {
-    data.removeWhere((Item currentItem) => item == currentItem);
-    notifyListeners();
+    if(index == 0) {
+      setCompanyDetails();
+    }
   }
 
   Future<void> asyncInit() async {
@@ -143,6 +173,10 @@ class ClientProfileViewModel extends BaseViewModel {
         flowDataProvider.currClient = client["data"];
         clientDisplayData =
             MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
+
+        clientData = flowDataProvider.currClient;
+
+        data[0].matForms.setVariableData("email", clientData["email"]);
       } else if (client["code"] == "300") {
         showToast(client["message"]);
       } else {
@@ -202,7 +236,7 @@ class ClientProfileViewModel extends BaseViewModel {
   }
 
 
-  void setSelectedCountry(dynamic country) async {
+  Future<void> setSelectedCountry(dynamic country) async {
     selectedCountry = country;
     print("state $country");
     if (country.toString() != Constants.DROPDOWN_NON_SELECT) {
@@ -230,7 +264,7 @@ class ClientProfileViewModel extends BaseViewModel {
     }
   }
 
-  void setSelectedState(dynamic state) async {
+  Future<void> setSelectedState(dynamic state) async {
     selectedState = state;
     print("state $state");
     if (state.toString() != Constants.DROPDOWN_NON_SELECT) {
@@ -294,6 +328,49 @@ class ClientProfileViewModel extends BaseViewModel {
       selectedProductIds[productsNameList[index]] = isSelected;
       notifyListeners();
     }
+  }
+
+  void setCompanyDetails() async {
+    await Future.delayed(Duration(milliseconds: 300));
+    print(clientData);
+    data[0].matForms.setVariableData(COMPANY_DETAIL_EMAIL, clientData[COMPANY_DETAIL_EMAIL]);
+    data[0].matForms.setVariableData(COMPANY_DETAIL_CONTACT, clientData[COMPANY_DETAIL_CONTACT]);
+
+    if(clientData["address_line1"] != null && clientData["address_line1"].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_ADD_LINE_1, clientData["address_line1"]);
+
+    if(clientData[COMPANY_DETAIL_PINCODE] != null && clientData[COMPANY_DETAIL_PINCODE].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_PINCODE, clientData[COMPANY_DETAIL_PINCODE]);
+
+    if(clientData[COMPANY_DETAIL_LANDLINE_NUMBER] != null && clientData[COMPANY_DETAIL_LANDLINE_NUMBER].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_LANDLINE_NUMBER, clientData[COMPANY_DETAIL_LANDLINE_NUMBER]);
+
+    if(clientData[COMPANY_DETAIL_WEBSITE] != null && clientData[COMPANY_DETAIL_WEBSITE].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_WEBSITE, clientData[COMPANY_DETAIL_WEBSITE]);
+
+    if(clientData[COMPANY_DETAIL_SOCIAL_HANDLES] != null && clientData[COMPANY_DETAIL_SOCIAL_HANDLES].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_SOCIAL_HANDLES, clientData[COMPANY_DETAIL_SOCIAL_HANDLES]);
+
+    if(clientData[COMPANY_DETAIL_BUSINESS_EMAIL] != null && clientData[COMPANY_DETAIL_BUSINESS_EMAIL].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_EMAIL, clientData[COMPANY_DETAIL_BUSINESS_EMAIL]);
+
+    if(clientData[COMPANY_DETAIL_BUSINESS_POC_1] != null && clientData[COMPANY_DETAIL_BUSINESS_POC_1].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_POC_1, clientData[COMPANY_DETAIL_BUSINESS_POC_1]);
+
+    if(clientData[COMPANY_DETAIL_BUSINESS_POC_2] != null && clientData[COMPANY_DETAIL_BUSINESS_POC_2].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_POC_2, clientData[COMPANY_DETAIL_BUSINESS_POC_2]);
+
+    if(clientData[COMPANY_DETAIL_BUSINESS_NUMBER] != null && clientData[COMPANY_DETAIL_BUSINESS_NUMBER].toString().isNotEmpty)
+      data[0].matForms.setVariableData(COMPANY_DETAIL_BUSINESS_NUMBER, clientData[COMPANY_DETAIL_BUSINESS_NUMBER]);
+
+    if(clientData[COMPANY_DETAIL_COUNTRY] != null && clientData[COMPANY_DETAIL_COUNTRY].toString().isNotEmpty)
+      await setSelectedCountry(clientData[COMPANY_DETAIL_COUNTRY]);
+
+    if(clientData[COMPANY_DETAIL_STATE] != null && clientData[COMPANY_DETAIL_STATE].toString().isNotEmpty)
+      await setSelectedState(clientData[COMPANY_DETAIL_STATE]);
+
+    if(clientData[COMPANY_DETAIL_CITY] != null && clientData[COMPANY_DETAIL_CITY].toString().isNotEmpty)
+      setSelectedCity(clientData[COMPANY_DETAIL_CITY]);
   }
 }
 
