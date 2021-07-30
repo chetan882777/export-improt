@@ -270,29 +270,46 @@ class ClientProfileProfileTab extends StatelessWidget {
                     ),
                     createExpansionTile(
                       model.data[1],
-                      Column(
-                        children: [
-                          model.data[1].matForms.matEditable(
-                            variable:
-                                ClientProfileViewModel.CONTACT_PERSON_NAME,
-                            displayText: "Name",
-                            textInputType: TextInputType.name,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
-                          ),
-                          model.data[1].matForms.matEditable(
-                            variable: ClientProfileViewModel
-                                .CONTACT_PERSON_DESIGNATION,
-                            displayText: "Designation",
-                            textInputType: TextInputType.name,
-                            player: (val) {},
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
-                          ),
-                        ],
+                      FormBuilder(
+                        key: model.data[1].matForms.dynamicFormKey,
+                        autovalidateMode: AutovalidateMode.disabled,
+                        child: Column(
+                          children: [
+                            model.data[1].matForms.matEditable(
+                              variable:
+                                  ClientProfileViewModel.CONTACT_PERSON_NAME,
+                              displayText: "Name",
+                              textInputType: TextInputType.name,
+                              player: (val) {},
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context),
+                              ]),
+                            ),
+                            model.data[1].matForms.matEditable(
+                              variable: ClientProfileViewModel
+                                  .CONTACT_PERSON_DESIGNATION,
+                              displayText: "Designation",
+                              textInputType: TextInputType.name,
+                              player: (val) {},
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(context),
+                              ]),
+                            ),
+                            model.data[1].matForms.matTextButton(
+                              textColor: Theme.of(context).primaryColor,
+                              displayText: "Save Person Details",
+                              player: () {
+                                if (model
+                                    .data[1].matForms.dynamicFormKey.currentState!
+                                    .saveAndValidate()) {
+                                  model.savePersonDetails();
+                                } else {
+                                  model.showToast("Fill up all valid data");
+                                }
+                              },
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     createExpansionTile(
@@ -353,6 +370,11 @@ class ClientProfileProfileTab extends StatelessWidget {
                           SizedBox(
                             height: 10,
                           ),
+                          model.data[2].matForms.matTextButton(
+                            textColor: Theme.of(context).primaryColor,
+                            displayText: "Save Product Details",
+                            player: model.saveProductDetails
+                          )
                         ],
                       ),
                     ),

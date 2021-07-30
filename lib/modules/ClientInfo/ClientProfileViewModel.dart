@@ -30,6 +30,9 @@ class ClientProfileViewModel extends BaseViewModel {
   static const String CONTACT_PERSON_NAME = "contactPersonName";
   static const String CONTACT_PERSON_DESIGNATION = "contactPersonDesignation";
 
+  static const String PRODUCT_CATEGORY = "productCategory";
+  static const String PRODUCTS = "clientProducts";
+
   static const String CORPORATE_KEY_MANAGEMENT_PERSONAL =
       "keyManagementPersonal";
   static const String CORPORATE_TEAM_SIZE = "teamSize";
@@ -122,9 +125,11 @@ class ClientProfileViewModel extends BaseViewModel {
   void setExpandedTile(int index, bool isExpanded) {
     data[index].isExpanded = isExpanded;
     notifyListeners();
-    if (index == 0) {
+    if (index == 0)
       setCompanyDetails();
-    }
+    else if (index == 1)
+      setPersonDetails();
+    else if (index == 2) setProductDetails();
   }
 
   Future<void> asyncInit() async {
@@ -293,7 +298,7 @@ class ClientProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void setSelectedProductCategory(dynamic product) async {
+  Future<void> setSelectedProductCategory(dynamic product) async {
     selectedProductCategory = product;
     if (product.toString() != Constants.DROPDOWN_NON_SELECT) {
       setBusy(true);
@@ -328,7 +333,6 @@ class ClientProfileViewModel extends BaseViewModel {
 
   void setCompanyDetails() async {
     await Future.delayed(Duration(milliseconds: 300));
-    print(clientData);
     data[0].matForms.setVariableData(
         COMPANY_DETAIL_EMAIL, clientData[COMPANY_DETAIL_EMAIL]);
     data[0].matForms.setVariableData(
@@ -392,6 +396,42 @@ class ClientProfileViewModel extends BaseViewModel {
       setSelectedCity(clientData[COMPANY_DETAIL_CITY]);
   }
 
+  void setPersonDetails() async {
+    await Future.delayed(Duration(milliseconds: 300));
+    print(clientData);
+
+    if (clientData[CONTACT_PERSON_NAME] != null &&
+        clientData[CONTACT_PERSON_NAME].toString().isNotEmpty)
+      data[1].matForms.setVariableData(
+          CONTACT_PERSON_NAME, clientData[CONTACT_PERSON_NAME]);
+
+    if (clientData[CONTACT_PERSON_DESIGNATION] != null &&
+        clientData[CONTACT_PERSON_DESIGNATION].toString().isNotEmpty)
+      data[1].matForms.setVariableData(
+          CONTACT_PERSON_DESIGNATION, clientData[CONTACT_PERSON_DESIGNATION]);
+  }
+
+  void setProductDetails() async {
+    await Future.delayed(Duration(milliseconds: 300));
+    print(clientData);
+
+    if (clientData[PRODUCT_CATEGORY] != null &&
+        clientData[PRODUCT_CATEGORY].toString().isNotEmpty)
+      await setSelectedProductCategory(clientData[PRODUCT_CATEGORY]);
+
+    if (clientData[PRODUCTS] != null &&
+        clientData[PRODUCTS].toString().isNotEmpty) {
+      List<String> products = clientData[PRODUCTS].toString().split(",");
+      print(products);
+
+      products.forEach((p) {
+        p = p.trim();
+        var i = productsNameList.indexOf(p);
+        setSelectedProduct(i, true);
+      });
+    }
+  }
+
   Future<void> saveCompanyDetails() async {
     if (!isContactValid) {
       showToast("Enter Valid Contact");
@@ -440,6 +480,92 @@ class ClientProfileViewModel extends BaseViewModel {
         print("error => $e");
         setBusy(false);
       }
+    }
+  }
+
+  Future<void> savePersonDetails() async {
+    if (data[1].matForms.dynamicFormKey.currentState != null) {
+      try {
+        setBusy(true);
+        var formData = data[1].matForms.dynamicFormKey.currentState!.value;
+        var reqData = Map<String, dynamic>();
+        formData.forEach((key, value) {
+          reqData[key] = value;
+        });
+        reqData.putIfAbsent("clientId", () => flowDataProvider.currClientId);
+        print(reqData);
+        var response = await ApiService.dio.post(
+            "profile/update_contact_person_details",
+            queryParameters: reqData);
+        if (response.statusCode == 200) {
+          var result = json.decode(response.data);
+          if (result["code"] == "300")
+            showToast(result["message"]);
+          else if (result["code"] == "200")
+            showToast("Successfully Updated person details");
+          else
+            showToast("Something went Wrong!");
+        } else {
+          showToast("Something went Wrong!");
+        }
+        setBusy(false);
+      } catch (e) {
+        showToast("Something went wrong!");
+        print("error => $e");
+        setBusy(false);
+      }
+    }
+  }
+
+  Future<void> saveProductDetails() async {
+    try {
+      setBusy(true);
+      var reqData = Map<String, dynamic>();
+
+      reqData.putIfAbsent("clientId", () => flowDataProvider.currClientId);
+
+      ListItem mProductCategory = productsCategoryList
+          .firstWhere((element) => element.name == selectedProductCategory);
+      reqData.putIfAbsent("productCategory", () => mProductCategory.id);
+
+      String mSelectedProductIds = "";
+      selectedProductIds.forEach((key, value) {
+        if (value) {
+          var thisProduct =
+              productsList.firstWhere((element) => key == element.name);
+          if (mSelectedProductIds.isEmpty)
+            mSelectedProductIds = thisProduct.id;
+          else
+            mSelectedProductIds += "," + thisProduct.id;
+        }
+      });
+
+      if (mSelectedProductIds.isNotEmpty) {
+        reqData.putIfAbsent("products", () => mSelectedProductIds);
+      } else {
+        showToast("Select at least one product");
+        setBusy(false);
+        return;
+      }
+      print(reqData);
+      var response = await ApiService.dio
+          .post("profile/update_product_details", queryParameters: reqData);
+      if (response.statusCode == 200) {
+        var result = json.decode(response.data);
+        if (result["code"] == "300")
+          showToast(result["message"]);
+        else if (result["code"] == "200")
+          showToast("Successfully Updated person details");
+        else
+          showToast("Something went Wrong!");
+      } else {
+        showToast("Something went Wrong!");
+      }
+      setBusy(false);
+    } catch (e) {
+      showToast("Something went wrong!");
+      print("error => $e");
+      setBusy(false);
     }
   }
 }
