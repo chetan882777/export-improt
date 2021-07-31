@@ -58,7 +58,7 @@ class RegisterViewModel extends BaseViewModel {
     }
     if (matForms.dynamicFormKey.currentState != null) {
       var formData = matForms.dynamicFormKey.currentState!.value;
-      var reqData = Map();
+      Map<String, dynamic> reqData = Map();
       formData.forEach((key, value) {
         reqData[key] = value;
       });
@@ -68,11 +68,9 @@ class RegisterViewModel extends BaseViewModel {
         ListItem r = roles.firstWhere((element) => element.name == selectedRole);
         return r.id;
       });
-
-      print(reqData);
       try {
         setBusy(true);
-        var response = await registerApi(formData);
+        var response = await registerApi(reqData);
         setBusy(false);
         Map<String, dynamic> result = json.decode(response);
         if (result["code"] == "400" || result["code"] == "300")
