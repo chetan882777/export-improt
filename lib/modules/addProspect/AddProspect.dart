@@ -120,7 +120,7 @@ class AddProspect extends StatelessWidget {
                           },
                           validator: FormBuilderValidators.compose([
                             FormBuilderValidators.required(context),
-                            FormBuilderValidators.max(context, 70),
+                            FormBuilderValidators.max(context, 80),
                           ]),
                         ),
                         matForms.matEditable(
@@ -129,7 +129,6 @@ class AddProspect extends StatelessWidget {
                           textInputType: TextInputType.emailAddress,
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
                             FormBuilderValidators.email(context)
                           ]),
                         ),
@@ -137,6 +136,7 @@ class AddProspect extends StatelessWidget {
                           variable: "contact",
                           displayText: "Contact number",
                           textInputType: TextInputType.phone,
+                          maxLength: 14,
                           player: (val) {
                             if (val.toString().length >= 10 &&
                                 val.toString().length < 15) {

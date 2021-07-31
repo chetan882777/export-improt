@@ -758,7 +758,6 @@ class ClientProfileViewModel extends BaseViewModel {
       if (response.statusCode == 200) {
         var result = json.decode(response.data);
         if (result["code"] == "300") {
-          showToast(result["message"]);
           flowDataProvider.convertTopPotentialFailures = result["data"];
           Navigator.pushNamed(context, ConvertToPotentialError.ROUTE_NAME);
         } else if (result["code"] == "200")
