@@ -216,6 +216,7 @@ class ClientProfileViewModel extends BaseViewModel {
 
         clientData = flowDataProvider.currClient;
 
+        print(clientData);
         data[0].matForms.setVariableData("email", clientData["email"]);
       } else if (client["code"] == "300") {
         showToast(client["message"]);

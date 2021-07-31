@@ -35,10 +35,15 @@ class MyMeetings extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16, top: 0),
-              child: SingleChildScrollView(
-                child: Consumer(
-                    builder: (context, MyMeetingsViewModel model, child) =>
-                        Column()),
+              child: Consumer(
+                builder: (context, MyMeetingsViewModel model, child) =>
+                    ListView.builder(
+                  itemCount: model.meetingsList.length,
+                  physics: BouncingScrollPhysics(),
+                  itemBuilder: (context, int index) {
+                    return meetingListItem(context, model.meetingsList[index], model, index);
+                  },
+                ),
               ),
             ),
             Consumer(
@@ -56,8 +61,7 @@ class MyMeetings extends StatelessWidget {
     );
   }
 
-  Widget clientInfoWidget(BuildContext context, Map<String, dynamic> data,
-      AddMeetingViewModel model) {
+  Widget meetingListItem(BuildContext context, Map<String, dynamic> data, MyMeetingsViewModel model, int index) {
     return Column(
       children: [
         SizedBox(
@@ -65,68 +69,68 @@ class MyMeetings extends StatelessWidget {
         ),
         Row(
           children: [
-            CircleAvatar(
-              radius: 36,
-              backgroundColor: Theme.of(context).primaryColor,
-              child: CircleAvatar(
-                radius: 32,
-                backgroundColor: Colors.black,
-                child: Text(
-                  data["name"].toString().substring(0, 1).toUpperCase(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 16,
-            ),
             Expanded(
               flex: 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    data["name"].toString(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    data["companyName"],
                     style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Constants.FONT_SIZE_BIG_TEXT,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 4,
+                        color: Colors.black,
+                        fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                        fontWeight: FontWeight.normal),
                   ),
                   Text(
-                    data["address"].toString(),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Text(
-                    data["clientStatus"].toString(),
+                    data["title"],
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: Constants.FONT_SIZE_SMALL_TEXT,
-                        fontWeight: FontWeight.bold),
+                        fontWeight: FontWeight.normal),
                   ),
+                  Row(
+                    children: [
+                      Text(
+                        data["status"],
+                        style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: Constants.FONT_SIZE_SMALL_TEXT,
+                            fontWeight: FontWeight.normal),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        data["date"].toString().length> 10 ? data["date"].toString().substring(0, 10) : data["date"],
+                        style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: Constants.FONT_SIZE_SMALL_TEXT,
+                            fontWeight: FontWeight.normal),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ),
+            InkWell(
+              child: CircleAvatar(
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Icon(Icons.chevron_right, color: Colors.white),
+              ),
+              onTap: () {
+                model.viewMeetingData(index);
+              },
+            )
           ],
         ),
         SizedBox(
           height: 16,
         ),
+        Container(
+          width: double.infinity,
+          height: .25,
+          color: Colors.black54,
+        )
       ],
     );
   }
