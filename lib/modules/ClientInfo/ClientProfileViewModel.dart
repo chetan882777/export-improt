@@ -96,6 +96,7 @@ class ClientProfileViewModel extends BaseViewModel {
 
   bool isContactValid = false;
   bool isBusinessContactValid = false;
+  bool isPotential = false;
 
   ClientProfileViewModel(BuildContext context)
       : clientBusinessTypeNameList = ["Importer", "Exporter"],
@@ -215,6 +216,10 @@ class ClientProfileViewModel extends BaseViewModel {
             MATUtils.getClientDisplayInfo(flowDataProvider.currClient, "clientStatus");
 
         clientData = flowDataProvider.currClient;
+
+        if(clientDisplayData["clientStatus"] == "Potential") {
+          isPotential = true;
+        }
 
         print(clientData);
         data[0].matForms.setVariableData("email", clientData["email"]);

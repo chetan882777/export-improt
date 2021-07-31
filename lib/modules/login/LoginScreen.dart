@@ -15,7 +15,7 @@ class LoginScreen extends StatelessWidget {
   late final BuildContext _ctx;
 
   Future<void> _login(LoginViewModel model) async {
-    //phoneNumberController.text = "9009193663"; // for testing purpose
+    phoneNumberController.text = "9009193663"; // for testing purpose
     if (phoneNumberController.text.isEmpty) {
       showToast('Enter Number Please');
       return;

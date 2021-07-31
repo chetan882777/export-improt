@@ -22,15 +22,19 @@ class ClientProfileProfileTab extends StatelessWidget {
               height: 0.25,
               color: Colors.black12,
             ),
-            Padding(
-              padding: EdgeInsets.only(left: 16, top: 16, bottom: 8, right: 16),
-              child: MATUtils.elevatedBtn(
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  displayText: "Convert to Potential",
-                  player: () {
-                    model.convertToPotential();
-                  }),
+            Offstage(
+              offstage: model.isPotential,
+              child: Padding(
+                padding:
+                    EdgeInsets.only(left: 16, top: 16, bottom: 8, right: 16),
+                child: MATUtils.elevatedBtn(
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
+                    displayText: "Convert to Potential",
+                    player: () {
+                      model.convertToPotential();
+                    }),
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(left: 16, top: 8, bottom: 8, right: 16),

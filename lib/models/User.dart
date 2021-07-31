@@ -145,8 +145,6 @@ class User {
     _clientTrader = json["client_trader"];
     _products = json["products"];
     _error = false;
-
-    _userRole = "BDM";
   }
 
 
