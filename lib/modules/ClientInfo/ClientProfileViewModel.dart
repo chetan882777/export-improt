@@ -11,6 +11,8 @@ import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import 'ConvertToPotentialError.dart';
+
 class ClientProfileViewModel extends BaseViewModel {
   static const String CLIENT_ID_KEY = "clientId";
 
@@ -207,6 +209,10 @@ class ClientProfileViewModel extends BaseViewModel {
   }
 
   Future<void> getClientData() async {
+
+    flowDataProvider.convertTopPotentialFailures = [];
+    flowDataProvider.currMeeting = {};
+
     Map<String, dynamic> client =
         await ApiService.getClient(flowDataProvider.currClientId);
     if (client.isNotEmpty) {
@@ -743,16 +749,19 @@ class ClientProfileViewModel extends BaseViewModel {
     try{
       setBusy(true);
       var response = await ApiService.dio
-          .post("profile/convert_client_status", queryParameters: {
+          .post("profile/convert_client_request", queryParameters: {
+            "userId" : await SharedPrefUtils.getUserId(),
             CLIENT_ID_KEY : flowDataProvider.currClientId,
             "clientStatus" : "Potential"
       });
       print(response.data);
       if (response.statusCode == 200) {
         var result = json.decode(response.data);
-        if (result["code"] == "300")
+        if (result["code"] == "300") {
           showToast(result["message"]);
-        else if (result["code"] == "200")
+          flowDataProvider.convertTopPotentialFailures = result["data"];
+          Navigator.pushNamed(context, ConvertToPotentialError.ROUTE_NAME);
+        } else if (result["code"] == "200")
           Navigator.pushNamed(context, ConvertToPotentialSuccess.ROUTE_NAME);
         else
           showToast("Something went Wrong!");

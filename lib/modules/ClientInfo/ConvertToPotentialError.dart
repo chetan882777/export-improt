@@ -1,13 +1,16 @@
 import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
 import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
+import 'package:agro_worlds/providers/FlowDataProvider.dart';
+import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 
-class ConvertToPotentialSuccess extends StatelessWidget {
-  static final String ROUTE_NAME = "/ConvertToPotentialSuccess";
+class ConvertToPotentialError extends StatelessWidget {
+  static final String ROUTE_NAME = "/ConvertToPotentialError";
 
   final GlobalKey<FormBuilderState> dynamicFormKey =
       GlobalKey<FormBuilderState>();
@@ -27,11 +30,13 @@ class ConvertToPotentialSuccess extends StatelessWidget {
         mapper: mapper,
         saveController: saveVariable);
 
+    FlowDataProvider provider = Provider.of(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: Text(
-          "Success",
+          "Failure",
           style: TextStyle(color: Colors.black),
         ),
         elevation: 0,
@@ -47,32 +52,79 @@ class ConvertToPotentialSuccess extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 32, right: 32, top: 8),
             child: SingleChildScrollView(
-              child:
-              Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: 48,),
+                  SizedBox(
+                    height: 48,
+                  ),
                   SizedBox(
                     height: 100,
                     width: double.infinity,
                     child: CircleAvatar(
-                      child: Icon(Icons.check, size: 56, color: Colors.white),
-                      backgroundColor: Theme.of(context).primaryColor,
+                      child: Icon(Icons.clear, size: 56, color: Colors.white),
+                      backgroundColor: Colors.red,
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Text(
-                    "Request to convert\nprospect into potential\nhas been sent",
+                    "Request to convert\nprospect into potential\ncannot been sent",
                     style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontSize: 32,
-
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xffebecec),
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(16),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: provider.convertTopPotentialFailures.length,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (context, int index) {
+                          return Padding(
+                            padding: EdgeInsets.only(
+                                top: 8, bottom: 8, left: 16, right: 16),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.circle,
+                                  color: Colors.black,
+                                  size: 8,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  provider.convertTopPotentialFailures[index]
+                                      .toString(),
+                                  style: TextStyle(
+                                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                      color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Align(
                     alignment: Alignment.center,
                     child: SizedBox(
@@ -84,27 +136,6 @@ class ConvertToPotentialSuccess extends StatelessWidget {
                         padding: EdgeInsets.only(left: 20, right: 20),
                         player: () {
                           Navigator.pop(context);
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: SizedBox(
-                      child: matForms.matOutlineButton(
-                        textColor: Colors.black,
-                        alignment: Alignment.center,
-                        displayText: "View all clients",
-                        borderWidth: 1.5,
-                        borderColor: Colors.black87,
-                        displayTextSize: 20,
-                        padding: EdgeInsets.only(
-                            left: 28, right: 28, top: 4, bottom: 4),
-                        player: () {
-                          Navigator.pushReplacementNamed(context, AllClients.ROUTE_NAME);
                         },
                       ),
                     ),

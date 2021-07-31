@@ -1,4 +1,5 @@
 import 'package:agro_worlds/modules/ClientInfo/ClientProfile.dart';
+import 'package:agro_worlds/modules/ClientInfo/ConvertToPotentialError.dart';
 import 'package:agro_worlds/modules/ClientInfo/ConvertToPotentialSuccess.dart';
 import 'package:agro_worlds/modules/addMeeting/AddMeeting.dart';
 import 'package:agro_worlds/modules/addProspect/AddProspect.dart';
@@ -64,6 +65,8 @@ class AgroWorld extends StatelessWidget {
           MeetingInfo.ROUTE_NAME: (ctx) => MeetingInfo(),
           ConvertToPotentialSuccess.ROUTE_NAME: (ctx) =>
               ConvertToPotentialSuccess(),
+          ConvertToPotentialError.ROUTE_NAME: (ctx) =>
+              ConvertToPotentialError(),
           MyMeetings.ROUTE_NAME: (ctx) => MyMeetings(),
         },
       ),
