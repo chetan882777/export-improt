@@ -42,12 +42,20 @@ class AddMeetingViewModel extends BaseViewModel {
       showMeetingStatus = false;
       if(flowDataProvider.currMeeting.isNotEmpty) {
         await Future.delayed(Duration(milliseconds: 300));
+        print(flowDataProvider.currMeeting);
         matForms.setVariableData("title", flowDataProvider.currMeeting["title"]);
         matForms.setVariableData("agenda", flowDataProvider.currMeeting["agenda"]);
         matForms.setVariableData("address", flowDataProvider.currMeeting["address"]);
         matForms.setVariableData("place", flowDataProvider.currMeeting["place"]);
-        matForms.setVariableData("time", flowDataProvider.currMeeting["time"].toString().substring(11, 16));
-        matForms.setVariableData("date", flowDataProvider.currMeeting["date"].toString().substring(0, 10));
+        try {
+          matForms.setVariableData("time",
+              flowDataProvider.currMeeting["time"].toString().substring(
+                  11, 16));
+          matForms.setVariableData("date",
+              flowDataProvider.currMeeting["date"].toString().substring(0, 10));
+        }catch(e) {}
+        selectedMeetingStatus = flowDataProvider.currMeeting["status"];
+        print("selectedMeetingStatus $selectedMeetingStatus");
         selectedMeetingMode = flowDataProvider.currMeeting["mode"];
         showMeetingStatus = true;
         notifyListeners();
@@ -81,11 +89,21 @@ class AddMeetingViewModel extends BaseViewModel {
          reqData[key] = value;
        });
        String? id = await SharedPrefUtils.getUserId();
+
        reqData.putIfAbsent("userId", () => id);
        reqData.putIfAbsent("clientId", () => flowDataProvider.currClient["id"]);
        reqData.putIfAbsent("mode", () => selectedMeetingMode);
+       reqData.putIfAbsent("status", () => selectedMeetingStatus);
 
-       await addMeetingApiCall(reqData);
+
+       if(!flowDataProvider.currMeeting.containsKey("id")) {
+         print(reqData);
+         await addMeetingApiCall(reqData);
+       } else {
+         reqData.putIfAbsent("meetingId", () => flowDataProvider.currMeeting["id"]);
+         print(reqData);
+         await updateMeetingApiCall(reqData);
+       }
        setBusy(false);
 
      } catch(e) {
@@ -95,11 +113,9 @@ class AddMeetingViewModel extends BaseViewModel {
    }
   }
 
-
   Future<void> addMeetingApiCall(Map<String, dynamic> formData) async {
-    var response = await ApiService.dio.post("profile/add_meeting", queryParameters: formData);
+    var response = await ApiService.dio.post("meetings/add_meeting", queryParameters: formData);
 
-    print(response.requestOptions.uri);
     if (response.statusCode == 200) {
       var result = json.decode(response.data);
       if (result["code"] == "300")
@@ -110,6 +126,26 @@ class AddMeetingViewModel extends BaseViewModel {
         Navigator.pop(context);
         Navigator.pop(context);
       });
+      else
+        showToast("Something went Wrong!");
+    } else {
+      showToast("Something went Wrong!");
+    }
+  }
+
+  Future<void> updateMeetingApiCall(Map<String, dynamic> formData) async {
+    var response = await ApiService.dio.post("meetings/update_meeting", queryParameters: formData);
+
+    if (response.statusCode == 200) {
+      var result = json.decode(response.data);
+      if (result["code"] == "300")
+        showToast(result["message"]);
+      else if (result["code"] == "200")
+        MATUtils.showAlertDialog(
+            "Updated meeting with ${clientDisplayData["name"]}", context, () {
+          Navigator.pop(context);
+          Navigator.pop(context);
+        });
       else
         showToast("Something went Wrong!");
     } else {

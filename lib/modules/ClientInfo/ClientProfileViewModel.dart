@@ -264,7 +264,7 @@ class ClientProfileViewModel extends BaseViewModel {
 
   Future<void> getMeetingsData() async {
     var id = await SharedPrefUtils.getUserId();
-    var response = await ApiService.dio.post("profile/get_client_meetings",
+    var response = await ApiService.dio.post("meetings/get_client_meetings",
         queryParameters: {
           "userId": id,
           CLIENT_ID_KEY: flowDataProvider.currClientId

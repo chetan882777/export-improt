@@ -72,7 +72,7 @@ class ClientProfileMeetingsTab extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          "Scheduled",
+                          data["status"].toString().isNotEmpty?data["status"]:"N/A",
                           style: TextStyle(
                               fontSize: Constants.FONT_SIZE_SMALL_TEXT,
                               color: Theme.of(context).primaryColor),
