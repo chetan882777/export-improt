@@ -38,7 +38,7 @@ class AddMeetingViewModel extends BaseViewModel {
           () => Navigator.pop(context));
     } else {
       clientDisplayData =
-          MATUtils.getClientDisplayInfo(flowDataProvider.currClient, "clientStatus");
+          MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
       showMeetingStatus = false;
       if(flowDataProvider.currMeeting.isNotEmpty) {
         await Future.delayed(Duration(milliseconds: 300));

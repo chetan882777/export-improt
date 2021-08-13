@@ -219,7 +219,7 @@ class ClientProfileViewModel extends BaseViewModel {
       if (client["code"] == "200") {
         flowDataProvider.currClient = client["data"];
         clientDisplayData =
-            MATUtils.getClientDisplayInfo(flowDataProvider.currClient, "clientStatus");
+            MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
 
         clientData = flowDataProvider.currClient;
 

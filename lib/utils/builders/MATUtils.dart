@@ -7,9 +7,9 @@ import '../Constants.dart';
 class MATUtils {
   static Widget showLoader(
       {required BuildContext context,
-        double size = 30.0,
-        double opacity = 0.7,
-        required bool isLoadingVar}) {
+      double size = 30.0,
+      double opacity = 0.7,
+      required bool isLoadingVar}) {
     return Visibility(
       visible: isLoadingVar,
       child: Container(
@@ -62,11 +62,11 @@ class MATUtils {
 
   static Widget elevatedBtn(
       {required Color color,
-        required Color textColor,
-        required String displayText,
-        required Function player,
-        double fontSize = Constants.FONT_SIZE_NORMAL_TEXT,
-        EdgeInsets padding = const EdgeInsets.all(8)}) {
+      required Color textColor,
+      required String displayText,
+      required Function player,
+      double fontSize = Constants.FONT_SIZE_NORMAL_TEXT,
+      EdgeInsets padding = const EdgeInsets.all(8)}) {
     return ElevatedButton(
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all(color),
@@ -89,7 +89,8 @@ class MATUtils {
         });
   }
 
-  static Map<String, dynamic> getClientDisplayInfo(Map<String, dynamic> element, String statusKey) {
+  static Map<String, dynamic> getClientDisplayInfo(
+      Map<String, dynamic> element) {
     Map<String, dynamic> map = Map();
     map.putIfAbsent("name", () {
       if (element["companyName"] != null) {
@@ -123,8 +124,12 @@ class MATUtils {
     });
 
     map.putIfAbsent("clientStatus", () {
-      if (element[statusKey] != null) {
-        return element[statusKey];
+      if (element.containsKey("client_status") &&
+          element["client_status"] != null) {
+        return element["client_status"];
+      } else if (element.containsKey("clientStatus") &&
+          element["clientStatus"] != null) {
+        return element["clientStatus"];
       } else {
         return "N/A";
       }
@@ -148,5 +153,4 @@ class MATUtils {
 
     return map;
   }
-
 }

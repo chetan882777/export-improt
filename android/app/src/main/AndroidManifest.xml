@@ -4,8 +4,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:icon="@mipmap/ic_launcher"
-        android:label="agro_worlds">
+        android:icon="@mipmap/agroworld_appicon"
+        android:label="Agro Worlds">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"

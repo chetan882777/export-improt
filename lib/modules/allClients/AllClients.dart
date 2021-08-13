@@ -115,7 +115,7 @@ class AllClients extends StatelessWidget {
                                       AllClientsViewModel.ORDER_BY_NAME);
                                 },
                                 child: Image.asset(
-                                  Constants.SORT_AZ_ICON,
+                                  model.currentOrderedBy == AllClientsViewModel.ORDER_BY_NAME? Constants.SORT_AZ_ACTIVE_ICON : Constants.SORT_AZ_ICON,
                                   height: 24,
                                   width: 24,
                                 ),
