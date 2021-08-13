@@ -7,16 +7,31 @@ import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
+import 'package:dio/src/response.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class AllClientsViewModel extends BaseViewModel {
+  static const String ORDER_BY_ASC = "asc";
+  static const String ORDER_BY_DESC = "desc";
+  static const String ORDER_BY_TIME = "time";
+  static const String ORDER_BY_NAME = "name";
+
+  String currentOrderedBy = ORDER_BY_TIME;
+  String currentOrderDirection = ORDER_BY_DESC;
+
   MATForms matForms;
   List<Map<String, dynamic>> clientsList = [];
   List<ListItem> allProductsList = [];
   List<String> allProductsNameList = [];
   String selectedProduct = Constants.DROPDOWN_NON_SELECT;
-  List<String> stageNameList = [Constants.DROPDOWN_NON_SELECT, "Prospect", "Potential", "Client"];
+  List<String> stageNameList = [
+    Constants.DROPDOWN_NON_SELECT,
+    "Prospect",
+    "Potential",
+    "Client"
+  ];
   String selectedStage = Constants.DROPDOWN_NON_SELECT;
+  bool isFilterApplied = false;
 
   AllClientsViewModel(BuildContext context, this.matForms) : super(context) {
     asyncInit();
@@ -34,30 +49,32 @@ class AllClientsViewModel extends BaseViewModel {
       var response = await ApiService.dio.post("/profile/user_clients",
           queryParameters: {"id": await SharedPrefUtils.getUserId()});
 
-      if (response.statusCode == 200) {
-        var result = json.decode(response.data);
-        if (result["code"] == "200") {
-          clientsList.clear();
-          List list = result["data"];
-          list.forEach((element) {
-            clientsList.add(
-                MATUtils.getClientDisplayInfo(element, "clientStatus"));
-          });
-          print(clientsList);
-        } else if (result["code"] == "300") {
-          showToast(result["message"]);
-        } else {
-          showToast("Something went wrong!");
-        }
-      } else
-        showToast("Something went wrong!");
-    } catch(e) {
+      handleResponse(response);
+    } catch (e) {
       showToast("Something went wrong!");
     }
   }
-  
+
+  void handleResponse(Response<dynamic> response) {
+    if (response.statusCode == 200) {
+      var result = json.decode(response.data);
+      if (result["code"] == "200") {
+        clientsList.clear();
+        List list = result["data"];
+        list.forEach((element) {
+          clientsList
+              .add(MATUtils.getClientDisplayInfo(element, "clientStatus"));
+        });
+      } else if (result["code"] == "300")
+        showToast(result["message"]);
+      else
+        showToast("Something went wrong!");
+    } else
+      showToast("Something went wrong!");
+  }
+
   Future<void> loadProducts() async {
-    try{
+    try {
       List<ListItem> productCategories = await ApiService.productCategories();
       List<ListItem> allProducts = [];
       await Future.forEach(productCategories, (ListItem element) async {
@@ -70,32 +87,33 @@ class AllClientsViewModel extends BaseViewModel {
       allProductsList.forEach((element) {
         allProductsNameList.add(element.name);
       });
-    } catch(e) {}
+    } catch (e) {}
   }
 
-  void setSelectedProduct (dynamic val) {
+  void setSelectedProduct(dynamic val) {
     selectedProduct = val;
     notifyListeners();
   }
 
-
-  void setSelectedStage (dynamic val) {
+  void setSelectedStage(dynamic val) {
     selectedStage = val;
     notifyListeners();
   }
 
   Future<void> filterList(String name) async {
     setBusy(true);
-    try{
+    try {
       Map<String, String> map = {};
       map["companyName"] = name;
 
-      if(selectedProduct != Constants.DROPDOWN_NON_SELECT)
-        map["product"] = allProductsList.firstWhere((element) => element.name == selectedProduct).id;
+      if (selectedProduct != Constants.DROPDOWN_NON_SELECT)
+        map["product"] = allProductsList
+            .firstWhere((element) => element.name == selectedProduct)
+            .id;
       else
         map["product"] = "";
 
-      if(selectedStage != Constants.DROPDOWN_NON_SELECT)
+      if (selectedStage != Constants.DROPDOWN_NON_SELECT)
         map["clientStatus"] = selectedStage;
       else
         map["clientStatus"] = "";
@@ -103,30 +121,46 @@ class AllClientsViewModel extends BaseViewModel {
       String? userId = await SharedPrefUtils.getUserId();
       map["userId"] = userId!;
 
-      print(map);
-      var response = await ApiService.dio.request("/profile/filter_user_clients", queryParameters: map);
+      var response = await ApiService.dio
+          .request("/profile/filter_user_clients", queryParameters: map);
 
-      print(response);
-      if (response.statusCode == 200) {
-        var result = json.decode(response.data);
-        if (result["code"] == "200") {
-          clientsList.clear();
-          List list = result["data"];
-          list.forEach((element) {
-            clientsList.add(
-                MATUtils.getClientDisplayInfo(element, "client_status"));
-          });
-          print(clientsList);
-        } else if (result["code"] == "300") {
-          showToast(result["message"]);
-        } else {
-          showToast("Something went wrong!");
-        }
-      } else
-        showToast("Something went wrong!");
-    } catch(e) {
-      showToast("Failed To apply filters");
+      handleResponse(response);
+    } catch (e) {
+      showToast("Failed to apply filters");
     }
     setBusy(false);
+  }
+
+  Future<void> sortClients(String sortBy) async {
+    setBusy(true);
+    try {
+      Map<String, String> map = {};
+
+      String? userId = await SharedPrefUtils.getUserId();
+      map["id"] = userId!;
+      map["sortBy"] = sortBy;
+
+      if (currentOrderedBy == sortBy) {
+        if (currentOrderDirection == ORDER_BY_ASC)
+          currentOrderDirection = ORDER_BY_DESC;
+        else if (currentOrderDirection == ORDER_BY_DESC)
+          currentOrderDirection = ORDER_BY_ASC;
+      } else if (sortBy == ORDER_BY_NAME)
+        currentOrderDirection = ORDER_BY_ASC;
+      else
+        currentOrderDirection = ORDER_BY_DESC;
+
+      currentOrderedBy = sortBy;
+      map["sortTo"] = currentOrderDirection;
+
+      var response = await ApiService.dio
+          .post("profile/user_clients", queryParameters: map);
+
+      handleResponse(response);
+    } catch (e) {
+      showToast("Failed while sorting");
+    }
+    setBusy(false);
+    currentOrderedBy = sortBy;
   }
 }

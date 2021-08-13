@@ -97,19 +97,28 @@ class AllClients extends StatelessWidget {
                                 width: 4,
                               ),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  model.sortClients(
+                                      AllClientsViewModel.ORDER_BY_TIME);
+                                },
                                 icon: Icon(
                                   Icons.access_time,
-                                  color: Theme.of(context).primaryColor,
+                                  color: model.currentOrderedBy == AllClientsViewModel.ORDER_BY_TIME ? Theme.of(context).primaryColor : Colors.black54,
                                 ),
                               ),
                               SizedBox(
                                 width: 4,
                               ),
-                              Image.asset(
-                                Constants.SORT_AZ_ICON,
-                                height: 24,
-                                width: 24,
+                              InkWell(
+                                onTap: () {
+                                  model.sortClients(
+                                      AllClientsViewModel.ORDER_BY_NAME);
+                                },
+                                child: Image.asset(
+                                  Constants.SORT_AZ_ICON,
+                                  height: 24,
+                                  width: 24,
+                                ),
                               ),
                               SizedBox(
                                 width: 4,
