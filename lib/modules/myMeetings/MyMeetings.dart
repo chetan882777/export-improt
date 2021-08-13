@@ -19,9 +19,11 @@ class MyMeetings extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: Text(
-            "My meetings",
-            style: TextStyle(color: Colors.black),
+          title: Consumer(
+            builder: (context, MyMeetingsViewModel model, child) => Text(
+              model.title,
+              style: TextStyle(color: Colors.black),
+            ),
           ),
           elevation: 0,
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
@@ -41,7 +43,8 @@ class MyMeetings extends StatelessWidget {
                   itemCount: model.meetingsList.length,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (context, int index) {
-                    return meetingListItem(context, model.meetingsList[index], model, index);
+                    return meetingListItem(
+                        context, model.meetingsList[index], model, index);
                   },
                 ),
               ),
@@ -61,7 +64,8 @@ class MyMeetings extends StatelessWidget {
     );
   }
 
-  Widget meetingListItem(BuildContext context, Map<String, dynamic> data, MyMeetingsViewModel model, int index) {
+  Widget meetingListItem(BuildContext context, Map<String, dynamic> data,
+      MyMeetingsViewModel model, int index) {
     return Column(
       children: [
         SizedBox(
@@ -101,7 +105,9 @@ class MyMeetings extends StatelessWidget {
                         width: 8,
                       ),
                       Text(
-                        data["date"].toString().length> 10 ? data["date"].toString().substring(0, 10) : data["date"],
+                        data["date"].toString().length > 10
+                            ? data["date"].toString().substring(0, 10)
+                            : data["date"],
                         style: TextStyle(
                             color: Colors.black38,
                             fontSize: Constants.FONT_SIZE_SMALL_TEXT,

@@ -4,14 +4,21 @@ import 'package:agro_worlds/modules/BaseViewModel.dart';
 import 'package:agro_worlds/modules/addMeeting/AddMeeting.dart';
 import 'package:agro_worlds/network/ApiService.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
-import 'package:agro_worlds/utils/builders/MATUtils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class MyMeetingsViewModel extends BaseViewModel {
+  static const MEETINGS_LIST_OF_ALL = "all";
+  static const MEETINGS_LIST_OF_INLINE = "inline";
+  static const MEETINGS_LIST_OF_DONE = "done";
+  static const MEETINGS_LIST_OF_FOLLOW_UP = "followUp";
+
+  static const USER_ID_KEY = "userId";
+
+  String title = "My meetings";
   var userId;
-  List<Map<String, dynamic>> clientsList = [];
+
   List<Map<String, dynamic>> meetingsList = [];
 
   MyMeetingsViewModel(BuildContext context) : super(context) {
@@ -21,63 +28,33 @@ class MyMeetingsViewModel extends BaseViewModel {
   Future<void> asyncInit() async {
     try {
       setBusy(true);
+
       userId = await SharedPrefUtils.getUserId();
-
-      //await getUserMeetings();
-
-      await loadClients();
-      await Future.forEach(clientsList, (element) async {
-        if (element != null) {
-          Map curr = element as Map<String, dynamic>;
-          var list = await getMeetingsData(userId, curr["id"]);
-          list.forEach((element) {
-            Map t = element as Map<String, dynamic>;
-            t.putIfAbsent("companyName", () => curr["name"]);
-            meetingsList.add(element);
-          });
-        }
-      });
-      if(meetingsList.isEmpty) {
-        showToast("No Meetings found");
+      if (flowDataProvider.showMeetingsListOf == MEETINGS_LIST_OF_ALL) {
+        title = "My meetings";
+        await getUserAllMeetings();
+      } else if (flowDataProvider.showMeetingsListOf == MEETINGS_LIST_OF_DONE) {
+        title = "Meetings done";
+        await getUserDoneMeetings();
+      } else if (flowDataProvider.showMeetingsListOf ==
+          MEETINGS_LIST_OF_INLINE) {
+        title = "Meetings inline";
+        await getUserInlineMeetings();
+      } else if (flowDataProvider.showMeetingsListOf ==
+          MEETINGS_LIST_OF_FOLLOW_UP) {
+        title = "Follow up meetings";
+        await getUserFollowUpMeetings();
+      } else {
+        title = "My meetings";
+        await getUserAllMeetings();
       }
+
+      if (meetingsList.isEmpty) showToast("No Meetings found");
       setBusy(false);
-    }catch(e) {
+    } catch (e) {
       setBusy(false);
       showToast("Something went Wrong!");
     }
-  }
-
-  Future<void> fetchAllMeetings() async {}
-
-  Future<void> loadClients() async {
-    var response = await ApiService.dio.post("/profile/user_clients",
-        queryParameters: {"id": await SharedPrefUtils.getUserId()});
-
-    if (response.statusCode == 200) {
-      var result = json.decode(response.data);
-      if (result["code"] == "200") {
-        List list = result["data"];
-        list.forEach((element) {
-          clientsList
-              .add(MATUtils.getClientDisplayInfo(element, "client_status"));
-        });
-      } else
-        showToast("Something went wrong!");
-    } else
-      showToast("Something went wrong!");
-  }
-
-  Future<List<dynamic>> getMeetingsData(String id, String clientId) async {
-    var response = await ApiService.dio.post("meetings/get_client_meetings",
-        queryParameters: {"userId": id, "clientId": clientId});
-    print(response.requestOptions.uri);
-    if (response.statusCode == 200) {
-      var data = json.decode(response.data);
-      if (data["code"] == "200") {
-        return data["data"];
-      }
-    }
-    return [];
   }
 
   void viewMeetingData(int index) async {
@@ -90,15 +67,32 @@ class MyMeetingsViewModel extends BaseViewModel {
       flowDataProvider.currClient = client["data"];
       Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
       setBusy(false);
-    } catch(e) {
+    } catch (e) {
       showToast("Something went wrong!");
       setBusy(false);
     }
   }
 
-  Future<void> getUserMeetings() async {
-    var response = await ApiService.dio.post("profile/get_user_meetings",
-        queryParameters: {"userId":  await SharedPrefUtils.getUserId()});
+  Future<void> getUserAllMeetings() async {
+    await getUserMeetings({USER_ID_KEY: userId!});
+  }
+
+  Future<void> getUserDoneMeetings() async {
+    await getUserMeetings({USER_ID_KEY: userId!, "status": "Completed"});
+  }
+
+  Future<void> getUserInlineMeetings() async {
+    await getUserMeetings({USER_ID_KEY: userId!, "status": "Scheduled"});
+  }
+
+  Future<void> getUserFollowUpMeetings() async {
+    await getUserMeetings(
+        {USER_ID_KEY: userId!, "meetingType": "First Meeting"});
+  }
+
+  Future<void> getUserMeetings(Map<String, String> map) async {
+    var response = await ApiService.dio
+        .post("meetings/get_user_meetings", queryParameters: map);
     if (response.statusCode == 200) {
       var data = json.decode(response.data);
       if (data["code"] == "200") {
@@ -106,7 +100,11 @@ class MyMeetingsViewModel extends BaseViewModel {
         list.forEach((element) {
           meetingsList.add(element);
         });
-      }
-    }
+      } else if (data["code"] == "300") {
+        showToast(data["message"]);
+      } else
+        showToast("Something went wrong!");
+    } else
+      showToast("Something went wrong!");
   }
 }

@@ -3,6 +3,7 @@ import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardViewModel.dart';
 import 'package:agro_worlds/modules/drawer/AgroWorldsDrawer.dart';
 import 'package:agro_worlds/modules/myMeetings/MyMeetings.dart';
+import 'package:agro_worlds/modules/myMeetings/MyMeetingsViewModel.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
@@ -72,13 +73,18 @@ class DashboardScreen extends StatelessWidget {
                               largeText: model.totalLeads,
                               smallText: "Total Leads",
                               bgColor: const Color(0xffaf8b46),
-                              player: () {}),
+                              player: () {
+                                Navigator.pushNamed(context, AllClients.ROUTE_NAME);
+                              }),
                           infoWidget(
                               context: context,
                               largeText: model.meetingsInline,
                               smallText: "Meetings inline",
                               bgColor: const Color(0xffbd9b5b),
-                              player: () {})
+                              player: () {
+                                model.flowDataProvider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_INLINE;
+                                Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
+                              })
                         ],
                       ),
                       Row(
@@ -88,13 +94,19 @@ class DashboardScreen extends StatelessWidget {
                               largeText: model.meetingsDone,
                               smallText: "Meetings done",
                               bgColor: const Color(0xffbd9b5b),
-                              player: () {}),
+                              player: () {
+                                model.flowDataProvider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_DONE;
+                                Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
+                              }),
                           infoWidget(
                               context: context,
                               largeText: model.followUpMeetings,
                               smallText: "Follow up meetings",
                               bgColor: const Color(0xffaf8b46),
-                              player: () {})
+                              player: () {
+                                model.flowDataProvider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_FOLLOW_UP;
+                                Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
+                              })
                         ],
                       ),
                       Row(
@@ -161,6 +173,7 @@ class DashboardScreen extends StatelessWidget {
                           icon: CupertinoIcons.rectangle_stack_person_crop,
                           displayText: "My Meetings",
                           player: () {
+                            model.flowDataProvider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_ALL;
                             Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
                           }),
                     ],
