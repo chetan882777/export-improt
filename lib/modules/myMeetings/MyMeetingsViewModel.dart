@@ -22,6 +22,9 @@ class MyMeetingsViewModel extends BaseViewModel {
     try {
       setBusy(true);
       userId = await SharedPrefUtils.getUserId();
+
+      //await getUserMeetings();
+
       await loadClients();
       await Future.forEach(clientsList, (element) async {
         if (element != null) {
@@ -95,6 +98,20 @@ class MyMeetingsViewModel extends BaseViewModel {
     } catch(e) {
       showToast("Something went wrong!");
       setBusy(false);
+    }
+  }
+
+  Future<void> getUserMeetings() async {
+    var response = await ApiService.dio.post("profile/get_user_meetings",
+        queryParameters: {"userId":  await SharedPrefUtils.getUserId()});
+    if (response.statusCode == 200) {
+      var data = json.decode(response.data);
+      if (data["code"] == "200") {
+        List<dynamic> list = data["data"];
+        list.forEach((element) {
+          meetingsList.add(element);
+        });
+      }
     }
   }
 }

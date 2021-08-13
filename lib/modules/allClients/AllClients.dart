@@ -24,9 +24,6 @@ class AllClients extends StatelessWidget {
 
   late final MATForms matForms;
 
-  final searchByNameController = TextEditingController();
-  final searchByLocationController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     matForms = MATForms(
@@ -82,7 +79,7 @@ class AllClients extends StatelessWidget {
                                   displayText: "Filter",
                                   padding: EdgeInsets.only(left: 8, right: 8),
                                   player: () {
-                                    showFilterBottomSheet(context);
+                                    showFilterBottomSheet(context, model);
                                   },
                                 ),
                               ),
@@ -129,7 +126,8 @@ class AllClients extends StatelessWidget {
                               itemCount: model.clientsList.length,
                               physics: BouncingScrollPhysics(),
                               itemBuilder: (context, int index) {
-                                return clientListItem(context, model.clientsList[index], model);
+                                return clientListItem(
+                                    context, model.clientsList[index], model);
                               },
                             ),
                           )
@@ -151,108 +149,19 @@ class AllClients extends StatelessWidget {
     );
   }
 
-  void showFilterBottomSheet(BuildContext context) {
+  void showFilterBottomSheet(BuildContext context, AllClientsViewModel model) {
     showModalBottomSheet(
         context: context,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16.0),
         ),
         builder: (context) {
-          return Padding(
-            padding: EdgeInsets.only(left: 32, right: 32, top: 8, bottom: 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Container(
-                      width: 100,
-                      height: 5,
-                      decoration: BoxDecoration(
-                          color: const Color(0xffd9dadb),
-                          border: Border.all(
-                              width: 1, color: const Color(0xffd9dadb)),
-                          borderRadius: BorderRadius.all(Radius.circular(5))),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  "Search by name",
-                  style: TextStyle(
-                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                      color: Colors.black),
-                ),
-                buildTextField("Enter here ..", searchByNameController),
-                Text(
-                  "Search by location",
-                  style: TextStyle(
-                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                      color: Colors.black),
-                ),
-                buildTextField("Enter state/city", searchByLocationController),
-                Text(
-                  "Search by stage",
-                  style: TextStyle(
-                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                      color: Colors.black),
-                ),
-                SizedBox(
-                  height: 8,
-                ),
-                matForms.borderedDropDown(
-                    borderColor: Colors.black54,
-                    borderRadius: 8,
-                    fontWeight: FontWeight.normal,
-                    items: ["Prospect", "Potentials"],
-                    displayValue: "Prospect",
-                    player: (val) {}),
-                SizedBox(
-                  height: 8,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: matForms.elevatedBtn(
-                      color: Theme.of(context).primaryColor,
-                      textColor: Colors.white,
-                      displayText: "Filter",
-                      player: () {}),
-                )
-              ],
-            ),
-          );
+          return ModelBottomSheetWidget(model, matForms);
         });
   }
 
-  Widget buildTextField(String labelText, TextEditingController listener) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 8, 0, 14),
-      child: SizedBox(
-        height: 48,
-        child: TextField(
-          keyboardType: TextInputType.name,
-          controller: listener,
-          style: TextStyle(color: Color(0xff313136)),
-          decoration: InputDecoration(
-            hintText: labelText,
-            hintStyle: TextStyle(color: Colors.grey),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.black54),
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          obscureText: false,
-        ),
-      ),
-    );
-  }
-
-  Widget clientListItem(BuildContext context, Map<String, dynamic> data, AllClientsViewModel model) {
+  Widget clientListItem(BuildContext context, Map<String, dynamic> data,
+      AllClientsViewModel model) {
     return Column(
       children: [
         SizedBox(
@@ -330,7 +239,7 @@ class AllClients extends StatelessWidget {
               ),
               onTap: () async {
                 if (await canLaunch('tel:${data["contact"]}')) {
-                await launch('tel:${data["contact"]}');
+                  await launch('tel:${data["contact"]}');
                 } else {
                   model.showToast("Failed to call ${data["contact"]}");
                 }
@@ -360,6 +269,136 @@ class AllClients extends StatelessWidget {
           color: Colors.black54,
         )
       ],
+    );
+  }
+}
+
+class ModelBottomSheetWidget extends StatefulWidget {
+  MATForms matForms;
+  AllClientsViewModel model;
+
+  ModelBottomSheetWidget(this.model, this.matForms);
+
+  @override
+  State<StatefulWidget> createState() => ModelBottomSheetWidgetState();
+}
+
+class ModelBottomSheetWidgetState extends State<ModelBottomSheetWidget> {
+  final searchByNameController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 32, right: 32, top: 8, bottom: 8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            child: Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: 100,
+                height: 5,
+                decoration: BoxDecoration(
+                    color: const Color(0xffd9dadb),
+                    border:
+                        Border.all(width: 1, color: const Color(0xffd9dadb)),
+                    borderRadius: BorderRadius.all(Radius.circular(5))),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Text(
+            "Search by name",
+            style: TextStyle(
+                fontSize: Constants.FONT_SIZE_NORMAL_TEXT, color: Colors.black),
+          ),
+          buildTextField("Enter here ..", searchByNameController),
+          Text(
+            "Search by product",
+            style: TextStyle(
+                fontSize: Constants.FONT_SIZE_NORMAL_TEXT, color: Colors.black),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          widget.matForms.borderedDropDown(
+              borderColor: Colors.black54,
+              borderRadius: 8,
+              fontWeight: FontWeight.normal,
+              items: widget.model.allProductsNameList,
+              displayValue: widget.model.selectedProduct,
+              player: (val) {
+                setState(() {
+                  widget.model.setSelectedProduct(val);
+                });
+              }),
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            "Search by stage",
+            style: TextStyle(
+                fontSize: Constants.FONT_SIZE_NORMAL_TEXT, color: Colors.black),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          widget.matForms.borderedDropDown(
+              borderColor: Colors.black54,
+              borderRadius: 8,
+              fontWeight: FontWeight.normal,
+              items: widget.model.stageNameList,
+              displayValue: widget.model.selectedStage,
+              player: (val) {
+                setState(() {
+                  widget.model.setSelectedStage(val);
+                });
+              }),
+          SizedBox(
+            height: 8,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: widget.matForms.elevatedBtn(
+                color: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+                displayText: "Filter",
+                player: () {
+                  String name = searchByNameController.text;
+                  widget.model.filterList(name);
+                  Navigator.pop(context);
+                }),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget buildTextField(String labelText, TextEditingController listener) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 14),
+      child: SizedBox(
+        height: 48,
+        child: TextField(
+          keyboardType: TextInputType.name,
+          controller: listener,
+          style: TextStyle(color: Color(0xff313136)),
+          decoration: InputDecoration(
+            hintText: labelText,
+            hintStyle: TextStyle(color: Colors.grey),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.black54),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          obscureText: false,
+        ),
+      ),
     );
   }
 }

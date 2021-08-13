@@ -59,7 +59,6 @@ class ApiService {
     print(forState);
     var response =
     await ApiService.dio.post("profile/cities?state_id=${int.parse(forState)}");
-    print("res ${response.requestOptions.uri}");
     if (response.statusCode == 200)
       return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
     else
@@ -69,7 +68,6 @@ class ApiService {
   static Future<List<ListItem>> productCategories() async {
     var response =
     await ApiService.dio.post("profile/product_categories");
-    print("res ${response.requestOptions.uri}");
     if (response.statusCode == 200)
       return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
     else
@@ -79,7 +77,6 @@ class ApiService {
   static Future<List<ListItem>> productsList(String forProductCategory) async {
     var response =
     await ApiService.dio.post("profile/products?category_id=${int.parse(forProductCategory)}");
-    print("res ${response.requestOptions.uri}");
     if (response.statusCode == 200)
       return ListBuilder.fromJson(json.decode(response.data), LIST_TYPE_ROLE).roleList;
     else
