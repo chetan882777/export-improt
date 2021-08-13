@@ -34,8 +34,11 @@ class AllClientsViewModel extends BaseViewModel {
         });
         print(clientsList);
 
-      } else
+      } else if (result["code"] == "300") {
+        showToast(result["message"]);
+      } else {
         showToast("Something went wrong!");
+      }
     } else
       showToast("Something went wrong!");
   }
