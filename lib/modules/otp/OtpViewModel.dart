@@ -36,7 +36,6 @@ class OtpViewModel extends BaseViewModel {
   void reLogin() async{
     try {
       var response = await _loginController.login(flowDataProvider.phone);
-      print(response);
       Map<String, dynamic> result = json.decode(response);
       if (result["code"] == "200") {
         flowDataProvider.otp = result["data"]["OTP"];
@@ -70,6 +69,8 @@ class OtpViewModel extends BaseViewModel {
       } catch(e) {
         showToast("Something went Wrong!");
       }
+    } else {
+      showToast("Invalid OTP");
     }
   }
 }
