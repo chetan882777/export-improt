@@ -37,9 +37,6 @@ class MyMeetingsViewModel extends BaseViewModel {
           });
         }
       });
-      meetingsList.forEach((element) {
-        print(element);
-      });
       if(meetingsList.isEmpty) {
         showToast("No Meetings found");
       }
@@ -64,7 +61,6 @@ class MyMeetingsViewModel extends BaseViewModel {
           clientsList
               .add(MATUtils.getClientDisplayInfo(element, "client_status"));
         });
-        print(clientsList);
       } else
         showToast("Something went wrong!");
     } else
@@ -72,7 +68,7 @@ class MyMeetingsViewModel extends BaseViewModel {
   }
 
   Future<List<dynamic>> getMeetingsData(String id, String clientId) async {
-    var response = await ApiService.dio.post("profile/get_client_meetings",
+    var response = await ApiService.dio.post("meetings/get_client_meetings",
         queryParameters: {"userId": id, "clientId": clientId});
     print(response.requestOptions.uri);
     if (response.statusCode == 200) {
@@ -92,7 +88,6 @@ class MyMeetingsViewModel extends BaseViewModel {
       Map<String, dynamic> client =
           await ApiService.getClient(flowDataProvider.currClientId);
       flowDataProvider.currClient = client["data"];
-      print("---- ${flowDataProvider.currClient}");
       Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
       setBusy(false);
     } catch(e) {

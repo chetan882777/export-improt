@@ -257,7 +257,7 @@ class AddProspect extends StatelessWidget {
                         matForms.matEditable(
                           variable: "landLineNumber",
                           displayText: "Landline Number",
-                          textInputType: TextInputType.name,
+                          textInputType: TextInputType.phone ,
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
                           ]),
