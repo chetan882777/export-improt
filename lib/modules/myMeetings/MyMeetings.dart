@@ -39,13 +39,16 @@ class MyMeetings extends StatelessWidget {
               padding: EdgeInsets.only(left: 16, right: 16, top: 0),
               child: Consumer(
                 builder: (context, MyMeetingsViewModel model, child) =>
-                    ListView.builder(
-                  itemCount: model.meetingsList.length,
-                  physics: BouncingScrollPhysics(),
-                  itemBuilder: (context, int index) {
-                    return meetingListItem(
-                        context, model.meetingsList[index], model, index);
-                  },
+                    RefreshIndicator(
+                  onRefresh: model.asyncInit,
+                  child: ListView.builder(
+                    itemCount: model.meetingsList.length,
+                    physics: BouncingScrollPhysics(),
+                    itemBuilder: (context, int index) {
+                      return meetingListItem(
+                          context, model.meetingsList[index], model, index);
+                    },
+                  ),
                 ),
               ),
             ),

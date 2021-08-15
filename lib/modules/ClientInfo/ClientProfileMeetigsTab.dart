@@ -14,34 +14,39 @@ class ClientProfileMeetingsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 0.25,
-              color: Colors.black38,
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: 16, top: 16, bottom: 8, right: 16),
-              child: MATUtils.elevatedBtn(
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                  displayText: "Add a meeting",
-                  player: () {
-                    model.flowDataProvider.currMeeting = {};
-                    Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
-                  }),
-            ),
-            ListView.builder(
-              itemCount: model.meetingsList.length,
-              shrinkWrap: true,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, int index) {
-                return remarkListItem(context, model.meetingsList[index]);
-              },
-            ),
-          ],
+      child: RefreshIndicator(
+        onRefresh: model.asyncInit,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 0.25,
+                color: Colors.black38,
+              ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 16, top: 16, bottom: 8, right: 16),
+                child: MATUtils.elevatedBtn(
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
+                    displayText: "Add a meeting",
+                    player: () {
+                      model.flowDataProvider.currMeeting = {};
+                      Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
+                    }),
+              ),
+              ListView.builder(
+                itemCount: model.meetingsList.length,
+                shrinkWrap: true,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, int index) {
+                  return remarkListItem(context, model.meetingsList[index]);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -72,7 +77,9 @@ class ClientProfileMeetingsTab extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          data["status"].toString().isNotEmpty?data["status"]:"N/A",
+                          data["status"].toString().isNotEmpty
+                              ? data["status"]
+                              : "N/A",
                           style: TextStyle(
                               fontSize: Constants.FONT_SIZE_SMALL_TEXT,
                               color: Theme.of(context).primaryColor),

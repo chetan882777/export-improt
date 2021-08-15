@@ -56,7 +56,9 @@ class ClientProfile extends StatelessWidget {
                           child: Consumer(
                             builder: (context, ClientProfileViewModel model,
                                     child) =>
-                                SingleChildScrollView(
+                        RefreshIndicator(
+                        onRefresh: model.asyncInit,
+                        child: SingleChildScrollView(
                               child: Container(
                                 child: Row(
                                   children: [
@@ -166,7 +168,7 @@ class ClientProfile extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                            ),
+                            ),),
                           ),
                         ),
                       ),

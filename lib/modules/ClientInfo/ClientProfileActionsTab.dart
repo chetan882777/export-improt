@@ -10,55 +10,61 @@ class ClientProfileActionsTab extends StatelessWidget {
   final ClientProfileViewModel model;
 
   ClientProfileActionsTab(this.model);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Padding(
-        padding: EdgeInsets.only(top: 0),
-        child: Column(
-          children: [
-            Container(
-              height: 0.25,
-              color: Colors.black38,
+    return RefreshIndicator(
+      onRefresh: model.asyncInit,
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Container(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: EdgeInsets.only(top: 0),
+            child: Column(
+              children: [
+                Container(
+                  height: 0.25,
+                  color: Colors.black38,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                belowClickWidgets(
+                  context: context,
+                  displayText: "Edit profile",
+                  player: () {
+                    DefaultTabController.of(context)!.animateTo(1);
+                  },
+                ),
+                Offstage(
+                  offstage: model.isPotential,
+                  child: belowClickWidgets(
+                    context: context,
+                    displayText: "Convert to potential",
+                    player: () {
+                      model.convertToPotential();
+                    },
+                  ),
+                ),
+                belowClickWidgets(
+                  context: context,
+                  displayText: "Add a remark",
+                  player: () {
+                    Navigator.pushNamed(context, AddRemark.ROUTE_NAME);
+                  },
+                ),
+                belowClickWidgets(
+                  context: context,
+                  displayText: "Add a meeting",
+                  player: () {
+                    model.flowDataProvider.currMeeting = {};
+                    Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
+                  },
+                ),
+              ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            belowClickWidgets(
-              context: context,
-              displayText: "Edit profile",
-              player: () {
-                DefaultTabController.of(context)!.animateTo(1);
-              },
-            ),
-            Offstage(
-              offstage: model.isPotential,
-              child: belowClickWidgets(
-                context: context,
-                displayText: "Convert to potential",
-                player: () {
-                  model.convertToPotential();
-                },
-              ),
-            ),
-
-            belowClickWidgets(
-              context: context,
-              displayText: "Add a remark",
-              player: () {
-                Navigator.pushNamed(context, AddRemark.ROUTE_NAME);
-              },
-            ),
-            belowClickWidgets(
-              context: context,
-              displayText: "Add a meeting",
-              player: () {
-                model.flowDataProvider.currMeeting = {};
-                Navigator.pushNamed(context, AddMeeting.ROUTE_NAME);
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
