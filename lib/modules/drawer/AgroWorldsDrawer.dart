@@ -3,6 +3,7 @@ import 'package:agro_worlds/modules/allClients/AllClients.dart';
 import 'package:agro_worlds/modules/dashboard/DashboardScreen.dart';
 import 'package:agro_worlds/modules/login/LoginScreen.dart';
 import 'package:agro_worlds/modules/myMeetings/MyMeetings.dart';
+import 'package:agro_worlds/modules/myMeetings/MyMeetingsViewModel.dart';
 import 'package:agro_worlds/providers/FlowDataProvider.dart';
 import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
@@ -67,9 +68,9 @@ class AgroWorldsDrawer {
             drawerMenuItem(
                 displayName: "Meetings",
                 player: () {
+                  provider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_ALL;
                   Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
                 }),
-            drawerMenuItem(displayName: "Deals"),
             drawerMenuItem(
                 displayName: "Logout",
                 color: Colors.red,

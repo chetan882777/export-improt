@@ -64,84 +64,93 @@ class AllClients extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 16, right: 16, top: 0),
               child: Consumer(
-                  builder: (context, AllClientsViewModel model, child) =>
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                height: 48,
-                                child: matForms.matOutlineButton(
-                                  leading: Icon(Icons.tune_rounded,
-                                      color: Colors.black54),
-                                  textColor: Colors.black54,
-                                  borderColor: Colors.black54,
-                                  displayText: "Filter",
-                                  padding: EdgeInsets.only(left: 8, right: 8),
-                                  player: () {
-                                    showFilterBottomSheet(context, model);
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: SizedBox(),
-                              ),
-                              Text(
-                                "Sort:",
-                                style: TextStyle(
-                                    fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                                    color: Colors.black),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  model.sortClients(
-                                      AllClientsViewModel.ORDER_BY_TIME);
-                                },
-                                icon: Icon(
-                                  Icons.access_time,
-                                  color: model.currentOrderedBy == AllClientsViewModel.ORDER_BY_TIME ? Theme.of(context).primaryColor : Colors.black54,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  model.sortClients(
-                                      AllClientsViewModel.ORDER_BY_NAME);
-                                },
-                                child: Image.asset(
-                                  model.currentOrderedBy == AllClientsViewModel.ORDER_BY_NAME? Constants.SORT_AZ_ACTIVE_ICON : Constants.SORT_AZ_ICON,
-                                  height: 24,
-                                  width: 24,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 4,
-                              ),
-                            ],
+                builder: (context, AllClientsViewModel model, child) => Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 48,
+                          child: matForms.matOutlineButton(
+                            leading: Icon(Icons.tune_rounded, color: Colors.black54),
+                            textColor: Colors.black54,
+                            borderColor: Colors.black54,
+                            displayText: "Filter",
+                            padding: EdgeInsets.only(left: 8, right: 8),
+                            player: () {
+                              showFilterBottomSheet(context, model);
+                            },
                           ),
-                          SizedBox(
-                            height: 10,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: SizedBox(),
+                        ),
+                        Text(
+                          "Sort:",
+                          style: TextStyle(
+                              fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                              color: Colors.black),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            model
+                                .sortClients(AllClientsViewModel.ORDER_BY_TIME);
+                          },
+                          icon: Icon(
+                            Icons.access_time,
+                            color: model.currentOrderedBy ==
+                                    AllClientsViewModel.ORDER_BY_TIME
+                                ? Theme.of(context).primaryColor
+                                : Colors.black54,
                           ),
-                          Container(height: 0.5, color: Colors.black12),
-                          Expanded(
-                            flex: 1,
-                            child: ListView.builder(
-                              itemCount: model.clientsList.length,
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, int index) {
-                                return clientListItem(
-                                    context, model.clientsList[index], model);
-                              },
-                            ),
-                          )
-                        ],
-                      )),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            model
+                                .sortClients(AllClientsViewModel.ORDER_BY_NAME);
+                          },
+                          child: Image.asset(
+                            model.currentOrderedBy ==
+                                    AllClientsViewModel.ORDER_BY_NAME
+                                ? Constants.SORT_AZ_ACTIVE_ICON
+                                : Constants.SORT_AZ_ICON,
+                            height: 24,
+                            width: 24,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(height: 0.5, color: Colors.black12),
+                    Expanded(
+                      flex: 1,
+                      child: RefreshIndicator(
+                        onRefresh: model.asyncInit,
+                        child: ListView.builder(
+                          itemCount: model.clientsList.length,
+                          physics: BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, int index) {
+                            return clientListItem(
+                                context, model.clientsList[index], model);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Consumer(
               builder: (context, AllClientsViewModel model, child) =>

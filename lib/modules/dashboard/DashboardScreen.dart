@@ -60,123 +60,139 @@ class DashboardScreen extends StatelessWidget {
               padding: EdgeInsets.all(10),
               child: Consumer(
                 builder: (context, DashboardViewModel model, child) =>
-                    SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Row(
-                        children: [
-                          infoWidget(
-                              context: context,
-                              largeText: model.totalLeads,
-                              smallText: "Total Leads",
-                              bgColor: const Color(0xffaf8b46),
-                              player: () {
-                                Navigator.pushNamed(context, AllClients.ROUTE_NAME);
-                              }),
-                          infoWidget(
-                              context: context,
-                              largeText: model.meetingsInline,
-                              smallText: "Meetings inline",
-                              bgColor: const Color(0xffbd9b5b),
-                              player: () {
-                                model.flowDataProvider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_INLINE;
-                                Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
-                              })
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          infoWidget(
-                              context: context,
-                              largeText: model.meetingsDone,
-                              smallText: "Meetings done",
-                              bgColor: const Color(0xffbd9b5b),
-                              player: () {
-                                model.flowDataProvider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_DONE;
-                                Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
-                              }),
-                          infoWidget(
-                              context: context,
-                              largeText: model.followUpMeetings,
-                              smallText: "Follow up meetings",
-                              bgColor: const Color(0xffaf8b46),
-                              player: () {
-                                model.flowDataProvider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_FOLLOW_UP;
-                                Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
-                              })
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          infoWidget(
-                              context: context,
-                              largeText: model.conversionRate,
-                              smallText: "Conversion rate",
-                              bgColor: const Color(0xffa07a30),
-                              player: () {}),
-                          infoWidget(
-                              context: context,
-                              largeText: model.dealsOfTheMonth,
-                              smallText: "Deals this month",
-                              bgColor: const Color(0xff91691a),
-                              player: () {})
-                        ],
-                      ),
-                      Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
-                        child: InkWell(
-                          onTap: () => Navigator.pushNamed(
-                              context, AddProspect.ROUTE_NAME),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Add a prospect",
-                                  style: TextStyle(
-                                      fontSize: Constants.FONT_SIZE_BIG_TEXT,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.normal),
+                    RefreshIndicator(
+                  onRefresh: model.asyncInit,
+                  child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            infoWidget(
+                                context: context,
+                                largeText: model.totalLeads,
+                                smallText: "Total Leads",
+                                bgColor: const Color(0xffaf8b46),
+                                player: () {
+                                  Navigator.pushNamed(
+                                      context, AllClients.ROUTE_NAME);
+                                }),
+                            infoWidget(
+                                context: context,
+                                largeText: model.meetingsInline,
+                                smallText: "Meetings inline",
+                                bgColor: const Color(0xffbd9b5b),
+                                player: () {
+                                  model.flowDataProvider.showMeetingsListOf =
+                                      MyMeetingsViewModel
+                                          .MEETINGS_LIST_OF_INLINE;
+                                  Navigator.pushNamed(
+                                      context, MyMeetings.ROUTE_NAME);
+                                })
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            infoWidget(
+                                context: context,
+                                largeText: model.meetingsDone,
+                                smallText: "Meetings done",
+                                bgColor: const Color(0xffbd9b5b),
+                                player: () {
+                                  model.flowDataProvider.showMeetingsListOf =
+                                      MyMeetingsViewModel.MEETINGS_LIST_OF_DONE;
+                                  Navigator.pushNamed(
+                                      context, MyMeetings.ROUTE_NAME);
+                                }),
+                            infoWidget(
+                                context: context,
+                                largeText: model.followUpMeetings,
+                                smallText: "Follow up meetings",
+                                bgColor: const Color(0xffaf8b46),
+                                player: () {
+                                  model.flowDataProvider.showMeetingsListOf =
+                                      MyMeetingsViewModel
+                                          .MEETINGS_LIST_OF_FOLLOW_UP;
+                                  Navigator.pushNamed(
+                                      context, MyMeetings.ROUTE_NAME);
+                                })
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            infoWidget(
+                                context: context,
+                                largeText: model.conversionRate,
+                                smallText: "Conversion rate",
+                                bgColor: const Color(0xffa07a30),
+                                player: () {}),
+                            infoWidget(
+                                context: context,
+                                largeText: model.dealsOfTheMonth,
+                                smallText: "Deals this month",
+                                bgColor: const Color(0xff91691a),
+                                player: () {})
+                          ],
+                        ),
+                        Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.fromLTRB(30, 10, 30, 10),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
+                          child: InkWell(
+                            onTap: () => Navigator.pushNamed(
+                                context, AddProspect.ROUTE_NAME),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    "Add a prospect",
+                                    style: TextStyle(
+                                        fontSize: Constants.FONT_SIZE_BIG_TEXT,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.normal),
+                                  ),
                                 ),
-                              ),
-                              IconButton(
-                                iconSize: 24.0,
-                                icon:
-                                    Icon(Icons.person_add, color: Colors.white),
-                                onPressed: () => Navigator.pushNamed(
-                                    context, AddProspect.ROUTE_NAME),
-                              ),
-                            ],
+                                IconButton(
+                                  iconSize: 24.0,
+                                  icon: Icon(Icons.person_add,
+                                      color: Colors.white),
+                                  onPressed: () => Navigator.pushNamed(
+                                      context, AddProspect.ROUTE_NAME),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      belowClickWidgets(
-                          context: context,
-                          icon: CupertinoIcons.clock,
-                          displayText: "View clients",
-                          player: () {
-                            Navigator.pushNamed(context, AllClients.ROUTE_NAME);
-                          }),
-                      belowClickWidgets(
-                          context: context,
-                          icon: CupertinoIcons.rectangle_stack_person_crop,
-                          displayText: "My Meetings",
-                          player: () {
-                            model.flowDataProvider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_ALL;
-                            Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
-                          }),
-                    ],
+                        SizedBox(
+                          height: 20,
+                        ),
+                        belowClickWidgets(
+                            context: context,
+                            icon: CupertinoIcons.clock,
+                            displayText: "View clients",
+                            player: () {
+                              Navigator.pushNamed(
+                                  context, AllClients.ROUTE_NAME);
+                            }),
+                        belowClickWidgets(
+                            context: context,
+                            icon: CupertinoIcons.rectangle_stack_person_crop,
+                            displayText: "My Meetings",
+                            player: () {
+                              model.flowDataProvider.showMeetingsListOf =
+                                  MyMeetingsViewModel.MEETINGS_LIST_OF_ALL;
+                              Navigator.pushNamed(
+                                  context, MyMeetings.ROUTE_NAME);
+                            }),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -207,7 +223,9 @@ class DashboardScreen extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
         child: Column(children: [
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Row(
             children: [
               Icon(
@@ -233,7 +251,9 @@ class DashboardScreen extends StatelessWidget {
               )
             ],
           ),
-          SizedBox(height: 16,),
+          SizedBox(
+            height: 16,
+          ),
           Container(
             height: 1,
             width: double.infinity,

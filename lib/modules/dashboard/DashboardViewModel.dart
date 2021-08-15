@@ -14,7 +14,7 @@ class DashboardViewModel extends BaseViewModel {
     asyncInit();
   }
 
-  void asyncInit() async {
+  Future<void> asyncInit() async {
     setBusy(true);
     String? userId = await SharedPrefUtils.getUserId();
     if (userId == null) {
