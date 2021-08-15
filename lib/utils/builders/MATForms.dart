@@ -133,7 +133,7 @@ class MATForms {
     TextInputType textInputType = TextInputType.text,
     void Function(dynamic)? player,
     bool obfuscate = false,
-    bool allCaps = true,
+    bool allCaps = false,
     bool disabled = false,
     bool needController = true,
     bool autocorrect = false,
