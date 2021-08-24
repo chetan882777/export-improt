@@ -97,23 +97,12 @@ class AddMeeting extends StatelessWidget {
                           validator: FormBuilderValidators.compose(
                               [FormBuilderValidators.required(context)]),
                         ),
-                        matForms.matDatePicker(
+                        matForms.matDateTimePicker(
                           variable: "date",
-                          displayText: "Meeting date",
+                          displayText: "Meeting date time",
                           startDate: DateTime.now(),
                           player: (val) {},
                           validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
-                          ]),
-                        ),
-                        matForms.matDatePicker(
-                          variable: "time",
-                          displayText: "Meeting time",
-                          inputType: InputType.time,
-                          startDate: DateTime.now(),
-                          player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.required(context),
                           ]),
                         ),
                         matForms.matEditable(

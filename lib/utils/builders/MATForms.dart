@@ -322,6 +322,35 @@ class MATForms {
     );
   }
 
+  Widget matDateTimePicker({
+    required String variable,
+    required String displayText,
+    required Function player,
+    InputType inputType = InputType.both,
+    bool disabled = false,
+    DateTime? lastDate,
+    DateTime? startDate,
+    required FormFieldValidator validator,
+  }) {
+    mapper.putIfAbsent(variable, () => TextEditingController());
+    return FormBuilderDateTimePicker(
+      name: variable,
+      inputType: inputType,
+      controller: mapper[variable],
+      enabled: !disabled,
+      firstDate: startDate,
+      lastDate: lastDate,
+      validator: validator,
+      format: DateFormat("yyyy-MM-dd hh:mm aaa"),
+      decoration: InputDecoration(labelText: displayText),
+      onChanged: (val) {
+        if (player != null) {
+          player(val);
+        }
+      },
+    );
+  }
+
   Widget matPlainText({
     required String displayText,
     String? fontWeight,

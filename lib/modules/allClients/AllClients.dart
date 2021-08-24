@@ -140,7 +140,6 @@ class AllClients extends StatelessWidget {
                         child: ListView.builder(
                           itemCount: model.clientsList.length,
                           physics: BouncingScrollPhysics(),
-                          shrinkWrap: true,
                           itemBuilder: (context, int index) {
                             return clientListItem(
                                 context, model.clientsList[index], model);

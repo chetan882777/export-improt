@@ -101,11 +101,11 @@ class ClientProfileViewModel extends BaseViewModel {
   bool isPotential = false;
 
   ClientProfileViewModel(BuildContext context)
-      : clientBusinessTypeNameList = ["Importer", "Exporter"],
-        selectedClientBusinessType = "Importer",
+      : clientBusinessTypeNameList = ["Importer (trader)", "Importer (miller)", "Exporter", "Importer and Exporter"],
+        selectedClientBusinessType = "Importer (trader)",
         businessSizeNameList = ["Small", "Medium", "Large"],
         selectedBusinessSize = "Small",
-        businessDemographicDetailsNameList = ["India", "Foreign"],
+        businessDemographicDetailsNameList = ["India", "Foreign", "Both"],
         selectedBusinessDemographicDetails = "India",
         businessInterestNameList = ["High", "Moderate", "Low"],
         selectedBusinessInterest = "High",
@@ -508,49 +508,43 @@ class ClientProfileViewModel extends BaseViewModel {
       data[3].matForms.setVariableData(CORPORATE_KEY_MANAGEMENT_PERSONAL,
           clientData[CORPORATE_KEY_MANAGEMENT_PERSONAL]);
 
-    print("1");
     if (clientData[CORPORATE_TEAM_SIZE] != null &&
         clientData[CORPORATE_TEAM_SIZE].toString().isNotEmpty)
       data[3].matForms.setVariableData(
           CORPORATE_TEAM_SIZE, clientData[CORPORATE_TEAM_SIZE]);
 
-    print("2");
     if (clientData[CORPORATE_BUSINESS_TURNOVER_APX] != null &&
         clientData[CORPORATE_BUSINESS_TURNOVER_APX].toString().isNotEmpty)
       data[3].matForms.setVariableData(CORPORATE_BUSINESS_TURNOVER_APX,
           clientData[CORPORATE_BUSINESS_TURNOVER_APX]);
 
-    print("3");
     if (clientData[CORPORATE_COMPANY_INCORP_DETAILS] != null &&
         clientData[CORPORATE_COMPANY_INCORP_DETAILS].toString().isNotEmpty)
       data[3].matForms.setVariableData(CORPORATE_COMPANY_INCORP_DETAILS,
           clientData[CORPORATE_COMPANY_INCORP_DETAILS]);
 
-    print("4");
     if (clientData[CORPORATE_BUSINESS_REF] != null &&
         clientData[CORPORATE_BUSINESS_REF].toString().isNotEmpty)
       data[3].matForms.setVariableData(
           CORPORATE_BUSINESS_REF, clientData[CORPORATE_BUSINESS_REF]);
 
-    print("5");
     if (clientData[CORPORATE_ADDITIONAL_DETAILS] != null &&
         clientData[CORPORATE_ADDITIONAL_DETAILS].toString().isNotEmpty)
       data[3].matForms.setVariableData(CORPORATE_ADDITIONAL_DETAILS,
           clientData[CORPORATE_ADDITIONAL_DETAILS]);
 
-    print("6");
     if (clientData[CORPORATE_CLIENT_BUSINESS_TYPE] != null &&
-        clientData[CORPORATE_CLIENT_BUSINESS_TYPE].toString().isNotEmpty)
-      selectedClientBusinessType = clientData[CORPORATE_CLIENT_BUSINESS_TYPE];
+        clientData[CORPORATE_CLIENT_BUSINESS_TYPE].toString().isNotEmpty) {
+      if(clientBusinessTypeNameList.contains(clientData[CORPORATE_CLIENT_BUSINESS_TYPE]))
+        selectedClientBusinessType = clientData[CORPORATE_CLIENT_BUSINESS_TYPE];
+    }
 
 
-    print("7");
     if (clientData[CORPORATE_BUSINESS_SIZE] != null &&
         clientData[CORPORATE_BUSINESS_SIZE].toString().isNotEmpty)
       selectedBusinessSize = clientData[CORPORATE_BUSINESS_SIZE];
 
 
-    print("8");
     if (clientData[CORPORATE_BUSINESS_DEMOGRAPHIC] != null &&
         clientData[CORPORATE_BUSINESS_DEMOGRAPHIC].toString().isNotEmpty)
       selectedBusinessDemographicDetails =
