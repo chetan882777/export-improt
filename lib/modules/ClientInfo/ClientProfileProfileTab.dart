@@ -254,6 +254,32 @@ class ClientProfileProfileTab extends StatelessWidget {
                               },
                               validator: FormBuilderValidators.compose([]),
                             ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Client source type",
+                                  style: TextStyle(
+                                      fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                      fontWeight: FontWeight.normal,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            model.data[0].matForms.borderedDropDown(
+                              borderColor: Theme.of(context).primaryColor,
+                              items: model.clientSourceTypeNameList,
+                              displayValue: model.selectedClientSourceType,
+                              menuColor: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                              borderRadius: 8,
+                              player: model.setSelectedClientSourceType,
+                            ),
                             model.data[0].matForms.matTextButton(
                               textColor: Theme.of(context).primaryColor,
                               displayText: "Save Company Details",

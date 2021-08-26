@@ -50,6 +50,7 @@ class ClientProfileViewModel extends BaseViewModel {
   static const String CORPORATE_BUSINESS_DEMOGRAPHIC =
       "businessDemographicDetails";
   static const String CORPORATE_BUSINESS_INTEREST = "businessInterest";
+  static const String CLIENT_SOURCE_TYPE = "clientSourceType";
 
   final Map<String, TextEditingController> mapper = Map();
 
@@ -86,6 +87,9 @@ class ClientProfileViewModel extends BaseViewModel {
   List<String> businessSizeNameList;
   String selectedBusinessSize;
 
+  List<String> clientSourceTypeNameList;
+  String selectedClientSourceType;
+
   List<String> businessDemographicDetailsNameList;
   String selectedBusinessDemographicDetails;
 
@@ -109,6 +113,8 @@ class ClientProfileViewModel extends BaseViewModel {
         selectedBusinessDemographicDetails = "India",
         businessInterestNameList = ["High", "Moderate", "Low"],
         selectedBusinessInterest = "High",
+        clientSourceTypeNameList = ["BDE", "Reference"],
+        selectedClientSourceType = "BDE",
         statesList = [],
         statesNameList = [Constants.DROPDOWN_NON_SELECT],
         countriesNameList = [Constants.DROPDOWN_NON_SELECT],
@@ -348,6 +354,11 @@ class ClientProfileViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void setSelectedClientSourceType(dynamic type) async {
+    selectedClientSourceType = type;
+    notifyListeners();
+  }
+
   Future<void> setSelectedProductCategory(dynamic product) async {
     selectedProductCategory = product;
     if (product.toString() != Constants.DROPDOWN_NON_SELECT) {
@@ -464,6 +475,16 @@ class ClientProfileViewModel extends BaseViewModel {
     if (clientData[COMPANY_DETAIL_CITY] != null &&
         clientData[COMPANY_DETAIL_CITY].toString().isNotEmpty)
       setSelectedCity(clientData[COMPANY_DETAIL_CITY]);
+
+
+    if (clientData[COMPANY_DETAIL_CITY] != null &&
+        clientData[COMPANY_DETAIL_CITY].toString().isNotEmpty)
+      setSelectedCity(clientData[COMPANY_DETAIL_CITY]);
+
+
+    if (clientData.containsKey(CLIENT_SOURCE_TYPE) && clientData[CLIENT_SOURCE_TYPE] != null &&
+        clientData[CLIENT_SOURCE_TYPE].toString().isNotEmpty)
+      setSelectedClientSourceType(clientData[CLIENT_SOURCE_TYPE]);
   }
 
   void setPersonDetails() async {
@@ -583,10 +604,13 @@ class ClientProfileViewModel extends BaseViewModel {
             statesList.firstWhere((element) => element.name == selectedState);
         ListItem mCity =
             citiesList.firstWhere((element) => element.name == selectedCity);
+
         reqData.putIfAbsent("country", () => mCountry.id);
         reqData.putIfAbsent("state", () => mState.id);
         reqData.putIfAbsent("city", () => mCity.id);
         reqData.putIfAbsent("companyName", () => clientData["companyName"]);
+        reqData.putIfAbsent(CLIENT_SOURCE_TYPE, () => selectedClientSourceType);
+
 
         var response = await ApiService.dio
             .post("profile/update_company_details", queryParameters: reqData);
