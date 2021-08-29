@@ -34,10 +34,11 @@ class AddMeeting extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: Text(
-            "Add a meeting",
-            style: TextStyle(color: Colors.black),
-          ),
+          title: Consumer(
+              builder: (context, AddMeetingViewModel model, child) => Text(
+                   model.title,
+                    style: TextStyle(color: Colors.black),
+                  )),
           elevation: 0,
           iconTheme: IconThemeData(color: Theme.of(context).accentColor),
           leading: IconButton(
@@ -102,8 +103,7 @@ class AddMeeting extends StatelessWidget {
                           displayText: "Meeting date time",
                           startDate: DateTime.now(),
                           player: (val) {},
-                          validator: FormBuilderValidators.compose([
-                          ]),
+                          validator: FormBuilderValidators.compose([]),
                         ),
                         matForms.matEditable(
                           variable: "place",
@@ -131,7 +131,8 @@ class AddMeeting extends StatelessWidget {
                                   child: Text(
                                     "Meeting status",
                                     style: TextStyle(
-                                        fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                                        fontSize:
+                                            Constants.FONT_SIZE_NORMAL_TEXT,
                                         fontWeight: FontWeight.normal,
                                         color: Colors.black),
                                   ),

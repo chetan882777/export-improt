@@ -17,6 +17,7 @@ class AddMeetingViewModel extends BaseViewModel {
 
   List<String> meetingModeNameList;
   String selectedMeetingMode;
+  String title = "Add a meeting";
 
   List<String> meetingStatusNameList = [
     "Scheduled",
@@ -47,6 +48,9 @@ class AddMeetingViewModel extends BaseViewModel {
           context,
           () => Navigator.pop(context));
     } else {
+      if (flowDataProvider.currMeeting.containsKey("id")) {
+        title = "Update meeting";
+      }
       clientDisplayData =
           MATUtils.getClientDisplayInfo(flowDataProvider.currClient);
       showMeetingStatus = false;
