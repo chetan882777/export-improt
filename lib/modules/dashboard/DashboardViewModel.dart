@@ -6,6 +6,7 @@ import 'package:agro_worlds/network/ApiService.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 
 class DashboardViewModel extends BaseViewModel {
   late final MATForms matForms;
@@ -27,6 +28,7 @@ class DashboardViewModel extends BaseViewModel {
 
   Future<void> getUserData(String uId) async {
     try {
+
       var user = await ApiService.getUser();
       if (user.isError) {
         sendToLogin();
@@ -38,9 +40,19 @@ class DashboardViewModel extends BaseViewModel {
         return;
       }
       flowDataProvider.user = user;
+
     } catch (e) {
       sendToLogin();
     }
+
+     try{
+       PackageInfo packageInfo = await PackageInfo.fromPlatform();
+       print(1);
+       flowDataProvider.apkVersion = packageInfo.version;
+       print(flowDataProvider.apkVersion);
+     } catch(e) {
+      print(e);
+     }
   }
 
   void sendToLogin() {

@@ -8,6 +8,7 @@ class FlowDataProvider {
   late String id;
   late User user;
   late String currClientId;
+  String apkVersion = "N/A";
   late Map<String, dynamic> currClient = {};
   late Map<String, dynamic> currMeeting = {};
   late List<dynamic> convertTopPotentialFailures = [];

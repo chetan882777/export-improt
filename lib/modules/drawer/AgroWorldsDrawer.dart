@@ -17,68 +17,94 @@ class AgroWorldsDrawer {
 
     return Drawer(
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 64,
-            ),
-            Image.asset(
-              Constants.AGRO_HEADER_LOGO,
-              colorBlendMode: BlendMode.color,
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 16),
-              width: double.infinity,
-              padding: EdgeInsets.all(16),
-              color: Color(0xffe4e4e5),
-              child: Column(
-                children: [
-                  Text(
-                    "${user.firstName} ${user.lastName}",
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 64,
+              ),
+              Image.asset(
+                Constants.AGRO_HEADER_LOGO,
+                colorBlendMode: BlendMode.color,
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 16),
+                width: double.infinity,
+                padding: EdgeInsets.all(16),
+                color: Color(0xffe4e4e5),
+                child: Column(
+                  children: [
+                    Text(
+                      "${user.firstName} ${user.lastName}",
+                      style: TextStyle(
+                          fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "${user.userRole}",
+                      style: TextStyle(
+                          fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              drawerMenuItem(
+                  displayName: "Dashboard",
+                  player: () {
+                    Navigator.pushNamed(context, DashboardScreen.ROUTE_NAME);
+                  }),
+              drawerMenuItem(
+                  displayName: "Clients",
+                  player: () {
+                    Navigator.pushNamed(context, AllClients.ROUTE_NAME);
+                  }),
+              drawerMenuItem(
+                  displayName: "Meetings",
+                  player: () {
+                    provider.showMeetingsListOf =
+                        MyMeetingsViewModel.MEETINGS_LIST_OF_ALL;
+                    Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
+                  }),
+              drawerMenuItem(
+                  displayName: "Logout",
+                  color: Colors.red,
+                  player: () async {
+                    await SharedPrefUtils.deleteUserId();
+                    Navigator.pushNamed(context, LoginScreen.ROUTE_NAME);
+                  }),
+              Expanded(
+                flex: 1,
+                child: SizedBox(
+                  height: 1,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 16),
+                width: double.infinity,
+                padding: EdgeInsets.all(16),
+                color: Color(0xffe4e4e5),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "v ${provider.apkVersion}",
                     style: TextStyle(
                         fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor),
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "${user.userRole}",
-                    style: TextStyle(
-                        fontSize: Constants.FONT_SIZE_NORMAL_TEXT,
-                        fontWeight: FontWeight.normal),
-                  ),
-                ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            drawerMenuItem(
-                displayName: "Dashboard",
-                player: () {
-                  Navigator.pushNamed(context, DashboardScreen.ROUTE_NAME);
-                }),
-            drawerMenuItem(
-                displayName: "Clients",
-                player: () {
-                  Navigator.pushNamed(context, AllClients.ROUTE_NAME);
-                }),
-            drawerMenuItem(
-                displayName: "Meetings",
-                player: () {
-                  provider.showMeetingsListOf = MyMeetingsViewModel.MEETINGS_LIST_OF_ALL;
-                  Navigator.pushNamed(context, MyMeetings.ROUTE_NAME);
-                }),
-            drawerMenuItem(
-                displayName: "Logout",
-                color: Colors.red,
-                player: () async {
-                  await SharedPrefUtils.deleteUserId();
-                  Navigator.pushNamed(context, LoginScreen.ROUTE_NAME);
-                }),
-          ],
+            ],
+          ),
         ),
       ),
     );
