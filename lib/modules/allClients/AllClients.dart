@@ -343,16 +343,14 @@ class ModelBottomSheetWidgetState extends State<ModelBottomSheetWidget> {
           SizedBox(
             height: 8,
           ),
-          widget.matForms.borderedDropDown(
+          widget.matForms.categorizedBorderedDropDown(
               borderColor: Colors.black54,
               borderRadius: 8,
               fontWeight: FontWeight.normal,
-              items: widget.model.allProductsNameList,
+              items: widget.model.productsMap,
               displayValue: widget.model.selectedProduct,
               player: (val) {
-                setState(() {
-                  widget.model.setSelectedProduct(val);
-                });
+                widget.model.setSelectedProduct(val);
               }),
           SizedBox(
             height: 8,

@@ -7,6 +7,7 @@ import 'package:agro_worlds/utils/Constants.dart';
 import 'package:agro_worlds/utils/SharedPrefUtils.dart';
 import 'package:agro_worlds/utils/builders/MATForms.dart';
 import 'package:agro_worlds/utils/builders/MATUtils.dart';
+import 'package:categorized_dropdown/categorized_dropdown.dart';
 import 'package:dio/src/response.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
@@ -23,7 +24,7 @@ class AllClientsViewModel extends BaseViewModel {
   List<Map<String, dynamic>> clientsList = [];
   List<ListItem> allProductsList = [];
   List<String> allProductsNameList = [];
-  String selectedProduct = Constants.DROPDOWN_NON_SELECT;
+  String selectedProduct = "";
   List<String> stageNameList = [
     Constants.DROPDOWN_NON_SELECT,
     "Prospect",
@@ -32,6 +33,8 @@ class AllClientsViewModel extends BaseViewModel {
   ];
   String selectedStage = Constants.DROPDOWN_NON_SELECT;
   bool isFilterApplied = false;
+
+  List<CategorizedDropdownItem<String>> productsMap = [];
 
   AllClientsViewModel(BuildContext context, this.matForms) : super(context) {
     asyncInit();
@@ -78,9 +81,28 @@ class AllClientsViewModel extends BaseViewModel {
       List<ListItem> productCategories = await ApiService.productCategories();
       List<ListItem> allProducts = [];
       await Future.forEach(productCategories, (ListItem element) async {
+
         List<ListItem> products = await ApiService.productsList(element.id);
         allProducts.addAll(products);
+        List<SubCategorizedDropdownItem<String>> temp = [];
+
+        String AllProductsOfCategory = "";
+
+        products.forEach((element) {
+          if(selectedProduct.isEmpty) {
+            selectedProduct = element.id;
+          }
+          if(AllProductsOfCategory.isEmpty)
+            AllProductsOfCategory = "${element.id}";
+          else
+            AllProductsOfCategory += ",${element.id}";
+
+          temp.add(SubCategorizedDropdownItem(value: element.id, text: element.name));
+        });
+
+        productsMap.add(CategorizedDropdownItem(text: element.name, subItems: temp, value: AllProductsOfCategory));
       });
+
 
       allProductsList = allProducts;
       allProductsNameList = [Constants.DROPDOWN_NON_SELECT];
@@ -91,8 +113,12 @@ class AllClientsViewModel extends BaseViewModel {
   }
 
   void setSelectedProduct(dynamic val) {
-    selectedProduct = val;
-    notifyListeners();
+    if(val != null) {
+      selectedProduct = val;
+      notifyListeners();
+    } else {
+      showToast("Cannot select product category!");
+    }
   }
 
   void setSelectedStage(dynamic val) {
@@ -107,9 +133,7 @@ class AllClientsViewModel extends BaseViewModel {
       map["companyName"] = name;
 
       if (selectedProduct != Constants.DROPDOWN_NON_SELECT)
-        map["product"] = allProductsList
-            .firstWhere((element) => element.name == selectedProduct)
-            .id;
+        map["product"] = selectedProduct;
       else
         map["product"] = "";
 
@@ -121,6 +145,7 @@ class AllClientsViewModel extends BaseViewModel {
       String? userId = await SharedPrefUtils.getUserId();
       map["userId"] = userId!;
 
+      print(" ========> map ${map}");
       var response = await ApiService.dio
           .request("/profile/filter_user_clients", queryParameters: map);
 

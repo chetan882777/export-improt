@@ -1,3 +1,4 @@
+import 'package:categorized_dropdown/categorized_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -591,6 +592,40 @@ class MATForms {
             onChanged: player,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget categorizedBorderedDropDown(
+      {required Color borderColor,
+      required List<CategorizedDropdownItem<String>> items,
+      required String displayValue,
+      Function(dynamic)? player,
+      Color menuColor = Colors.black,
+      FontWeight fontWeight = FontWeight.bold,
+      double borderRadius = 16,
+      double fontSize = Constants.FONT_SIZE_NORMAL_TEXT}) {
+    return Container(
+      width: double.infinity,
+      decoration: ShapeDecoration(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+            width: 1.0,
+            style: BorderStyle.solid,
+            color: borderColor,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+        ),
+      ),
+      child: CategorizedDropdown(
+          items: items,
+          value: displayValue,
+          hint: const Text('Select auto parts'),
+          onChanged: player,
+          style:  TextStyle(
+              fontSize: fontSize,
+              fontWeight: fontWeight,
+              color: menuColor),
       ),
     );
   }
