@@ -606,6 +606,7 @@ class MATForms {
       double borderRadius = 16,
       double fontSize = Constants.FONT_SIZE_NORMAL_TEXT}) {
     return Container(
+      height: 48,
       width: double.infinity,
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
@@ -617,15 +618,15 @@ class MATForms {
           borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
         ),
       ),
-      child: CategorizedDropdown(
+      child: Padding(
+        padding: EdgeInsets.only(left: 8),
+        child: CategorizedDropdown(
           items: items,
           value: displayValue,
-          hint: const Text('Select auto parts'),
           onChanged: player,
-          style:  TextStyle(
-              fontSize: fontSize,
-              fontWeight: fontWeight,
-              color: menuColor),
+          style: TextStyle(
+              fontSize: fontSize, fontWeight: fontWeight, color: menuColor),
+        ),
       ),
     );
   }
