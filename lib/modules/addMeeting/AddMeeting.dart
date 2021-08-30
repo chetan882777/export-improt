@@ -20,14 +20,18 @@ class AddMeeting extends StatelessWidget {
   }
 
   late final MATForms matForms;
+  bool isInitialized = false;
 
   @override
   Widget build(BuildContext context) {
-    matForms = MATForms(
-        context: context,
-        dynamicFormKey: dynamicFormKey,
-        mapper: mapper,
-        saveController: saveVariable);
+    if(!isInitialized) {
+      matForms = MATForms(
+          context: context,
+          dynamicFormKey: dynamicFormKey,
+          mapper: mapper,
+          saveController: saveVariable);
+      isInitialized = true;
+    }
 
     return ChangeNotifierProvider<AddMeetingViewModel>(
       create: (context) => AddMeetingViewModel(context, matForms),

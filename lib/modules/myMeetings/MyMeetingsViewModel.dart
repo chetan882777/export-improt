@@ -98,6 +98,7 @@ class MyMeetingsViewModel extends BaseViewModel {
       if (data["code"] == "200") {
         List<dynamic> list = data["data"];
         list.forEach((element) {
+          element["color"] = getColor(element);
           meetingsList.add(element);
         });
       } else if (data["code"] == "300") {
@@ -106,5 +107,26 @@ class MyMeetingsViewModel extends BaseViewModel {
         showToast("Something went wrong!");
     } else
       showToast("Something went wrong!");
+
+  }
+
+  Color getColor(element) {
+    if(element["status"] == "Completed" || element["status"] == "Cancelled") {
+      return const Color(0xff999999);
+    }
+    String date = element["date"];
+    var mDate = DateTime.parse(date);
+    var currDate = DateTime.now();
+
+    var mDifference = mDate.difference(currDate);
+
+    var hours = mDifference.inHours;
+
+    if(hours > 48) {
+      return const Color(0xff029302);
+    } else if (hours > 0) {
+      return const Color(0xffff923d);
+    }
+    return const Color(0xffff0000);
   }
 }

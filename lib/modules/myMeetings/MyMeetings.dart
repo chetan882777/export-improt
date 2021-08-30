@@ -46,7 +46,11 @@ class MyMeetings extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (context, int index) {
                       return meetingListItem(
-                          context, model.meetingsList[index], model, index);
+                          context,
+                          model.meetingsList[
+                              model.meetingsList.length - index - 1],
+                          model,
+                          model.meetingsList.length - index - 1);
                     },
                   ),
                 ),
@@ -76,6 +80,14 @@ class MyMeetings extends StatelessWidget {
         ),
         Row(
           children: [
+            CircleAvatar(
+              backgroundColor: data["color"],
+              radius: 5,
+              child: Text(" "),
+            ),
+            SizedBox(
+              width: 16,
+            ),
             Expanded(
               flex: 1,
               child: Column(
