@@ -93,7 +93,7 @@ class AllClientsViewModel extends BaseViewModel {
             selectedProduct = element.id;
           }
           if(AllProductsOfCategory.isEmpty)
-            AllProductsOfCategory = "${element.id}";
+            AllProductsOfCategory = "PC${element.id}";
           else
             AllProductsOfCategory += ",${element.id}";
 
@@ -132,8 +132,14 @@ class AllClientsViewModel extends BaseViewModel {
       Map<String, String> map = {};
       map["companyName"] = name;
 
-      if (selectedProduct != Constants.DROPDOWN_NON_SELECT)
-        map["product"] = selectedProduct;
+      if (selectedProduct != Constants.DROPDOWN_NON_SELECT) {
+        var temp = selectedProduct;
+        if(selectedProduct.contains("PC")) {
+          temp = temp.substring(2);
+        }
+        print(" =====> prod $temp");
+        map["product"] = temp;
+      }
       else
         map["product"] = "";
 
