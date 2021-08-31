@@ -46,11 +46,7 @@ class MyMeetings extends StatelessWidget {
                     physics: BouncingScrollPhysics(),
                     itemBuilder: (context, int index) {
                       return meetingListItem(
-                          context,
-                          model.meetingsList[
-                              model.meetingsList.length - index - 1],
-                          model,
-                          model.meetingsList.length - index - 1);
+                          context, model.meetingsList[index], model, index);
                     },
                   ),
                 ),

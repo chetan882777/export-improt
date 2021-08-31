@@ -111,6 +111,7 @@ class MyMeetingsViewModel extends BaseViewModel {
   }
 
   Color getColor(element) {
+    print(element);
     if(element["status"] == "Completed" || element["status"] == "Cancelled") {
       return const Color(0xff999999);
     }
@@ -121,12 +122,12 @@ class MyMeetingsViewModel extends BaseViewModel {
     var mDifference = mDate.difference(currDate);
 
     var hours = mDifference.inHours;
-
-    if(hours > 48) {
+    print(hours);
+    if(hours >= 48) {
       return const Color(0xff029302);
-    } else if (hours > 0) {
+    } else if (hours >= 0) {
       return const Color(0xffff923d);
     }
-    return const Color(0xffff0000);
+    return const Color(0xffdd0000);
   }
 }
