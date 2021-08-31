@@ -97,6 +97,7 @@ class MyMeetingsViewModel extends BaseViewModel {
       var data = json.decode(response.data);
       if (data["code"] == "200") {
         List<dynamic> list = data["data"];
+        meetingsList.clear();
         list.forEach((element) {
           element["color"] = getColor(element);
           meetingsList.add(element);

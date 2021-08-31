@@ -43,7 +43,7 @@ class MyMeetings extends StatelessWidget {
                   onRefresh: model.asyncInit,
                   child: ListView.builder(
                     itemCount: model.meetingsList.length,
-                    physics: BouncingScrollPhysics(),
+                    physics: AlwaysScrollableScrollPhysics(),
                     itemBuilder: (context, int index) {
                       return meetingListItem(
                           context, model.meetingsList[index], model, index);
